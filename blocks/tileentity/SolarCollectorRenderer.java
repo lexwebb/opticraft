@@ -45,7 +45,7 @@ public class SolarCollectorRenderer extends TileEntitySpecialRenderer{
     //binding the textures
             Minecraft.getMinecraft().renderEngine.bindTexture(textures);
 
-    //This rotation part is very important! Without it, your model will render upside-down! And for some reason you DO need PushMatrix again!                       
+    //This rotation part is very important! Without it, yousr model will render upside-down! And for some reason you DO need PushMatrix again!                       
             GL11.glPushMatrix();
             GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
     //A reference to your Model file. Again, very important.
@@ -53,6 +53,18 @@ public class SolarCollectorRenderer extends TileEntitySpecialRenderer{
     //Tell it to stop rendering for both the PushMatrix's
             GL11.glPopMatrix();
             GL11.glPopMatrix();
+          
+            if(time() <= 12000)
+            	model.setRotation(model.sPanel, 0F, 0f, (1f * time() / 24000) - 0.25f);
+            else
+            	model.setRotation(model.sPanel, 0F, 0f, 0f);
+            
+            if(time() <6000)
+            	model.sPanel.setRotationPoint(-7f, 18f +  (1f - (time() / 3000)), -7f);            
+            else if(time() < 12000)
+            	model.sPanel.setRotationPoint(-7f, 18f - ((time() - 6000) / 3000), -7f);
+            else
+            	model.sPanel.setRotationPoint(-7f, 18f, -7f);
     }
 
     //Set the lighting stuff, so it changes it's brightness properly.       
@@ -64,6 +76,13 @@ public class SolarCollectorRenderer extends TileEntitySpecialRenderer{
             int divModifier = skyLight / 65536;
             tess.setColorOpaque_F(brightness, brightness, brightness);
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit,  (float) modulousModifier,  divModifier);
+    }
+    
+    private long time(){
+    	long worldTime = this.tileEntityRenderer.worldObj.getWorldTime();
+    	int days = (int) Math.floor(worldTime / 24000);
+    	long baseTime = worldTime - (days * 24000);
+		return baseTime;    	
     }
 	
 }

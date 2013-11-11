@@ -11,7 +11,10 @@
 
 package opticraft.models;
 
+import java.util.List;
+
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
@@ -23,7 +26,7 @@ public class SolarCollectorModel extends ModelBase
     ModelRenderer RstrutF;
     ModelRenderer LstrutT;
     ModelRenderer RstrutT;
-    ModelRenderer Shape1;
+    public ModelRenderer sPanel;
   
   public SolarCollectorModel()
   {
@@ -60,12 +63,12 @@ public class SolarCollectorModel extends ModelBase
       RstrutT.setTextureSize(64, 32);
       RstrutT.mirror = true;
       setRotation(RstrutT, 0F, 0F, 0F);
-      Shape1 = new ModelRenderer(this, 0, 17);
-      Shape1.addBox(0F, 0F, 0F, 14, 1, 14);
-      Shape1.setRotationPoint(-7F, 18F, -7F);
-      Shape1.setTextureSize(64, 32);
-      Shape1.mirror = true;
-      setRotation(Shape1, 0F, 0F, 0F);
+      sPanel = new ModelRenderer(this, 0, 17);
+      sPanel.addBox(0F, 0F, 0F, 14, 1, 14);
+      sPanel.setRotationPoint(-7F, 18F, -7F);
+      sPanel.setTextureSize(64, 32);
+      sPanel.mirror = true;
+      setRotation(sPanel, 0F, 0F, 0F);
   }
   
   public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
@@ -77,10 +80,10 @@ public class SolarCollectorModel extends ModelBase
     RstrutF.render(f5);
     LstrutT.render(f5);
     RstrutT.render(f5);
-    Shape1.render(f5);
+    sPanel.render(f5);
   }
   
-  private void setRotation(ModelRenderer model, float x, float y, float z)
+  public void setRotation(ModelRenderer model, float x, float y, float z)
   {
     model.rotateAngleX = x;
     model.rotateAngleY = y;
