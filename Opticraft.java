@@ -1,6 +1,7 @@
 package opticraft;
 
 import opticraft.blocks.Blocks;
+import opticraft.blocks.tileentity.BeamEntity;
 import opticraft.blocks.tileentity.ItemLaserEntity;
 import opticraft.blocks.tileentity.SolarCollectorEntity;
 import opticraft.items.Items;
@@ -39,6 +40,7 @@ public class Opticraft {
 		proxy.registerRenderThings();
         GameRegistry.registerTileEntity(ItemLaserEntity.class, "tileEntityItemLaser");
         GameRegistry.registerTileEntity(SolarCollectorEntity.class, "tileEntitySolarCollector");
+        GameRegistry.registerTileEntity(BeamEntity.class, "tileEntityBeam");
 	}
 
 	@EventHandler

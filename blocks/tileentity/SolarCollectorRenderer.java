@@ -45,7 +45,7 @@ public class SolarCollectorRenderer extends TileEntitySpecialRenderer{
     //binding the textures
             Minecraft.getMinecraft().renderEngine.bindTexture(textures);
 
-    //This rotation part is very important! Without it, yousr model will render upside-down! And for some reason you DO need PushMatrix again!                       
+    //This rotation part is very important! Without it, your model will render upside-down! And for some reason you DO need PushMatrix again!                       
             GL11.glPushMatrix();
             GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
     //A reference to your Model file. Again, very important.

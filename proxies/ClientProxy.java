@@ -1,5 +1,7 @@
 package opticraft.proxies;
 
+import opticraft.blocks.tileentity.BeamEntity;
+import opticraft.blocks.tileentity.BeamRenderer;
 import opticraft.blocks.tileentity.ItemLaserEntity;
 import opticraft.blocks.tileentity.ItemLaserRenderer;
 import opticraft.blocks.tileentity.SolarCollectorEntity;
@@ -21,6 +23,7 @@ public class ClientProxy extends CommonProxy{
 	public void registerRenderThings() {
     	ClientRegistry.bindTileEntitySpecialRenderer(ItemLaserEntity.class, new ItemLaserRenderer());
     	ClientRegistry.bindTileEntitySpecialRenderer(SolarCollectorEntity.class, new SolarCollectorRenderer());
+    	ClientRegistry.bindTileEntitySpecialRenderer(BeamEntity.class, new BeamRenderer());
 	}
 	
 }
