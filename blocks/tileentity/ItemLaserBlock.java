@@ -1,5 +1,7 @@
 package opticraft.blocks.tileentity;
 
+import java.util.HashMap;
+
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,8 +23,7 @@ import net.minecraftforge.event.ForgeSubscribe;
 
 public class ItemLaserBlock extends BlockContainer{
 	
-	String orientation;
-	ItemLaserEntity ent;
+	private static HashMap<String, Integer> entList = new HashMap<String, Integer>();
 
 	//Treat it like a normal block here. The Block Bounds are a good idea - the first three are X Y and Z of the botton-left corner,
     //And the second three are the top-right corner.
@@ -34,9 +35,8 @@ public class ItemLaserBlock extends BlockContainer{
 
     //Make sure you set this as your TileEntity class relevant for the block!
     @Override
-    public TileEntity createNewTileEntity(World world) {
-    		ent = new ItemLaserEntity();
-            return ent;
+    public TileEntity createNewTileEntity(World world) {  		
+            return new ItemLaserEntity();
     }
     
     //You don't want the normal render type, or it wont render properly.
@@ -62,26 +62,15 @@ public class ItemLaserBlock extends BlockContainer{
     } 
     
     @Override
-    public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9){
-    	
-    	int side = par5;
-    	
-    	
-    	if(ent != null)
-    		if(side == 1){
-    			ent.setOrientation("U");
-    		} else if(side == 2){  			
-				ent.setOrientation("N");
-    		} else if(side == 3){    			
-				ent.setOrientation("S");
-			} else if(side == 4){    			
-				ent.setOrientation("W");
-			} else if(side == 5){   			
-				ent.setOrientation("E");
-			} else if(side == 0){   			
-				ent.setOrientation("D");
-			} else
-				ent.setOrientation("U");
-		return 0;   	
+    public int onBlockPlaced(World par1World, int x, int y, int z, int side, float par6, float par7, float par8, int par9){
+    	entList.put(String.valueOf(x) + String.valueOf(y) + String.valueOf(z), side);
+    	return 0;
+    }
+    
+    @Override
+    public void onPostBlockPlaced(World par1World, int x, int y, int z, int par5) {
+    	System.out.println("SIDE = " + String.valueOf(par5));
+    	par1World.setBlockMetadataWithNotify(x, y, z, entList.get(String.valueOf(x) + String.valueOf(y) + String.valueOf(z)), 0);
+    	entList.remove(String.valueOf(x) + String.valueOf(y) + String.valueOf(z));
     }
 }

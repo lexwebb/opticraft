@@ -85,9 +85,9 @@ public class ItemLaserRenderer extends TileEntitySpecialRenderer{
     //Tell it to stop rendering for both the PushMatrix's
             GL11.glPopMatrix();
             GL11.glPopMatrix();
-            
-
     }
+    
+    
 
     //Set the lighting stuff, so it changes it's brightness properly.       
     private void adjustLightFixture(World world, int i, int j, int k, Block block) {
