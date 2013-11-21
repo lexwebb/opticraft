@@ -1,7 +1,7 @@
 package opticraft.client.gui;
 
-import opticraft.blocks.tileentity.ItemLaserContainer;
-import opticraft.blocks.tileentity.ItemLaserEntity;
+import opticraft.blocks.containers.ItemLaserContainer;
+import opticraft.entitys.TileEntityItemLaser;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -19,8 +19,9 @@ public class GuiHandler implements IGuiHandler{
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world,
 			int x, int y, int z) {
 		TileEntity tile_entity = world.getBlockTileEntity(x, y, z);
-		if(tile_entity instanceof ItemLaserEntity){
-			return new ItemLaserContainer((ItemLaserEntity) tile_entity, player.inventory);
+		if(tile_entity instanceof TileEntityItemLaser){
+			return new GuiItemLaser(player.inventory, (TileEntityItemLaser)tile_entity);
+			//return new ItemLaserContainer((ItemLaserEntity) tile_entity, player.inventory);
 		}		
 		return null;
 		

@@ -1,11 +1,11 @@
 package opticraft;
 
 import opticraft.blocks.Blocks;
-import opticraft.blocks.tileentity.BeamEntity;
-import opticraft.blocks.tileentity.ItemLaserEntity;
-import opticraft.blocks.tileentity.LaserDetectorEntity;
-import opticraft.blocks.tileentity.SolarCollectorEntity;
 import opticraft.client.gui.GuiHandler;
+import opticraft.entitys.TileEntityBeam;
+import opticraft.entitys.TileEntityItemLaser;
+import opticraft.entitys.TileEntityLaserDetector;
+import opticraft.entitys.TileEntitySolarCollector;
 import opticraft.items.Items;
 import opticraft.lib.ModInfo;
 import opticraft.proxies.CommonProxy;
@@ -50,10 +50,10 @@ public class Opticraft {
 		NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
 	
 		proxy.registerRenderThings();
-        GameRegistry.registerTileEntity(ItemLaserEntity.class, "tileEntityItemLaser");
-        GameRegistry.registerTileEntity(SolarCollectorEntity.class, "tileEntitySolarCollector");
-        GameRegistry.registerTileEntity(BeamEntity.class, "tileEntityBeam");
-        GameRegistry.registerTileEntity(LaserDetectorEntity.class, "tileEntityLaserDetector");
+        GameRegistry.registerTileEntity(TileEntityItemLaser.class, "tileEntityItemLaser");
+        GameRegistry.registerTileEntity(TileEntitySolarCollector.class, "tileEntitySolarCollector");
+        GameRegistry.registerTileEntity(TileEntityBeam.class, "tileEntityBeam");
+        GameRegistry.registerTileEntity(TileEntityLaserDetector.class, "tileEntityLaserDetector");
 	}
 
 	@EventHandler

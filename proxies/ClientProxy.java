@@ -1,13 +1,13 @@
 package opticraft.proxies;
 
-import opticraft.blocks.tileentity.BeamEntity;
-import opticraft.blocks.tileentity.BeamRenderer;
-import opticraft.blocks.tileentity.ItemLaserEntity;
-import opticraft.blocks.tileentity.ItemLaserRenderer;
-import opticraft.blocks.tileentity.LaserDetectorEntity;
-import opticraft.blocks.tileentity.LaserDetectorRenderer;
-import opticraft.blocks.tileentity.SolarCollectorEntity;
-import opticraft.blocks.tileentity.SolarCollectorRenderer;
+import opticraft.entitys.TileEntityBeam;
+import opticraft.entitys.TileEntityItemLaser;
+import opticraft.entitys.TileEntityLaserDetector;
+import opticraft.entitys.TileEntitySolarCollector;
+import opticraft.render.BeamRenderer;
+import opticraft.render.ItemLaserRenderer;
+import opticraft.render.LaserDetectorRenderer;
+import opticraft.render.SolarCollectorRenderer;
 import cpw.mods.fml.client.registry.ClientRegistry;
 
 public class ClientProxy extends CommonProxy{
@@ -23,10 +23,10 @@ public class ClientProxy extends CommonProxy{
 	}
 	
 	public void registerRenderThings() {
-    	ClientRegistry.bindTileEntitySpecialRenderer(ItemLaserEntity.class, new ItemLaserRenderer());
-    	ClientRegistry.bindTileEntitySpecialRenderer(SolarCollectorEntity.class, new SolarCollectorRenderer());
-    	ClientRegistry.bindTileEntitySpecialRenderer(BeamEntity.class, new BeamRenderer());
-    	ClientRegistry.bindTileEntitySpecialRenderer(LaserDetectorEntity.class, new LaserDetectorRenderer());
+    	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityItemLaser.class, new ItemLaserRenderer());
+    	ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolarCollector.class, new SolarCollectorRenderer());
+    	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeam.class, new BeamRenderer());
+    	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaserDetector.class, new LaserDetectorRenderer());
 	}
 	
 }

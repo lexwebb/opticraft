@@ -1,4 +1,4 @@
-package opticraft.blocks.tileentity;
+package opticraft.blocks;
 
 import java.util.HashMap;
 
@@ -7,7 +7,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
-import opticraft.blocks.tileentity.ItemLaserEntity;
+import opticraft.entitys.TileEntityItemLaser;
+import opticraft.entitys.TileEntityLaserDetector;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -37,7 +38,7 @@ public class LaserDetectorBlock extends BlockContainer{
     //Make sure you set this as your TileEntity class relevant for the block!
     @Override
     public TileEntity createNewTileEntity(World world) {  		
-            return new LaserDetectorEntity();
+            return new TileEntityLaserDetector();
     }
     
     //You don't want the normal render type, or it wont render properly.

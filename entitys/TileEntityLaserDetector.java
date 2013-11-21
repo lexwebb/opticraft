@@ -1,6 +1,5 @@
-package opticraft.blocks.tileentity;
+package opticraft.entitys;
 
-import opticraft.entitys.EntityEnergyLaser;
 import opticraft.lib.Position;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.client.Minecraft;
@@ -13,7 +12,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class LaserDetectorEntity extends TileEntity {
+public class TileEntityLaserDetector extends TileEntity {
 	
 	private String orientation;
 

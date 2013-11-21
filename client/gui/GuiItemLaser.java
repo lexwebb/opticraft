@@ -2,8 +2,8 @@ package opticraft.client.gui;
 
 import org.lwjgl.opengl.GL11;
 
-import opticraft.blocks.tileentity.ItemLaserContainer;
-import opticraft.blocks.tileentity.ItemLaserEntity;
+import opticraft.blocks.containers.ItemLaserContainer;
+import opticraft.entitys.TileEntityItemLaser;
 import opticraft.lib.ModInfo;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.texture.TextureObject;
@@ -14,7 +14,7 @@ import net.minecraft.util.StatCollector;
 
 public class GuiItemLaser extends GuiContainer{
 
-	public GuiItemLaser(InventoryPlayer inv, ItemLaserEntity ent) {
+	public GuiItemLaser(InventoryPlayer inv, TileEntityItemLaser ent) {
 		super(new ItemLaserContainer(ent, inv));
 	}
 

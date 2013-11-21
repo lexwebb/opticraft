@@ -1,6 +1,5 @@
-package opticraft.blocks.tileentity;
+package opticraft.entitys;
 
-import opticraft.entitys.EntityEnergyLaser;
 import opticraft.lib.Position;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.client.Minecraft;
@@ -18,13 +17,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
 
-public class ItemLaserEntity extends TileEntity implements IInventory{
+public class TileEntityItemLaser extends TileEntity implements IInventory{
 	
 	private String orientation;
 	private EntityEnergyLaser laser = null;
 	private ItemStack[] inv;
 	
-	public ItemLaserEntity(){
+	public TileEntityItemLaser(){
 		inv = new ItemStack[1];
 	}
 	

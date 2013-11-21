@@ -1,7 +1,7 @@
 package opticraft.proxies;
 
-import opticraft.blocks.tileentity.ItemLaserEntity;
-import opticraft.blocks.tileentity.ItemLaserRenderer;
+import opticraft.entitys.TileEntityItemLaser;
+import opticraft.render.ItemLaserRenderer;
 import cpw.mods.fml.client.registry.ClientRegistry;
 
 public class CommonProxy {

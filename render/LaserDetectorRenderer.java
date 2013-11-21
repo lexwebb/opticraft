@@ -1,8 +1,10 @@
-package opticraft.blocks.tileentity;
+package opticraft.render;
 
+import opticraft.entitys.TileEntityLaserDetector;
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
 import opticraft.models.ItemLaserModel;
+import opticraft.models.LaserDetectorModel;
 
 import org.lwjgl.opengl.GL11;
 
@@ -16,12 +18,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class ItemLaserRenderer extends TileEntitySpecialRenderer{
+public class LaserDetectorRenderer extends TileEntitySpecialRenderer{
 
-	private final ItemLaserModel model;
+	private final LaserDetectorModel model;
     
-    public ItemLaserRenderer() {
-            this.model = new ItemLaserModel();
+    public LaserDetectorRenderer() {
+            this.model = new LaserDetectorModel();
     }
     
     private void adjustRotatePivotViaMeta(World world, int x, int y, int z) {
@@ -34,7 +36,7 @@ public class ItemLaserRenderer extends TileEntitySpecialRenderer{
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
     
-    		ItemLaserEntity ent = (ItemLaserEntity) te;
+    		TileEntityLaserDetector ent = (TileEntityLaserDetector) te;
     		String or = ent.getOrientation();
     		
     //The PushMatrix tells the renderer to "start" doing something.    
@@ -58,7 +60,7 @@ public class ItemLaserRenderer extends TileEntitySpecialRenderer{
     //This is the texture of your block. It's pathed to be the same place as your other blocks here.
             //Outdated bindTextureByName("/mods/roads/textures/blocks/TrafficLightPoleRed.png");
    //Use in 1.6.2  this
-            ResourceLocation textures = (new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/blocks/itemLaserTile.png")); 
+            ResourceLocation textures = (new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/blocks/LaserDetectorTile.png")); 
     //the ':' is very important
     //binding the textures
             Minecraft.getMinecraft().renderEngine.bindTexture(textures);

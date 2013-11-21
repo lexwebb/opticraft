@@ -1,4 +1,4 @@
-package opticraft.blocks.tileentity;
+package opticraft.blocks;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -9,7 +9,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import opticraft.Opticraft;
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
-import opticraft.blocks.tileentity.ItemLaserEntity;
+import opticraft.entitys.TileEntityItemLaser;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -42,7 +42,7 @@ public class ItemLaserBlock extends BlockContainer{
     //Make sure you set this as your TileEntity class relevant for the block!
     @Override
     public TileEntity createNewTileEntity(World world) {  		
-            return new ItemLaserEntity();
+            return new TileEntityItemLaser();
     }
     
     //You don't want the normal render type, or it wont render properly.
@@ -81,7 +81,7 @@ public class ItemLaserBlock extends BlockContainer{
     }
     
     public IInventory getInventory(World par1World, int par2, int par3, int par4) {
-		return (ItemLaserEntity)par1World.getBlockTileEntity(par2, par3, par4);
+		return (TileEntityItemLaser)par1World.getBlockTileEntity(par2, par3, par4);
 		
     }
     

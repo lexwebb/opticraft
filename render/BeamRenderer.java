@@ -1,4 +1,4 @@
-package opticraft.blocks.tileentity;
+package opticraft.render;
 
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;

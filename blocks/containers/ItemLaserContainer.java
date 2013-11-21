@@ -1,5 +1,6 @@
-package opticraft.blocks.tileentity;
+package opticraft.blocks.containers;
 
+import opticraft.entitys.TileEntityItemLaser;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -7,9 +8,9 @@ import net.minecraft.inventory.Slot;
 
 public class ItemLaserContainer extends Container{
 
-	protected ItemLaserEntity tile_entity;
+	protected TileEntityItemLaser tile_entity;
 	
-	public ItemLaserContainer(ItemLaserEntity tile_entity, InventoryPlayer inv){
+	public ItemLaserContainer(TileEntityItemLaser tile_entity, InventoryPlayer inv){
 		this.tile_entity = tile_entity;
 		addSlotToContainer(new Slot(tile_entity, 0, 76, 27));
 		bindPlayerInventory(inv);
@@ -31,5 +32,6 @@ public class ItemLaserContainer extends Container{
 			addSlotToContainer(new Slot(inv, i, 6 + i * 16, 142));
 		}
 	}
-
+	
+	
 }

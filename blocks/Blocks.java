@@ -2,10 +2,6 @@ package opticraft.blocks;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import opticraft.blocks.tileentity.BeamBlock;
-import opticraft.blocks.tileentity.ItemLaserBlock;
-import opticraft.blocks.tileentity.LaserDetectorBlock;
-import opticraft.blocks.tileentity.SolarCollectorBlock;
 import opticraft.lib.Ids;
 import opticraft.lib.Names;
 import net.minecraft.block.Block;
