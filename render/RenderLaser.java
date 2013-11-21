@@ -5,7 +5,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import opticraft.entity.EntityLaser;
+import opticraft.entitys.EntityLaser;
 import opticraft.lib.Position;
 
 import org.lwjgl.opengl.GL11;

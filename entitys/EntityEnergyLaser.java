@@ -1,4 +1,4 @@
-package opticraft.entity;
+package opticraft.entitys;
 
 import opticraft.lib.Position;
 import net.minecraft.util.ResourceLocation;

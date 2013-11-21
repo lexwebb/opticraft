@@ -1,4 +1,4 @@
-package opticraft.entity;
+package opticraft.entitys;
 
 import opticraft.lib.ModInfo;
 import opticraft.lib.Position;

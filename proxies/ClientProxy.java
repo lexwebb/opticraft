@@ -4,6 +4,8 @@ import opticraft.blocks.tileentity.BeamEntity;
 import opticraft.blocks.tileentity.BeamRenderer;
 import opticraft.blocks.tileentity.ItemLaserEntity;
 import opticraft.blocks.tileentity.ItemLaserRenderer;
+import opticraft.blocks.tileentity.LaserDetectorEntity;
+import opticraft.blocks.tileentity.LaserDetectorRenderer;
 import opticraft.blocks.tileentity.SolarCollectorEntity;
 import opticraft.blocks.tileentity.SolarCollectorRenderer;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -24,6 +26,7 @@ public class ClientProxy extends CommonProxy{
     	ClientRegistry.bindTileEntitySpecialRenderer(ItemLaserEntity.class, new ItemLaserRenderer());
     	ClientRegistry.bindTileEntitySpecialRenderer(SolarCollectorEntity.class, new SolarCollectorRenderer());
     	ClientRegistry.bindTileEntitySpecialRenderer(BeamEntity.class, new BeamRenderer());
+    	ClientRegistry.bindTileEntitySpecialRenderer(LaserDetectorEntity.class, new LaserDetectorRenderer());
 	}
 	
 }

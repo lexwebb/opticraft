@@ -52,7 +52,7 @@ public class SolarCollectorBlock extends BlockContainer{
     
     //This is the icon to use for showing the block in your hand.
     public void registerIcons(IconRegister icon) {
-            this.blockIcon = icon.registerIcon(ModInfo.ID.toLowerCase() + ":" + Names.solarCollectorTile_unlocalizedName);
+            this.blockIcon = icon.registerIcon(ModInfo.ID.toLowerCase() + ":" + "SolarIcon");
     }
     
     @Override
