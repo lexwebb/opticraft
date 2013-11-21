@@ -12,6 +12,10 @@ public class GuiHandler implements IGuiHandler{
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world,
 			int x, int y, int z) {
+		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		if(tileEntity instanceof TileEntityItemLaser){
+			return new ItemLaserContainer((TileEntityItemLaser)tileEntity, player.inventory); // your Containers go here			
+		}
 		return null;
 	}
 
