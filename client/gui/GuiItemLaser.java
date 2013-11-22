@@ -27,7 +27,7 @@ public class GuiItemLaser extends GuiContainer{
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {		
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		this.mc.renderEngine.bindTexture(new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/gui/ItemLaserInventory"));
+		this.mc.renderEngine.bindTexture(new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/gui/Inventory.png"));
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);

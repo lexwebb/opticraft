@@ -9,7 +9,7 @@ public class Items {
 	public static Item item;
 
 	public static void init() {
-		item = new LaserRench(Ids.laserRench);
+		item = new LaserWrench(Ids.laserRench);
 	}
 	
 	public static void addNames() {

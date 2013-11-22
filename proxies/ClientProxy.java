@@ -1,9 +1,14 @@
 package opticraft.proxies;
 
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
 import opticraft.entitys.TileEntityBeam;
 import opticraft.entitys.TileEntityItemLaser;
 import opticraft.entitys.TileEntityLaserDetector;
 import opticraft.entitys.TileEntitySolarCollector;
+import opticraft.items.LaserWrench;
+import opticraft.items.LaserWrenchRenderer;
+import opticraft.lib.Ids;
 import opticraft.render.BeamRenderer;
 import opticraft.render.ItemLaserRenderer;
 import opticraft.render.LaserDetectorRenderer;
@@ -27,6 +32,8 @@ public class ClientProxy extends CommonProxy{
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolarCollector.class, new SolarCollectorRenderer());
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeam.class, new BeamRenderer());
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaserDetector.class, new LaserDetectorRenderer());
+    	
+    	MinecraftForgeClient.registerItemRenderer(Ids.laserRench, (IItemRenderer)new LaserWrenchRenderer());
 	}
 	
 }

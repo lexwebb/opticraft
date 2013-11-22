@@ -1,8 +1,8 @@
 package opticraft.lib;
 
 public class Names {
-	public static final String laserRench_unlocalizedName = "laserRench";
-	public static final String laserRench_name = "Laser Rench";
+	public static final String laserRench_unlocalizedName = "laserWrench";
+	public static final String laserRench_name = "Laser Wrench";
 	
 	public static final String itemLaserTile_unlocalizedName = "itemLaserTile";
 	public static final String itemLaserTile_name = "Item Laser";

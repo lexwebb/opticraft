@@ -14,27 +14,29 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class LaserRench extends Item{
+public class LaserWrench extends Item{
 
-	public LaserRench(int par1) {
+	public LaserWrench(int par1) {
 		super(par1);
-		this.setCreativeTab(CreativeTabs.tabMisc);
+		setMaxStackSize(1);
+		this.setCreativeTab(CreativeTabs.tabTools);
 		this.setUnlocalizedName(Names.laserRench_unlocalizedName);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister icon) {
-		itemIcon = icon.registerIcon(ModInfo.ID.toLowerCase() + ":" + Names.laserRench_unlocalizedName);
+		itemIcon = icon.registerIcon(ModInfo.ID.toLowerCase() + ":" + "Error");
 	}
 	
 	@Override
 	public boolean itemInteractionForEntity(ItemStack itemstack, EntityPlayer player, EntityLivingBase target) {
-		if(!target.worldObj.isRemote) {
-			if(target instanceof EntityCreeper) {
-				target.motionY = 2;
-				}
-		}
+
 		return false;
 	}
+	
+	@Override
+	  public int getSpriteNumber() {
+	    return 0;
+	  }
 }
