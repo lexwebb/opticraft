@@ -5,6 +5,7 @@ import java.util.HashMap;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import opticraft.lib.DirectionalBlock;
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
 import opticraft.entitys.TileEntityItemLaser;
@@ -23,14 +24,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.ForgeSubscribe;
 
-public class LaserDetectorBlock extends BlockContainer{
-	
-	private static HashMap<String, Integer> entList = new HashMap<String, Integer>();
+public class LaserDetectorBlock extends DirectionalBlock{
 
 	//Treat it like a normal block here. The Block Bounds are a good idea - the first three are X Y and Z of the botton-left corner,
     //And the second three are the top-right corner.
     public LaserDetectorBlock(int id) {
-            super(id, Material.iron);
+            super(id, Material.iron, false);
             this.setCreativeTab(CreativeTabs.tabBlock);
             this.setBlockBounds(0F, 0.0F, 0F, 1f, 1F, 1F);
     }
@@ -41,38 +40,8 @@ public class LaserDetectorBlock extends BlockContainer{
             return new TileEntityLaserDetector();
     }
     
-    //You don't want the normal render type, or it wont render properly.
-    @Override
-    public int getRenderType() {
-            return -1;
-    }
-    
-    //It's not an opaque cube, so you need this.
-    @Override
-    public boolean isOpaqueCube() {
-            return false;
-    }
-    
-    //It's not a normal block, so you need this too.
-    public boolean renderAsNormalBlock() {
-            return false;
-    }
-    
     //This is the icon to use for showing the block in your hand.
     public void registerIcons(IconRegister icon) {
             this.blockIcon = icon.registerIcon(ModInfo.ID.toLowerCase() + ":" + "LaserIconFlat");
     } 
-    
-    @Override
-    public int onBlockPlaced(World par1World, int x, int y, int z, int side, float par6, float par7, float par8, int par9){
-    	entList.put(String.valueOf(x) + String.valueOf(y) + String.valueOf(z), side);
-    	return 0;
-    }
-    
-    @Override
-    public void onPostBlockPlaced(World par1World, int x, int y, int z, int par5) {
-    	System.out.println("SIDE = " + String.valueOf(par5));
-    	par1World.setBlockMetadataWithNotify(x, y, z, entList.get(String.valueOf(x) + String.valueOf(y) + String.valueOf(z)), 0);
-    	entList.remove(String.valueOf(x) + String.valueOf(y) + String.valueOf(z));
-    }
 }

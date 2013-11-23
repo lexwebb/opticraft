@@ -1,5 +1,6 @@
 package opticraft.entitys;
 
+import opticraft.lib.DirectionalTileEntity;
 import opticraft.lib.Position;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.client.Minecraft;
@@ -15,63 +16,143 @@ import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class TileEntityItemLaser extends TileEntity implements IInventory{
+public class TileEntityItemLaser extends DirectionalTileEntity implements IInventory{
 	
-	private String orientation;
-	private EntityEnergyLaser laser = null;
 	private ItemStack[] inv;
+	Position linkedDetector;
 	
 	public TileEntityItemLaser(){
 		inv = new ItemStack[1];
 	}
 	
-	public void setOrientation(String ori){
-		System.out.println("SET ORIENTATION");
-		orientation = ori;		
-	}
-	
-	public String getOrientation(){
-		return orientation;
-	}
-	
-//	@Override
-//	public Packet getDescriptionPacket(){
-//		NBTTagCompound titleTag = new NBTTagCompound();
-//		this.writeToNBT(titleTag);
-//		return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, titleTag);
-//	}
-//	
-//	@Override
-//	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt){
-//		this.readFromNBT(pkt.data);
-//	}
-	
 	@Override
 	public void updateEntity(){
-		if(orientation == null){
-			int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+		super.updateEntity();
+		
+		//check for Detector
+		if(this.worldObj.getWorldTime() % 10 == 0){
+			TileEntity tile_entity;
+			linkedDetector = null;
 			
-			if(meta == 1){
-    			setOrientation("U");
-    		} else if(meta == 2){  			
-				setOrientation("N");
-    		} else if(meta == 3){    			
-				setOrientation("S");
-			} else if(meta == 4){    			
-				setOrientation("W");
-			} else if(meta == 5){   			
-				setOrientation("E");
-			} else if(meta == 0){   			
-				setOrientation("D");
-			} else
-				setOrientation("U");
+			if(this.getOrientation() == "U"){
+				for(int i = 1; i < 64; i++){
+					tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord + i, zCoord);
+					if(tile_entity instanceof TileEntityLaserDetector){
+						DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
+						if(ent.getOrientation() == "D"){
+							linkedDetector = new Position(ent);
+						}
+					}
+					if(linkedDetector != null)
+						break;
+				}
+			} else if(this.getOrientation() == "D"){
+				for(int i = 1; i < 64; i++){
+					tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord - i, zCoord);
+					if(tile_entity instanceof TileEntityLaserDetector){
+						DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
+						if(ent.getOrientation() == "U"){
+							linkedDetector = new Position(ent);
+						}
+					}
+					if(linkedDetector != null)
+						break;
+				}	
+			} else if(this.getOrientation() == "N"){
+				for(int i = 1; i < 64; i++){
+					tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord - i);
+					if(tile_entity instanceof TileEntityLaserDetector){
+						DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
+						if(ent.getOrientation() == "S"){
+							linkedDetector = new Position(ent);
+						}
+					}
+					if(linkedDetector != null)
+						break;
+				}	
+			} else if(this.getOrientation() == "S"){
+				for(int i = 1; i < 64; i++){
+					tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord + i);
+					if(tile_entity instanceof TileEntityLaserDetector){
+						DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
+						if(ent.getOrientation() == "N"){
+							linkedDetector = new Position(ent);
+						}
+					}
+					if(linkedDetector != null)
+						break;
+				}	
+			} else if(this.getOrientation() == "W"){
+				for(int i = 1; i < 64; i++){
+					tile_entity = worldObj.getBlockTileEntity(xCoord - i, yCoord, zCoord);
+					if(tile_entity instanceof TileEntityLaserDetector){
+						DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
+						if(ent.getOrientation() == "E"){
+							linkedDetector = new Position(ent);
+						}
+					}
+					if(linkedDetector != null)
+						break;
+				}	
+			} else if(this.getOrientation() == "E"){
+				for(int i = 1; i < 64; i++){
+					tile_entity = worldObj.getBlockTileEntity(xCoord + i, yCoord, zCoord);
+					if(tile_entity instanceof TileEntityLaserDetector){
+						DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
+						if(ent.getOrientation() == "W"){
+							linkedDetector = new Position(ent);
+						}
+					}
+					if(linkedDetector != null)
+						break;
+				}	
+			}
+			
+			if(linkedDetector != null){
+				TileEntityLaserDetector ent = (TileEntityLaserDetector) worldObj.getBlockTileEntity(
+						(int) Math.floor(linkedDetector.x), (int) Math.floor(linkedDetector.y), (int) Math.floor(linkedDetector.z));
+				if(ent.getStackInSlot(0) == null){
+					ent.setInventorySlotContents(0, this.getStackInSlot(0));
+					this.setInventorySlotContents(0, null);
+//					
+					if(this.getOrientation() == "U"){
+						for(int i = this.yCoord; i <= linkedDetector.y - 1; i++){
+							System.out.println(i);
+							if (!worldObj.isRemote){
+								worldObj.spawnEntityInWorld(new EntityBeam(worldObj, "UD"));
+							}
+							
+						}
+					} else if(this.getOrientation() == "D"){
+						for(int i = this.yCoord; i <= this.yCoord + 1; i++){
+
+						}	
+					} else if(this.getOrientation() == "N"){
+						for(int i = this.yCoord; i <= this.yCoord + 1; i++){
+
+						}	
+					} else if(this.getOrientation() == "S"){
+						for(int i = this.yCoord; i <= this.yCoord + 1; i++){
+
+						}	
+					} else if(this.getOrientation() == "W"){
+						for(int i = this.yCoord; i <= this.yCoord + 1; i++){
+
+						}	
+					} else if(this.getOrientation() == "E"){
+						for(int i = this.yCoord; i <= this.yCoord + 1; i++){
+							
+						}
+
+					}
+				}
+			}
 		}
 	}
 
-	//inventory
-	
     @Override
     public int getSizeInventory() {
             return inv.length;
@@ -117,7 +198,7 @@ public class TileEntityItemLaser extends TileEntity implements IInventory{
     
     @Override
     public int getInventoryStackLimit() {
-            return 64;
+            return 1;
     }
 
     @Override

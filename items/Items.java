@@ -9,7 +9,7 @@ public class Items {
 	public static Item item;
 
 	public static void init() {
-		item = new LaserWrench(Ids.laserWrench);
+		item = new ItemLaserWrench(Ids.laserWrench);
 		System.out.println(String.valueOf(item.itemID));
 	}
 	

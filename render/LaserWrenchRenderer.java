@@ -1,4 +1,4 @@
-package opticraft.items;
+package opticraft.render;
 
 import opticraft.lib.ModInfo;
 import opticraft.models.ItemLaserModel;
@@ -32,7 +32,11 @@ public class LaserWrenchRenderer implements IItemRenderer {
 	@Override
 	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) 
 	{
-		return false;
+		if(helper == ItemRendererHelper.INVENTORY_BLOCK){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	@Override
@@ -58,7 +62,7 @@ public class LaserWrenchRenderer implements IItemRenderer {
 			
 			GL11.glPopMatrix();
 			
-		} else if(type == ItemRenderType.ENTITY || type == ItemRenderType.INVENTORY){
+		} else if(type == ItemRenderType.ENTITY){
 			RenderBlocks blockRenderer = (RenderBlocks)data[0];
 			//Entity entity = (Entity)data[1]; // entity holding the item
 			
@@ -83,7 +87,7 @@ public class LaserWrenchRenderer implements IItemRenderer {
 			
 			float scale = 0.7F;
 			GL11.glScalef(scale, scale, scale);
-			GL11.glRotatef(90, -1, 0, 0);
+			GL11.glRotatef(80, -1, 0, 0);
 			GL11.glRotatef(60, 0, 0, 1);
 			GL11.glRotatef(180, 0, 1, 0);
 			GL11.glRotatef(100, 1, 0, 0);
@@ -100,10 +104,12 @@ public class LaserWrenchRenderer implements IItemRenderer {
 			GL11.glPushMatrix();
 			Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/items/LaserWrench.png"));
 			
-			float scale = 0.7F;
+			float scale = 0.8F;
 			GL11.glScalef(scale, scale, scale);
 			GL11.glRotatef(180, 1, 0, 0);
+			GL11.glRotatef(-30, 0, 0, 1);
 			// Forward-Backwards Up-Down
+			GL11.glTranslatef(-0.1F, -0.9F, 0.0F); // Left-Right
 			model.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F,
 					0.0625F);
 			

@@ -14,9 +14,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class LaserWrench extends Item{
+public class ItemLaserWrench extends Item{
 
-	public LaserWrench(int par1) {
+	public ItemLaserWrench(int par1) {
 		super(par1);
 		setMaxStackSize(1);
 		this.setCreativeTab(CreativeTabs.tabTools);

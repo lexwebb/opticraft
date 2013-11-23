@@ -4,16 +4,16 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import opticraft.blocks.Blocks;
 import opticraft.client.gui.GuiHandler;
-import opticraft.entitys.TileEntityBeam;
+import opticraft.entitys.EntityBeam;
 import opticraft.entitys.TileEntityItemLaser;
 import opticraft.entitys.TileEntityLaserDetector;
 import opticraft.entitys.TileEntitySolarCollector;
 import opticraft.items.Items;
-import opticraft.items.LaserWrench;
-import opticraft.items.LaserWrenchRenderer;
+import opticraft.items.ItemLaserWrench;
 import opticraft.lib.Ids;
 import opticraft.lib.ModInfo;
 import opticraft.proxies.CommonProxy;
+import opticraft.render.LaserWrenchRenderer;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Instance;
@@ -24,6 +24,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = ModInfo.ID, name = ModInfo.NAME, version = ModInfo.VERSION)
@@ -59,8 +60,9 @@ public class Opticraft {
 		
         GameRegistry.registerTileEntity(TileEntityItemLaser.class, "tileEntityItemLaser");
         GameRegistry.registerTileEntity(TileEntitySolarCollector.class, "tileEntitySolarCollector");
-        GameRegistry.registerTileEntity(TileEntityBeam.class, "tileEntityBeam");
         GameRegistry.registerTileEntity(TileEntityLaserDetector.class, "tileEntityLaserDetector");
+        
+        
         
 	}
 
