@@ -35,8 +35,8 @@ public class LaserWrench extends Item{
 		return false;
 	}
 	
-	@Override
-	  public int getSpriteNumber() {
-	    return 0;
-	  }
+//	@Override
+//	  public int getSpriteNumber() {
+//	    return 0;
+//	  }
 }

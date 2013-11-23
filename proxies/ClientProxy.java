@@ -33,7 +33,8 @@ public class ClientProxy extends CommonProxy{
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeam.class, new BeamRenderer());
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaserDetector.class, new LaserDetectorRenderer());
     	
-    	MinecraftForgeClient.registerItemRenderer(Ids.laserRench, (IItemRenderer)new LaserWrenchRenderer());
+    	MinecraftForgeClient.registerItemRenderer(Ids.laserWrench + 256, (IItemRenderer)new LaserWrenchRenderer());
+    	System.out.println(String.valueOf(Ids.laserWrench));
 	}
 	
 }

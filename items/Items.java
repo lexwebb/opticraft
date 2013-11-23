@@ -9,7 +9,8 @@ public class Items {
 	public static Item item;
 
 	public static void init() {
-		item = new LaserWrench(Ids.laserRench);
+		item = new LaserWrench(Ids.laserWrench);
+		System.out.println(String.valueOf(item.itemID));
 	}
 	
 	public static void addNames() {

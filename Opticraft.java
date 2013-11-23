@@ -14,6 +14,7 @@ import opticraft.items.LaserWrenchRenderer;
 import opticraft.lib.Ids;
 import opticraft.lib.ModInfo;
 import opticraft.proxies.CommonProxy;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
@@ -60,6 +61,7 @@ public class Opticraft {
         GameRegistry.registerTileEntity(TileEntitySolarCollector.class, "tileEntitySolarCollector");
         GameRegistry.registerTileEntity(TileEntityBeam.class, "tileEntityBeam");
         GameRegistry.registerTileEntity(TileEntityLaserDetector.class, "tileEntityLaserDetector");
+        
 	}
 
 	@EventHandler

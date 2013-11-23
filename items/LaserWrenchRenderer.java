@@ -26,7 +26,7 @@ public class LaserWrenchRenderer implements IItemRenderer {
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) 
 	{
-		return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON;
+		return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON || type == ItemRenderType.ENTITY || type == ItemRenderType.INVENTORY;
 	}
 
 	@Override
@@ -38,26 +38,78 @@ public class LaserWrenchRenderer implements IItemRenderer {
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) 
 	{
-		if (type == ItemRenderType.EQUIPPED) {
+		if (type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
 			RenderBlocks blockRenderer = (RenderBlocks)data[0];
-			EntityLiving entity = (EntityLiving)data[1]; // entity holding the item
-
+			Entity entity = (Entity)data[1]; // entity holding the item
+			
 			GL11.glPushMatrix();
 			Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/items/LaserWrench.png"));
-
-			float scale = 1.4F;
+			
+			float scale = 0.7F;
 			GL11.glScalef(scale, scale, scale);
 			GL11.glRotatef(90, -1, 0, 0);
 			GL11.glRotatef(85, 0, 0, 1);
 			GL11.glRotatef(180, 0, 1, 0);
-			GL11.glRotatef(135, 1, 0, 0);
-			GL11.glTranslatef(-0.1F, -0.5F, 0.5F); // Left-Right
+			GL11.glRotatef(120, 1, 0, 0);
+			GL11.glTranslatef(0.4F, -0.5F, 1.5F); // Left-Right
 			// Forward-Backwards Up-Down
 			model.render((Entity) data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F,
 					0.0625F);
-
+			
+			GL11.glPopMatrix();
+			
+		} else if(type == ItemRenderType.ENTITY || type == ItemRenderType.INVENTORY){
+			RenderBlocks blockRenderer = (RenderBlocks)data[0];
+			//Entity entity = (Entity)data[1]; // entity holding the item
+			
+			GL11.glPushMatrix();
+			Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/items/LaserWrench.png"));
+			
+			float scale = 0.7F;
+			GL11.glScalef(scale, scale, scale);
+			GL11.glRotatef(180, 1, 0, 0);
+			GL11.glTranslatef(0.0F, -1.4F, 0.0F); // Left-Right
+			// Forward-Backwards Up-Down
+			model.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F,
+					0.0625F);
+			
+			GL11.glPopMatrix();			
+		} else if(type == ItemRenderType.EQUIPPED){
+			RenderBlocks blockRenderer = (RenderBlocks)data[0];
+			Entity entity = (Entity)data[1]; // entity holding the item
+			
+			GL11.glPushMatrix();
+			Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/items/LaserWrench.png"));
+			
+			float scale = 0.7F;
+			GL11.glScalef(scale, scale, scale);
+			GL11.glRotatef(90, -1, 0, 0);
+			GL11.glRotatef(60, 0, 0, 1);
+			GL11.glRotatef(180, 0, 1, 0);
+			GL11.glRotatef(100, 1, 0, 0);
+			GL11.glTranslatef(-0.5F, -1.5F, 0.5F); // Left-Right
+			// Forward-Backwards Up-Down
+			model.render((Entity) data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F,
+					0.0625F);
+			
+			GL11.glPopMatrix();
+		} else if(type == ItemRenderType.INVENTORY){
+			RenderBlocks blockRenderer = (RenderBlocks)data[0];
+			//Entity entity = (Entity)data[1]; // entity holding the item
+			
+			GL11.glPushMatrix();
+			Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/items/LaserWrench.png"));
+			
+			float scale = 0.7F;
+			GL11.glScalef(scale, scale, scale);
+			GL11.glRotatef(180, 1, 0, 0);
+			// Forward-Backwards Up-Down
+			model.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F,
+					0.0625F);
+			
 			GL11.glPopMatrix();
 		}
+
 	}
 
 }
