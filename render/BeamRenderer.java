@@ -60,7 +60,8 @@ public class BeamRenderer extends Render{
 //This is the texture of your block. It's pathed to be the same place as your other blocks here.
         //Outdated bindTextureByName("/mods/roads/textures/blocks/TrafficLightPoleRed.png");
 //Use in 1.6.2  this
-        ResourceLocation textures = (new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/blocks/beamTile.png")); 
+        ResourceLocation textures = (new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/blocks/beamTile.png"));
+        
 //the ':' is very important
 //binding the textures
         Minecraft.getMinecraft().renderEngine.bindTexture(textures);
@@ -96,8 +97,8 @@ public class BeamRenderer extends Render{
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/blocks/beamTile.png");
 	}
 	
 }

@@ -3,9 +3,11 @@ package opticraft.entitys;
 import opticraft.lib.DirectionalTileEntity;
 import opticraft.lib.Position;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import net.minecraft.block.BlockHopper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -15,6 +17,8 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityHopper;
+import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 
 public class TileEntityLaserDetector extends DirectionalTileEntity implements IInventory {	
@@ -24,6 +28,79 @@ private ItemStack[] inv;
 	public TileEntityLaserDetector(){
 		inv = new ItemStack[1];
 	}
+	
+    @Override
+    public void updateEntity(){
+    	super.updateEntity();
+    	if(this.worldObj.getWorldTime() % 10 == 0){
+	    	if(getStackInSlot(0) != null){	
+				TileEntity ent = null;
+				int sideDirection = 0;
+				
+				if(this.getOrientation() == "U"){
+					ent = worldObj.getBlockTileEntity(xCoord, yCoord - 1, zCoord);					
+				} else if(this.getOrientation() == "D"){
+					ent = worldObj.getBlockTileEntity(xCoord, yCoord + 1, zCoord);
+				} else if(this.getOrientation() == "N"){
+					ent = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord + 1);
+				} else if(this.getOrientation() == "S"){
+					ent = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord - 1);
+				} else if(this.getOrientation() == "W"){
+					ent = worldObj.getBlockTileEntity(xCoord + 1, yCoord, zCoord);
+				} else if(this.getOrientation() == "E"){
+					ent = worldObj.getBlockTileEntity(xCoord - 1, yCoord, zCoord);
+				}
+				
+				if(ent instanceof IInventory)
+					PushItemsOut((IInventory)ent);
+			}
+    	}
+    }
+    
+    public void PushItemsOut(IInventory inv) {
+		boolean foundItem = false;
+		boolean hasInserted = false;
+		for(int i = 0; i < inv.getSizeInventory(); i++){
+			
+			if(inv.getStackInSlot(i) != null){
+				if(areItemStacksEqualItem(inv.getStackInSlot(i), getStackInSlot(0))){
+					if(inv.getStackInSlot(i).stackSize < 64){
+						ItemStack tempStack = inv.getStackInSlot(i).copy();
+						tempStack.stackSize = tempStack.stackSize + 1;
+						inv.setInventorySlotContents(i, tempStack);
+						hasInserted = true;
+					}
+				} 
+			}
+			else {
+				
+				inv.setInventorySlotContents(i, getStackInSlot(0));
+				hasInserted = true;
+			}
+			
+			if(hasInserted){
+				if(getStackInSlot(0).stackSize == 1){
+					setInventorySlotContents(0, null);
+				} else {					
+					decrStackSize(i, 1);
+				}
+
+				inv.onInventoryChanged();
+				this.onInventoryChanged();
+				
+				foundItem = true;		
+			}
+			
+			if(foundItem)
+				break;
+		}
+		
+	}
+    
+    private static boolean areItemStacksEqualItem(ItemStack par0ItemStack, ItemStack par1ItemStack)
+    {
+        return par0ItemStack.itemID != par1ItemStack.itemID ? false : (par0ItemStack.getItemDamage() != par1ItemStack.getItemDamage() ? false : (par0ItemStack.stackSize > par0ItemStack.getMaxStackSize() ? false : ItemStack.areItemStackTagsEqual(par0ItemStack, par1ItemStack)));
+    }
 
     @Override
     public int getSizeInventory() {
@@ -133,5 +210,4 @@ private ItemStack[] inv;
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
 }

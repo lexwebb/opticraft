@@ -22,15 +22,15 @@ public class Blocks {
 		GameRegistry.registerBlock(solarCollectorTileBlock);
 		GameRegistry.registerBlock(laserDetectorTileBlock);
 				
-		itemLaserTileBlock.setUnlocalizedName(Names.itemLaserTile_unlocalizedName);
-		solarCollectorTileBlock.setUnlocalizedName(Names.solarCollectorTile_unlocalizedName);
-		laserDetectorTileBlock.setUnlocalizedName(Names.laserDetectorTile_unlocalizedName);
+		itemLaserTileBlock.setUnlocalizedName(Names.itemLaserTile_u);
+		solarCollectorTileBlock.setUnlocalizedName(Names.solarCollectorTile_u);
+		laserDetectorTileBlock.setUnlocalizedName(Names.laserDetectorTile_u);
 
 	}
 
 	public static void addNames() {		
-		LanguageRegistry.addName(itemLaserTileBlock, Names.itemLaserTile_name);
-		LanguageRegistry.addName(solarCollectorTileBlock, Names.solarCollectorTile_name);
-		LanguageRegistry.addName(laserDetectorTileBlock, Names.laserDetectorTile_name);
+		LanguageRegistry.addName(itemLaserTileBlock, Names.itemLaserTile_n);
+		LanguageRegistry.addName(solarCollectorTileBlock, Names.solarCollectorTile_n);
+		LanguageRegistry.addName(laserDetectorTileBlock, Names.laserDetectorTile_n);
 	}
 }

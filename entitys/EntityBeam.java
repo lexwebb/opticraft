@@ -13,9 +13,17 @@ public class EntityBeam extends Entity {
 		super(par1World);
 		this.orientation = orientation;
 	}
+	
+	public EntityBeam(World par1World) {
+		super(par1World);
+	}
 
 	@Override
 	protected void entityInit() {
+
+	}
+	
+	protected void init(){
 		
 	}
 

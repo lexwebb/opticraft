@@ -44,11 +44,13 @@ public class Opticraft {
 		proxy.initRenderers();
 		proxy.initSounds();
 		
+		Blocks.init();
+		Blocks.addNames();
+		
 		Items.init();
 		Items.addNames();
 		
-		Blocks.init();
-		Blocks.addNames();
+		Items.initRecipes();
 	}
 	
 	@EventHandler
@@ -56,14 +58,13 @@ public class Opticraft {
 		
 		NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
 	
+		EntityRegistry.registerModEntity(EntityBeam.class, "EntityBeam", EntityRegistry.findGlobalUniqueEntityId(), this, 128, 1, true);
 		proxy.registerRenderThings();
 		
         GameRegistry.registerTileEntity(TileEntityItemLaser.class, "tileEntityItemLaser");
         GameRegistry.registerTileEntity(TileEntitySolarCollector.class, "tileEntitySolarCollector");
         GameRegistry.registerTileEntity(TileEntityLaserDetector.class, "tileEntityLaserDetector");
-        
-        
-        
+              
 	}
 
 	@EventHandler

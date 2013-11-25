@@ -4,8 +4,10 @@ import opticraft.lib.DirectionalTileEntity;
 import opticraft.lib.Position;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -14,18 +16,20 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.Hopper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class TileEntityItemLaser extends DirectionalTileEntity implements IInventory{
+public class TileEntityItemLaser extends DirectionalTileEntity implements ISidedInventory{
 	
 	private ItemStack[] inv;
 	Position linkedDetector;
 	
 	public TileEntityItemLaser(){
-		inv = new ItemStack[1];
+		inv = new ItemStack[2];
 	}
 	
 	@Override
@@ -114,15 +118,17 @@ public class TileEntityItemLaser extends DirectionalTileEntity implements IInven
 			if(linkedDetector != null){
 				TileEntityLaserDetector ent = (TileEntityLaserDetector) worldObj.getBlockTileEntity(
 						(int) Math.floor(linkedDetector.x), (int) Math.floor(linkedDetector.y), (int) Math.floor(linkedDetector.z));
-				if(ent.getStackInSlot(0) == null){
+				if(ent.getStackInSlot(0) == null && getStackInSlot(0) != null){
 					ent.setInventorySlotContents(0, this.getStackInSlot(0));
 					this.setInventorySlotContents(0, null);
 //					
 					if(this.getOrientation() == "U"){
 						for(int i = this.yCoord; i <= linkedDetector.y - 1; i++){
-							System.out.println(i);
 							if (!worldObj.isRemote){
-								worldObj.spawnEntityInWorld(new EntityBeam(worldObj, "UD"));
+								EntityBeam entity = new EntityBeam(worldObj, "UD");
+								entity.setPosition(xCoord, yCoord + i, zCoord);
+								worldObj.spawnEntityInWorld(entity);
+								//worldObj.playSoundEffect((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D, "random.fizz",  0.1F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
 							}
 							
 						}
@@ -150,7 +156,53 @@ public class TileEntityItemLaser extends DirectionalTileEntity implements IInven
 					}
 				}
 			}
+			
+			if(getStackInSlot(0) == null){	
+				TileEntity ent = null;
+				if(this.getOrientation() == "U"){
+					ent = worldObj.getBlockTileEntity(xCoord, yCoord - 1, zCoord);					
+				} else if(this.getOrientation() == "D"){
+					ent = worldObj.getBlockTileEntity(xCoord, yCoord + 1, zCoord);
+				} else if(this.getOrientation() == "N"){
+					ent = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord + 1);
+				} else if(this.getOrientation() == "S"){
+					ent = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord - 1);
+				} else if(this.getOrientation() == "W"){
+					ent = worldObj.getBlockTileEntity(xCoord + 1, yCoord, zCoord);
+				} else if(this.getOrientation() == "E"){
+					ent = worldObj.getBlockTileEntity(xCoord - 1, yCoord , zCoord);
+				}
+				
+				if(ent instanceof IInventory)
+					suckItemsIn((IInventory)ent);
+			}
 		}
+	}
+
+	public void suckItemsIn(IInventory inv) {
+		boolean foundItem = false;
+		for(int i = 0; i < inv.getSizeInventory(); i++){
+			if(inv.getStackInSlot(i) != null){
+				
+				ItemStack tempStack = inv.getStackInSlot(i).copy();
+				tempStack.stackSize = 1;
+				setInventorySlotContents(0, tempStack);
+				
+				if(inv.getStackInSlot(i).stackSize == 1){
+					inv.setInventorySlotContents(i, null);
+				} else {					
+					inv.decrStackSize(i, 1);
+				}
+
+				inv.onInventoryChanged();
+				this.onInventoryChanged();
+				
+				foundItem = true;				
+			}
+			if(foundItem)
+				break;
+		}
+		
 	}
 
     @Override
@@ -160,7 +212,10 @@ public class TileEntityItemLaser extends DirectionalTileEntity implements IInven
 
     @Override
     public ItemStack getStackInSlot(int slot) {
-            return inv[slot];
+    	if(slot > inv.length)
+            return inv[0];
+    	else
+    		return inv[slot];
     }
     
     @Override
@@ -258,8 +313,40 @@ public class TileEntityItemLaser extends DirectionalTileEntity implements IInven
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
+		if(i == 0){
+			return true;
+		} else
 		return false;
+	}
+
+	@Override
+	public int[] getAccessibleSlotsFromSide(int var1) {
+		if(this.getOrientation() == "U"){
+			return new int[] {0};
+		} else if(this.getOrientation() == "D"){
+			return new int[] {1};
+		} else if(this.getOrientation() == "N"){
+			return new int[] {3};
+		} else if(this.getOrientation() == "S"){
+			return new int[] {2};
+		} else if(this.getOrientation() == "W"){
+			return new int[] {5};
+		} else if(this.getOrientation() == "E"){
+			return new int[] {2};
+		} 
+		return new int[] {0};
+	}
+
+	@Override
+	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
+		// TODO Auto-generated method stub
+		return true;
 	}
 	
 }

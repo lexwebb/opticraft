@@ -22,7 +22,7 @@ public class ClientProxy extends CommonProxy{
 
 	@Override
 	public void initRenderers() {
-		EntityRegistry.registerModEntity(EntityBeam.class, "Entity Beam", 20, Opticraft.instance, 64, 1, false);
+		
 	}
 
 	@Override

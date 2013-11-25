@@ -14,19 +14,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class ItemLaserWrench extends Item{
+public class ItemMatterCrystal extends Item{
 
-	public ItemLaserWrench(int par1) {
+	public ItemMatterCrystal(int par1) {
 		super(par1);
 		setMaxStackSize(1);
-		this.setCreativeTab(CreativeTabs.tabTools);
-		this.setUnlocalizedName(Names.laserRench_u);
+		this.setCreativeTab(CreativeTabs.tabMisc);
+		this.setUnlocalizedName(Names.matterCrystal_u);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister icon) {
-		itemIcon = icon.registerIcon(ModInfo.ID.toLowerCase() + ":" + "Error");
+		itemIcon = icon.registerIcon(ModInfo.ID.toLowerCase() + ":" + "matterCrystal");
 	}
 	
 	@Override
