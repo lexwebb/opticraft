@@ -4,7 +4,10 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import opticraft.blocks.Blocks;
 import opticraft.client.gui.GuiHandler;
-import opticraft.entitys.EntityBeam;
+import opticraft.entitys.EntityBeamX;
+import opticraft.entitys.EntityBeamY;
+import opticraft.entitys.EntityBeamZ;
+import opticraft.entitys.TileEntityFiberCable;
 import opticraft.entitys.TileEntityItemLaser;
 import opticraft.entitys.TileEntityLaserDetector;
 import opticraft.entitys.TileEntitySolarCollector;
@@ -58,12 +61,15 @@ public class Opticraft {
 		
 		NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
 	
-		EntityRegistry.registerModEntity(EntityBeam.class, "EntityBeam", EntityRegistry.findGlobalUniqueEntityId(), this, 128, 1, true);
+		EntityRegistry.registerModEntity(EntityBeamY.class, "EntityBeamY", 20, this, 128, 1, false);
+		EntityRegistry.registerModEntity(EntityBeamX.class, "EntityBeamX", 21, this, 128, 1, false);
+		EntityRegistry.registerModEntity(EntityBeamZ.class, "EntityBeamZ", 22, this, 128, 1, false);
 		proxy.registerRenderThings();
 		
         GameRegistry.registerTileEntity(TileEntityItemLaser.class, "tileEntityItemLaser");
         GameRegistry.registerTileEntity(TileEntitySolarCollector.class, "tileEntitySolarCollector");
         GameRegistry.registerTileEntity(TileEntityLaserDetector.class, "tileEntityLaserDetector");
+        GameRegistry.registerTileEntity(TileEntityFiberCable.class, "tileEntityFiberCable");
               
 	}
 

@@ -21,4 +21,7 @@ public class Names {
 	
 	public static final String laserDetectorTile_u = "laserDetectorTile";
 	public static final String laserDetectorTile_n = "Laser Detector";
+	
+	public static final String fiberCableTile_u = "fiberCableTile";
+	public static final String fiberCableTile_n = "Fiber Cable";
 }

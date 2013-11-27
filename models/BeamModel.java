@@ -5,6 +5,8 @@
 // - ZeuX
 package opticraft.models;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -45,9 +47,13 @@ public class BeamModel extends ModelBase
   {
     super.render(entity, f, f1, f2, f3, f4, f5);
     setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+    
+    GL11.glEnable(GL11.GL_BLEND);
+	GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     LR.render(f5);
     FB.render(f5);
     TB.render(f5);
+    GL11.glDisable(GL11.GL_BLEND);
   }
   
   private void setRotation(ModelRenderer model, float x, float y, float z)

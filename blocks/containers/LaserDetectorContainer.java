@@ -14,7 +14,7 @@ public class LaserDetectorContainer extends Container{
 	
 	public LaserDetectorContainer(TileEntityLaserDetector tile_entity, InventoryPlayer inv){
 		this.tile_entity = tile_entity;
-		addSlotToContainer(new Slot(tile_entity, 0, 76, 27));
+		addSlotToContainer(new Slot(tile_entity, 0, 81, 27));
 		bindPlayerInventory(inv);
 	}
 	
@@ -26,12 +26,12 @@ public class LaserDetectorContainer extends Container{
 	protected void bindPlayerInventory(InventoryPlayer inv){
 		for(int i = 0; i < 3; i++){
 			for(int j = 0; j < 9; j++){
-				addSlotToContainer(new Slot(inv, j + i * 9 + 9, 9 + j * 18, 64 + i * 16));
+				addSlotToContainer(new Slot(inv, j + i * 9 + 9, 9 + j * 18, 64 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++){
-			addSlotToContainer(new Slot(inv, i, 6 + i * 19, 142));
+			addSlotToContainer(new Slot(inv, i, 9 + i * 18, 123));
 		}
 	}
 	

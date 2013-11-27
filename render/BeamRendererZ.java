@@ -1,6 +1,6 @@
 package opticraft.render;
 
-import opticraft.entitys.EntityBeam;
+import opticraft.entitys.EntityBeamY;
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
 import opticraft.models.BeamModel;
@@ -19,14 +19,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class BeamRenderer extends Render{
+public class BeamRendererZ extends Render{
 
 	private final BeamModel model;
-	private String orientation = "LR";
+	private String orientation = "UD";
     
-    public BeamRenderer() {
+    public BeamRendererZ() {
             this.model = new BeamModel();
-            System.out.println("RENDER CONSTRUCTED");
     }
     
     private void adjustRotatePivotViaMeta(World world, int x, int y, int z) {
@@ -36,22 +35,20 @@ public class BeamRenderer extends Render{
             GL11.glPopMatrix();
     }
 
-    //Set the lighting stuff, so it changes it's brightness properly.       
-    private void adjustLightFixture(World world, int i, int j, int k, Block block) {
-            Tessellator tess = Tessellator.instance;
-            float brightness = block.getBlockBrightness(world, i, j, k);
-            int skyLight = world.getLightBrightnessForSkyBlocks(i, j, k, 0);
-            int modulousModifier = skyLight % 65536;
-            int divModifier = skyLight / 65536;
-            tess.setColorOpaque_F(brightness, brightness, brightness);
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit,  (float) modulousModifier,  divModifier);
-    }
+//    //Set the lighting stuff, so it changes it's brightness properly.       
+//    private void adjustLightFixture(World world, int i, int j, int k, Block block) {
+//            Tessellator tess = Tessellator.instance;
+//            float brightness = block.getBlockBrightness(world, i, j, k);
+//            int skyLight = world.getLightBrightnessForSkyBlocks(i, j, k, 0);
+//            int modulousModifier = skyLight % 65536;
+//            int divModifier = skyLight / 65536;
+//            tess.setColorOpaque_F(brightness, brightness, brightness);
+//            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit,  (float) modulousModifier,  divModifier);
+//    }
 
 	@Override
 	public void doRender(Entity entity, double x, double y, double z,
 			float f, float f1) {
-		
-		System.out.println("RENDER CALLED");
 		
 		//The PushMatrix tells the renderer to "start" doing something.
         GL11.glPushMatrix();
@@ -70,29 +67,17 @@ public class BeamRenderer extends Render{
         GL11.glPushMatrix();
         GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
 //A reference to your Model file. Again, very important.
+        
+        GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         this.model.render((Entity)entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 //Tell it to stop rendering for both the PushMatrix's
         GL11.glPopMatrix();
         GL11.glPopMatrix();            
         
         model.LR.isHidden = true;
-        model.FB.isHidden = true;
+        model.FB.isHidden = false;
         model.TB.isHidden = true;
-        
-        EntityBeam ent = (EntityBeam) entity;
-        orientation = ent.orientation;
-        if(orientation == "LR")
-        	model.LR.isHidden = false;
-        else if(orientation == "FB")
-        	model.FB.isHidden = false;
-        else if(orientation == "UD")
-        	model.TB.isHidden = false;
-        else{
-        	model.LR.isHidden = false;
-            model.FB.isHidden = false;
-            model.TB.isHidden = false;
-        }
-		
 	}
 
 	@Override

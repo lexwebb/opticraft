@@ -120,40 +120,58 @@ public class TileEntityItemLaser extends DirectionalTileEntity implements ISided
 						(int) Math.floor(linkedDetector.x), (int) Math.floor(linkedDetector.y), (int) Math.floor(linkedDetector.z));
 				if(ent.getStackInSlot(0) == null && getStackInSlot(0) != null){
 					ent.setInventorySlotContents(0, this.getStackInSlot(0));
-					this.setInventorySlotContents(0, null);
-//					
+					this.setInventorySlotContents(0, null);					
 					if(this.getOrientation() == "U"){
-						for(int i = this.yCoord; i <= linkedDetector.y - 1; i++){
+						for(int i = this.yCoord + 1; i <= linkedDetector.y; i++){
 							if (!worldObj.isRemote){
-								EntityBeam entity = new EntityBeam(worldObj, "UD");
-								entity.setPosition(xCoord, yCoord + i, zCoord);
+								EntityBeamY entity = new EntityBeamY(worldObj);
+								entity.setPosition(xCoord, i, zCoord);							
 								worldObj.spawnEntityInWorld(entity);
-								//worldObj.playSoundEffect((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D, "random.fizz",  0.1F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
-							}
-							
+							}		
 						}
 					} else if(this.getOrientation() == "D"){
-						for(int i = this.yCoord; i <= this.yCoord + 1; i++){
-
+						for(int i = this.yCoord - 1; i >= linkedDetector.y; i--){
+							if (!worldObj.isRemote){
+								EntityBeamY entity = new EntityBeamY(worldObj);
+								entity.setPosition(xCoord, i, zCoord);							
+								worldObj.spawnEntityInWorld(entity);
+							}		
 						}	
 					} else if(this.getOrientation() == "N"){
-						for(int i = this.yCoord; i <= this.yCoord + 1; i++){
-
+						for(int i = this.zCoord - 1; i >= linkedDetector.z; i--){
+							if (!worldObj.isRemote){
+								EntityBeamZ entity = new EntityBeamZ(worldObj);
+								entity.setPosition(xCoord, yCoord, i);							
+								worldObj.spawnEntityInWorld(entity);
+							}		
 						}	
 					} else if(this.getOrientation() == "S"){
-						for(int i = this.yCoord; i <= this.yCoord + 1; i++){
-
-						}	
-					} else if(this.getOrientation() == "W"){
-						for(int i = this.yCoord; i <= this.yCoord + 1; i++){
-
+						for(int i = this.zCoord + 1; i <= linkedDetector.z; i++){
+							if (!worldObj.isRemote){
+								EntityBeamZ entity = new EntityBeamZ(worldObj);
+								entity.setPosition(xCoord, yCoord, i);							
+								worldObj.spawnEntityInWorld(entity);
+							}		
 						}	
 					} else if(this.getOrientation() == "E"){
-						for(int i = this.yCoord; i <= this.yCoord + 1; i++){
-							
+						for(int i = this.xCoord + 1; i <= linkedDetector.x; i++){
+							if (!worldObj.isRemote){
+								EntityBeamX entity = new EntityBeamX(worldObj);
+								entity.setPosition(i, yCoord, zCoord);							
+								worldObj.spawnEntityInWorld(entity);
+							}		
+						}	
+					} else if(this.getOrientation() == "W"){
+						for(int i = this.xCoord - 1; i >= linkedDetector.x; i--){
+							if (!worldObj.isRemote){
+								EntityBeamX entity = new EntityBeamX(worldObj);
+								entity.setPosition(i, yCoord, zCoord);							
+								worldObj.spawnEntityInWorld(entity);
+							}		
 						}
-
 					}
+					
+					worldObj.playSoundEffect((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D, "optcrft:buzz",  0.1F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
 				}
 			}
 			

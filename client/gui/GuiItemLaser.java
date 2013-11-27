@@ -21,13 +21,13 @@ public class GuiItemLaser extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		fontRenderer.drawString("Item Laser", 6, 6, 0xffffff);
-		fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 6, ySize - 96 + 2, 0xffffff);
+		fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 6, 50, 0xffffff);
 	}
 	
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {		
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		this.mc.renderEngine.bindTexture(new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/gui/Inventory.png"));
+		this.mc.renderEngine.bindTexture(new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/gui/InventoryLaser.png"));
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);

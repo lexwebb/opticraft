@@ -17,7 +17,7 @@ import net.minecraft.entity.Entity;
 
 public class ItemLaserModel extends ModelBase
 {
-  //fields
+	//fields
     ModelRenderer Base;
     ModelRenderer LaserBase1;
     ModelRenderer LaserBase2;
@@ -40,6 +40,14 @@ public class ItemLaserModel extends ModelBase
     ModelRenderer Light2;
     ModelRenderer Light3;
     ModelRenderer Light4;
+    ModelRenderer CableBack;
+    ModelRenderer CableBackConnector;
+    ModelRenderer CableFront;
+    ModelRenderer CableFrontConnector;
+    ModelRenderer CableRight;
+    ModelRenderer CableRightConnector;
+    ModelRenderer CableLeft;
+    ModelRenderer CableLeftConnector;
   
   public ItemLaserModel()
   {
@@ -178,6 +186,54 @@ public class ItemLaserModel extends ModelBase
       Light4.setTextureSize(60, 64);
       Light4.mirror = true;
       setRotation(Light4, 0F, 0F, 0F);
+      CableBack = new ModelRenderer(this, 35, 34);
+      CableBack.addBox(0F, 0F, 0F, 1, 8, 1);
+      CableBack.setRotationPoint(-0.5F, 16F, 6F);
+      CableBack.setTextureSize(60, 64);
+      CableBack.mirror = true;
+      setRotation(CableBack, 0F, 0F, 0F);
+      CableBackConnector = new ModelRenderer(this, 35, 43);
+      CableBackConnector.addBox(0F, 0F, 0F, 2, 2, 1);
+      CableBackConnector.setRotationPoint(-1F, 15F, 7F);
+      CableBackConnector.setTextureSize(60, 64);
+      CableBackConnector.mirror = true;
+      setRotation(CableBackConnector, 0F, 0F, 0F);
+      CableFront = new ModelRenderer(this, 39, 34);
+      CableFront.addBox(0F, 0F, 0F, 1, 8, 1);
+      CableFront.setRotationPoint(-0.5F, 16F, -7F);
+      CableFront.setTextureSize(60, 64);
+      CableFront.mirror = true;
+      setRotation(CableFront, 0F, 0F, 0F);
+      CableFrontConnector = new ModelRenderer(this, 41, 43);
+      CableFrontConnector.addBox(0F, 0F, 0F, 2, 2, 1);
+      CableFrontConnector.setRotationPoint(-1F, 15F, -8F);
+      CableFrontConnector.setTextureSize(60, 64);
+      CableFrontConnector.mirror = true;
+      setRotation(CableFrontConnector, 0F, 0F, 0F);
+      CableRight = new ModelRenderer(this, 43, 34);
+      CableRight.addBox(0F, 0F, 0F, 1, 8, 1);
+      CableRight.setRotationPoint(-7F, 16F, -0.5F);
+      CableRight.setTextureSize(60, 64);
+      CableRight.mirror = true;
+      setRotation(CableRight, 0F, 0F, 0F);
+      CableRightConnector = new ModelRenderer(this, 35, 46);
+      CableRightConnector.addBox(0F, 0F, 0F, 1, 2, 2);
+      CableRightConnector.setRotationPoint(-8F, 15F, -1F);
+      CableRightConnector.setTextureSize(60, 64);
+      CableRightConnector.mirror = true;
+      setRotation(CableRightConnector, 0F, 0F, 0F);
+      CableLeft = new ModelRenderer(this, 47, 34);
+      CableLeft.addBox(0F, 0F, 0F, 1, 8, 1);
+      CableLeft.setRotationPoint(6F, 16F, -0.5F);
+      CableLeft.setTextureSize(60, 64);
+      CableLeft.mirror = true;
+      setRotation(CableLeft, 0F, 0F, 0F);
+      CableLeftConnector = new ModelRenderer(this, 41, 46);
+      CableLeftConnector.addBox(0F, 0F, 0F, 1, 2, 2);
+      CableLeftConnector.setRotationPoint(7F, 15F, -1F);
+      CableLeftConnector.setTextureSize(60, 64);
+      CableLeftConnector.mirror = true;
+      setRotation(CableLeftConnector, 0F, 0F, 0F);
   }
   
   public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
@@ -206,6 +262,14 @@ public class ItemLaserModel extends ModelBase
     Light2.render(f5);
     Light3.render(f5);
     Light4.render(f5);
+    CableBack.render(f5);
+    CableBackConnector.render(f5);
+    CableFront.render(f5);
+    CableFrontConnector.render(f5);
+    CableRight.render(f5);
+    CableRightConnector.render(f5);
+    CableLeft.render(f5);
+    CableLeftConnector.render(f5);
   }
   
   private void setRotation(ModelRenderer model, float x, float y, float z)
