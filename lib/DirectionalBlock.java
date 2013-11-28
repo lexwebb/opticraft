@@ -19,16 +19,18 @@ public class DirectionalBlock extends BlockContainer{
 	
 	private static HashMap<String, Integer> entList = new HashMap<String, Integer>();
 	
-	boolean canFloat;
+	public boolean isDirectional;
+	public boolean canFloat;
 
 	/**
      * Instantiates Direction Block. Parameters: id, Material, canFloat
      */
-	protected DirectionalBlock(int par1, Material par2Material, boolean canFloat) {
+	protected DirectionalBlock(int par1, Material par2Material, boolean canFloat, boolean isDirectional) {
 		super(par1, par2Material);
         this.setCreativeTab(CreativeTabs.tabMisc);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1F, 1.0F, 1F);
         this.canFloat = canFloat;
+        this.isDirectional = true;
 	}
 	
 	//You don't want the normal render type, or it wont render properly.
@@ -61,8 +63,7 @@ public class DirectionalBlock extends BlockContainer{
     }
     
     public IInventory getInventory(World par1World, int par2, int par3, int par4) {
-		return (TileEntityItemLaser)par1World.getBlockTileEntity(par2, par3, par4);
-		
+		return (TileEntityItemLaser)par1World.getBlockTileEntity(par2, par3, par4);		
     }
     
     @Override
@@ -82,32 +83,34 @@ public class DirectionalBlock extends BlockContainer{
     
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, int par5){
-    	DirectionalTileEntity tile_entity = (DirectionalTileEntity) world.getBlockTileEntity(x, y, z);	
-    	boolean canStay = true;;  	
-    	String orientation = tile_entity.getOrientation();
-    	
-    	if(orientation == "U"){
-			if(!world.getBlockMaterial(x, y - 1, z).isSolid())
-				canStay = false;			
-		} else if(orientation == "D"){
-			if(!world.getBlockMaterial(x, y + 1, z).isSolid())
-				canStay = false;	
-		} else if(orientation == "N"){
-			if(!world.getBlockMaterial(x, y, z + 1).isSolid())
-				canStay = false;	
-		} else if(orientation == "S"){
-			if(!world.getBlockMaterial(x, y, z - 1).isSolid())
-				canStay = false;	
-		} else if(orientation == "W"){
-			if(!world.getBlockMaterial(x + 1, y, z).isSolid())
-				canStay = false;	
-		} else if(orientation == "E"){
-			if(!world.getBlockMaterial(x - 1, y, z).isSolid())
-				canStay = false;	
-		}
-		
-    	if(!canStay)
-    		world.destroyBlock(x, y, z, true);
+    	if(isDirectional && !canFloat){
+	    	DirectionalTileEntity tile_entity = (DirectionalTileEntity) world.getBlockTileEntity(x, y, z);	
+	    	boolean canStay = true;;  	
+	    	String orientation = tile_entity.getOrientation();
+	    	
+	    	if(orientation == "U"){
+				if(!world.getBlockMaterial(x, y - 1, z).isSolid())
+					canStay = false;			
+			} else if(orientation == "D"){
+				if(!world.getBlockMaterial(x, y + 1, z).isSolid())
+					canStay = false;	
+			} else if(orientation == "N"){
+				if(!world.getBlockMaterial(x, y, z + 1).isSolid())
+					canStay = false;	
+			} else if(orientation == "S"){
+				if(!world.getBlockMaterial(x, y, z - 1).isSolid())
+					canStay = false;	
+			} else if(orientation == "W"){
+				if(!world.getBlockMaterial(x + 1, y, z).isSolid())
+					canStay = false;	
+			} else if(orientation == "E"){
+				if(!world.getBlockMaterial(x - 1, y, z).isSolid())
+					canStay = false;	
+			}
+			
+	    	if(!canStay)
+	    		world.destroyBlock(x, y, z, true);
+    	}
     }
     
     @Override

@@ -1,5 +1,6 @@
 package opticraft.render;
 
+import opticraft.entitys.TileEntityFiberCable;
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
 import opticraft.models.FiberCableModel;
@@ -9,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -34,6 +36,22 @@ public class FiberCableRenderer extends TileEntitySpecialRenderer{
     
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
+    	
+    	TileEntityFiberCable ent = (TileEntityFiberCable) te;
+    	
+        model.Top.isHidden = ent.upHidden;
+        model.TopInner.isHidden = ent.upHidden;
+        model.Bottom.isHidden = ent.downHidden;
+        model.BottomInner.isHidden = ent.downHidden;
+        model.Front.isHidden = ent.northHidden;
+        model.FrontInner.isHidden = ent.northHidden;
+        model.Back.isHidden = ent.southHidden;
+        model.BackInner.isHidden = ent.southHidden;
+        model.Left.isHidden = ent.westHidden;
+        model.LeftInner.isHidden = ent.westHidden;
+        model.Right.isHidden = ent.eastHidden;
+        model.RightInner.isHidden = ent.eastHidden;
+    	
     //The PushMatrix tells the renderer to "start" doing something.
             GL11.glPushMatrix();
     //This is setting the initial location.
@@ -53,7 +71,9 @@ public class FiberCableRenderer extends TileEntitySpecialRenderer{
             this.model.render((Entity)null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
     //Tell it to stop rendering for both the PushMatrix's
             GL11.glPopMatrix();
-            GL11.glPopMatrix();         
+            GL11.glPopMatrix(); 
+            
+
 
     }
 

@@ -35,7 +35,7 @@ public class ItemLaserBlock extends DirectionalBlock{
 	//Treat it like a normal block here. The Block Bounds are a good idea - the first three are X Y and Z of the botton-left corner,
     //And the second three are the top-right corner.
     public ItemLaserBlock(int id) {
-            super(id, Material.iron, false);
+            super(id, Material.iron, false, true);
             this.setCreativeTab(CreativeTabs.tabBlock);
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1F, 1.0F, 1F);
     }

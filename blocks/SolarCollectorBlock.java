@@ -6,6 +6,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import opticraft.entitys.TileEntitySolarCollector;
+import opticraft.lib.DirectionalBlock;
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
 import net.minecraft.block.BlockContainer;
@@ -16,14 +17,14 @@ import net.minecraft.src.ModLoader;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class SolarCollectorBlock extends BlockContainer{
+public class SolarCollectorBlock extends DirectionalBlock{
 	
 	long gameTime;
 
 	//Treat it like a normal block here. The Block Bounds are a good idea - the first three are X Y and Z of the botton-left corner,
     //And the second three are the top-right corner.
     public SolarCollectorBlock(int id) {
-            super(id, Material.iron);
+            super(id, Material.iron, true, false);
             this.setCreativeTab(CreativeTabs.tabBlock);
             this.setBlockBounds(0F, 0.0F, 0F, 1f, 0.4F, 1F);
     }

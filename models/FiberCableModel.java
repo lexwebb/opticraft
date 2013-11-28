@@ -20,18 +20,18 @@ public class FiberCableModel extends ModelBase
   //fields
     ModelRenderer Center;
     ModelRenderer CenterInner;
-    ModelRenderer Top;
-    ModelRenderer TopInner;
-    ModelRenderer Bottom;
-    ModelRenderer BottomInner;
-    ModelRenderer Front;
-    ModelRenderer FrontInner;
-    ModelRenderer Back;
-    ModelRenderer BackInner;
-    ModelRenderer Left;
-    ModelRenderer LeftInner;
-    ModelRenderer Right;
-    ModelRenderer RightInner;
+    public ModelRenderer Top;
+    public ModelRenderer TopInner;
+    public ModelRenderer Bottom;
+    public ModelRenderer BottomInner;
+    public ModelRenderer Front;
+    public ModelRenderer FrontInner;
+    public ModelRenderer Back;
+    public ModelRenderer BackInner;
+    public ModelRenderer Left;
+    public ModelRenderer LeftInner;
+    public ModelRenderer Right;
+    public ModelRenderer RightInner;
   
   public FiberCableModel()
   {

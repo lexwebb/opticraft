@@ -1,5 +1,6 @@
 package opticraft.entitys;
 
+import opticraft.energy.LuxContainerTileEntity;
 import opticraft.lib.DirectionalTileEntity;
 import opticraft.lib.Position;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -23,13 +24,15 @@ import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class TileEntityItemLaser extends DirectionalTileEntity implements ISidedInventory{
+public class TileEntityItemLaser extends LuxContainerTileEntity implements ISidedInventory{
 	
 	private ItemStack[] inv;
 	Position linkedDetector;
 	
 	public TileEntityItemLaser(){
 		inv = new ItemStack[2];
+		this.maxCharge = 128;
+		this.canExport = false;
 	}
 	
 	@Override
@@ -115,7 +118,7 @@ public class TileEntityItemLaser extends DirectionalTileEntity implements ISided
 				}	
 			}
 			
-			if(linkedDetector != null){
+			if(linkedDetector != null && this.lux.get() > 0){
 				TileEntityLaserDetector ent = (TileEntityLaserDetector) worldObj.getBlockTileEntity(
 						(int) Math.floor(linkedDetector.x), (int) Math.floor(linkedDetector.y), (int) Math.floor(linkedDetector.z));
 				if(ent.getStackInSlot(0) == null && getStackInSlot(0) != null){
@@ -171,6 +174,8 @@ public class TileEntityItemLaser extends DirectionalTileEntity implements ISided
 						}
 					}
 					
+					this.lux.decreaseBy(1, 0);
+					System.out.println(this.lux.get());
 					worldObj.playSoundEffect((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D, "optcrft:buzz",  0.1F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
 				}
 			}

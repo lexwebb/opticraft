@@ -1,5 +1,6 @@
 package opticraft.entitys;
 
+import opticraft.energy.LuxContainerTileEntity;
 import opticraft.lib.DirectionalTileEntity;
 import opticraft.lib.Position;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -21,12 +22,14 @@ import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 
-public class TileEntityLaserDetector extends DirectionalTileEntity implements IInventory {	
+public class TileEntityLaserDetector extends LuxContainerTileEntity implements IInventory {	
 	
 private ItemStack[] inv;
 	
 	public TileEntityLaserDetector(){
 		inv = new ItemStack[1];
+		this.maxCharge = 128;
+		this.maxOutput = 128;
 	}
 	
     @Override
