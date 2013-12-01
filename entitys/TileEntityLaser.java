@@ -32,7 +32,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 	public TileEntityLaser(){
 		inv = new ItemStack[2];
 		this.maxCharge = 128;
-		this.canExport = false;
+		this.consumer = true;
 	}
 	
 	@Override
@@ -40,7 +40,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 		super.updateEntity();
 		
 		//check for Detector
-		if(this.worldObj.getWorldTime() % 10 == 0){
+		if(this.worldObj.getWorldTime() % 5 == 0 && this.worldObj.getWorldTime() % 10 != 0){
 			TileEntity tile_entity;
 			linkedDetector = null;
 			
@@ -175,7 +175,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 					}
 					
 					this.lux.decreaseBy(1, 0);
-					System.out.println(this.lux.get());
+					//System.out.println(this.lux.get());
 					worldObj.playSoundEffect((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D, "optcrft:buzz",  0.1F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
 				}
 			}

@@ -29,8 +29,10 @@ private ItemStack[] inv;
 	public TileEntityLaserDetector(){
 		inv = new ItemStack[1];
 		this.maxCharge = 128;
-		this.maxOutput = 128;
+		this.maxOutput = 2;
+		this.producer = true;
 	}
+	
 	
     @Override
     public void updateEntity(){

@@ -1,25 +1,21 @@
 package opticraft.energy;
 
 public class Lux {
-	double value;
+	int value;
 	
 	public Lux(){
-		this.value = 0.0;
-	}
-	
-	public Lux(double value){
-		this.value = value;
+		this.value = 0;
 	}
 	
 	public Lux(int value){
-		this.value = (double)value;
+		this.value = value;
 	}
 	
 	public String toString(){
 		return String.valueOf(value);
 	}
 	
-	public boolean decreaseBy(double value, double min){
+	public boolean decreaseBy(int value, int min){
 		if((this.value - value) < 0){
 			return false;
 		} else
@@ -27,11 +23,18 @@ public class Lux {
 			return true;
 	}
 	
-	public boolean increaseBy(double value, double max){
+	public boolean increaseBy(int value, double max){
 		if((this.value + value) >= Integer.MAX_VALUE || this.value >= max){
 			return false;
 		} else
 			this.value = this.value + value;
+			return true;
+	}
+	
+	public boolean canAcceptValue(int value, int max){
+		if(this.value + value > max){
+			return false;
+		} else
 			return true;
 	}
 	

@@ -31,7 +31,9 @@ public class TileEntityLuxCapacitor extends LuxContainerTileEntity implements II
 	public TileEntityLuxCapacitor(){
 		inv = new ItemStack[1];
 		this.maxCharge = 1024;
-		this.maxOutput = 128;
+		this.maxOutput = 8;
+		this.producer = true;
+		this.consumer = true;
 	}
 	
 	@Override

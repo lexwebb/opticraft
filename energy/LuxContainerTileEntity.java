@@ -9,13 +9,15 @@ import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 
 public class LuxContainerTileEntity extends DirectionalTileEntity{
+		
+	public List<LuxContainerTileEntity> linkedContainers = new ArrayList<LuxContainerTileEntity>();
 	
 	public Lux lux = new Lux();
 	public int maxOutput = 1;
 	public int maxCharge = 0;
 	
-	public boolean canExport = true;;
-	public boolean canImport = true;;
+	public boolean producer = false;
+	public boolean consumer = false;
 	
 	public boolean faceOneUsable;
 	public boolean faceTwoUsable;
@@ -41,18 +43,15 @@ public class LuxContainerTileEntity extends DirectionalTileEntity{
 	public void updateEntity(){
 		super.updateEntity();
 		
-		if(canExport && maxCharge !=0){
-			transfer(2, this);
+		if(producer && lux.value >= maxOutput){
+			transfer(maxOutput);
 		}
 	}
 	
-	public boolean increaseBySource(double value, LuxContainerTileEntity source){
-		if(this.canImport){
+	public boolean increaseBySource(int value){
+		if(this.consumer){
 			if(this.maxCharge == 0){
-				if(transfer(value, source))
-					return true;
-				else
-					return false;
+				return false;
 			} else {
 				return lux.increaseBy(value, maxCharge);
 			}
@@ -60,63 +59,90 @@ public class LuxContainerTileEntity extends DirectionalTileEntity{
 		else return false;
 	}
 	
-	public boolean transfer(double value, LuxContainerTileEntity source){
-		List<LuxContainerTileEntity> transporters = getAdjacantTransporters();
+	public boolean transfer(int value){
+		linkedContainers.clear();
+		List<LuxContainerTileEntity> adjacentContainers = getAdjacentContainers(this);
 		boolean transfered = false;
+		int consumerCount = 0;
 		
-		for(LuxContainerTileEntity trans : transporters){	
-			if(trans != source || source == this){
-				if(this.maxCharge != 0){
-					if(lux.decreaseBy(value, 0)){
-						if(trans.increaseBySource(value / (transporters.size()), this)){
-							transfered = true;
-						} else {
-							lux.increaseBy(value, maxCharge);
-						}
-							
-					}
-				} else {
-					if(trans.increaseBySource(value / (transporters.size() - 1), this)){
-						transfered = true;
-					} else {
-						lux.increaseBy(value, maxCharge);
-					}
+		recursiveFind(this);
+		
+		List<LuxContainerTileEntity> consumers = new ArrayList<LuxContainerTileEntity>();
+		
+		for(LuxContainerTileEntity ent : linkedContainers){
+			if(ent.consumer && ent != this){
+				consumerCount++;
+				consumers.add(ent);
+			}
+			
+		}
+		
+		if(consumerCount !=0){
+			int ammnountPer = value / consumerCount;
+			
+			boolean consumersSet = false;
+			while(!consumersSet){
+				if(consumerCount == 0)
+					break;
+				for(LuxContainerTileEntity ent : consumers){
+					if(!ent.lux.canAcceptValue(ammnountPer, ent.maxCharge)){
+						consumers.remove(ent);
+						consumerCount--;
+						if(consumerCount !=0)
+							ammnountPer = value / consumerCount;
+						break;
+					}		
 				}
-					
+				consumersSet = true;
+			}
+			
+			if(consumersSet){
+				for(LuxContainerTileEntity ent : consumers){
+					ent.lux.increaseBy(ammnountPer, ent.maxCharge);
+					transfered = true;
+				}
+				
+				if(transfered)
+					lux.decreaseBy(ammnountPer * consumerCount, 0);
 			}
 		}
 		
-		return transfered;
+		return transfered;	
 	}
 	
-	public List<LuxContainerTileEntity> getAdjacantTransporters(){
-		List<LuxContainerTileEntity> transporters = new ArrayList<LuxContainerTileEntity>();
-		if(worldObj.getBlockTileEntity(xCoord, yCoord + 1, zCoord) instanceof LuxContainerTileEntity){
-//			if(((LuxContainerTileEntity)worldObj.getBlockTileEntity(xCoord, yCoord + 1, zCoord)).canImport)
-				transporters.add((LuxContainerTileEntity)worldObj.getBlockTileEntity(xCoord, yCoord + 1, zCoord));		
+	public void recursiveFind(LuxContainerTileEntity entity){
+		List<LuxContainerTileEntity> adjacentContainers = getAdjacentContainers(entity);
+		
+		for(LuxContainerTileEntity ent : adjacentContainers){
+			if(!linkedContainers.contains(ent)){
+				linkedContainers.add(ent);
+				recursiveFind(ent);
+			}
 		}
-		if(worldObj.getBlockTileEntity(xCoord, yCoord - 1, zCoord) instanceof LuxContainerTileEntity){
-//			if(((LuxContainerTileEntity)worldObj.getBlockTileEntity(xCoord, yCoord - 1, zCoord)).canImport)
-				transporters.add((LuxContainerTileEntity)worldObj.getBlockTileEntity(xCoord, yCoord - 1, zCoord));		
+	}
+	
+	public List<LuxContainerTileEntity> getAdjacentContainers(LuxContainerTileEntity ent){
+		List<LuxContainerTileEntity> adjacentContainers = new ArrayList<LuxContainerTileEntity>();
+		if(worldObj.getBlockTileEntity(ent.xCoord, ent.yCoord + 1, ent.zCoord) instanceof LuxContainerTileEntity){
+			adjacentContainers.add((LuxContainerTileEntity)worldObj.getBlockTileEntity(ent.xCoord, ent.yCoord + 1, ent.zCoord));		
 		}
-		if(worldObj.getBlockTileEntity(xCoord + 1, yCoord, zCoord) instanceof LuxContainerTileEntity){
-//			if(((LuxContainerTileEntity)worldObj.getBlockTileEntity(xCoord + 1, yCoord, zCoord)).canImport)
-				transporters.add((LuxContainerTileEntity)worldObj.getBlockTileEntity(xCoord + 1, yCoord, zCoord));		
+		if(worldObj.getBlockTileEntity(ent.xCoord, ent.yCoord - 1, ent. zCoord) instanceof LuxContainerTileEntity){
+			adjacentContainers.add((LuxContainerTileEntity)worldObj.getBlockTileEntity(ent.xCoord, ent.yCoord - 1, ent.zCoord));		
 		}
-		if(worldObj.getBlockTileEntity(xCoord - 1, yCoord, zCoord) instanceof LuxContainerTileEntity){
-//			if(((LuxContainerTileEntity)worldObj.getBlockTileEntity(xCoord - 1, yCoord, zCoord)).canImport)
-				transporters.add((LuxContainerTileEntity)worldObj.getBlockTileEntity(xCoord - 1, yCoord, zCoord));		
+		if(worldObj.getBlockTileEntity(ent.xCoord + 1, ent.yCoord, ent.zCoord) instanceof LuxContainerTileEntity){
+			adjacentContainers.add((LuxContainerTileEntity)worldObj.getBlockTileEntity(ent.xCoord + 1, ent.yCoord, ent.zCoord));		
 		}
-		if(worldObj.getBlockTileEntity(xCoord, yCoord, zCoord + 1) instanceof LuxContainerTileEntity){
-//			if(((LuxContainerTileEntity)worldObj.getBlockTileEntity(xCoord, yCoord, zCoord + 1)).canImport)
-				transporters.add((LuxContainerTileEntity)worldObj.getBlockTileEntity(xCoord, yCoord, zCoord + 1));		
+		if(worldObj.getBlockTileEntity(ent.xCoord - 1, ent.yCoord, ent.zCoord) instanceof LuxContainerTileEntity){
+			adjacentContainers.add((LuxContainerTileEntity)worldObj.getBlockTileEntity(ent.xCoord - 1, ent.yCoord, ent.zCoord));		
 		}
-		if(worldObj.getBlockTileEntity(xCoord, yCoord, zCoord - 1) instanceof LuxContainerTileEntity){
-//			if(((LuxContainerTileEntity)worldObj.getBlockTileEntity(xCoord, yCoord, zCoord - 1)).canImport)
-				transporters.add((LuxContainerTileEntity)worldObj.getBlockTileEntity(xCoord, yCoord, zCoord - 1));		
+		if(worldObj.getBlockTileEntity(ent.xCoord, ent.yCoord, ent.zCoord + 1) instanceof LuxContainerTileEntity){
+			adjacentContainers.add((LuxContainerTileEntity)worldObj.getBlockTileEntity(ent.xCoord, ent.yCoord, ent.zCoord + 1));		
+		}
+		if(worldObj.getBlockTileEntity(ent.xCoord, ent.yCoord, ent.zCoord - 1) instanceof LuxContainerTileEntity){
+			adjacentContainers.add((LuxContainerTileEntity)worldObj.getBlockTileEntity(ent.xCoord, ent.yCoord, ent.zCoord - 1));		
 		}
 		
-		return transporters;
+		return adjacentContainers;
 	}
 
 }

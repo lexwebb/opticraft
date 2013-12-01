@@ -7,9 +7,9 @@ import net.minecraft.tileentity.TileEntity;
 public class TileEntitySolarCollector extends LuxContainerTileEntity {
 	
 	public TileEntitySolarCollector(){
-		this.canImport = false;
+		this.producer = true;
 		this.maxCharge = 128;
-		this.maxOutput = 128;
+		this.maxOutput = 2;
 	}
 	
 	@Override
