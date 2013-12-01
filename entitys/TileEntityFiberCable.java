@@ -37,6 +37,7 @@ public class TileEntityFiberCable extends LuxContainerTileEntity{
 	public TileEntityFiberCable(){
 		this.maxCharge = 0;
 		this.maxOutput = 128;
+		this.canImport = true;
 	}
 	
 	@Override

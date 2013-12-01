@@ -8,8 +8,9 @@ import opticraft.entitys.EntityBeamX;
 import opticraft.entitys.EntityBeamY;
 import opticraft.entitys.EntityBeamZ;
 import opticraft.entitys.TileEntityFiberCable;
-import opticraft.entitys.TileEntityItemLaser;
+import opticraft.entitys.TileEntityLaser;
 import opticraft.entitys.TileEntityLaserDetector;
+import opticraft.entitys.TileEntityLuxCapacitor;
 import opticraft.entitys.TileEntitySolarCollector;
 import opticraft.items.Items;
 import opticraft.items.ItemLaserWrench;
@@ -66,10 +67,11 @@ public class Opticraft {
 		EntityRegistry.registerModEntity(EntityBeamZ.class, "EntityBeamZ", 22, this, 128, 1, false);
 		proxy.registerRenderThings();
 		
-        GameRegistry.registerTileEntity(TileEntityItemLaser.class, "tileEntityItemLaser");
+        GameRegistry.registerTileEntity(TileEntityLaser.class, "tileEntityItemLaser");
         GameRegistry.registerTileEntity(TileEntitySolarCollector.class, "tileEntitySolarCollector");
         GameRegistry.registerTileEntity(TileEntityLaserDetector.class, "tileEntityLaserDetector");
         GameRegistry.registerTileEntity(TileEntityFiberCable.class, "tileEntityFiberCable");
+        GameRegistry.registerTileEntity(TileEntityLuxCapacitor.class, "tileEntityLuxBattery");
               
 	}
 

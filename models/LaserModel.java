@@ -15,7 +15,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-public class ItemLaserModel extends ModelBase
+public class LaserModel extends ModelBase
 {
 	//fields
     ModelRenderer Base;
@@ -49,7 +49,7 @@ public class ItemLaserModel extends ModelBase
     ModelRenderer CableLeft;
     ModelRenderer CableLeftConnector;
   
-  public ItemLaserModel()
+  public LaserModel()
   {
     textureWidth = 60;
     textureHeight = 64;

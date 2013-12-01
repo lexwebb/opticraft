@@ -10,8 +10,8 @@ public class Names {
 	public static final String matterCrystal_u = "matterCrystal";
 	public static final String matterCrystal_n = "Matter Crystal";
 	
-	public static final String itemLaserTile_u = "itemLaserTile";
-	public static final String itemLaserTile_n = "Item Laser";
+	public static final String laserTile_u = "laserTile";
+	public static final String laserTile_n = "Laser";
 	
 	public static final String beamTile_u = "beamTile";
 	public static final String beamTile_n = "Beam";
@@ -24,4 +24,7 @@ public class Names {
 	
 	public static final String fiberCableTile_u = "fiberCableTile";
 	public static final String fiberCableTile_n = "Fiber Cable";
+	
+	public static final String luxCapacitorTile_u = "luxCapacitorTile";
+	public static final String luxCapacitorTile_n = "Lux Capacitor";
 }

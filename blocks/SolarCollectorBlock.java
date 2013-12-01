@@ -20,11 +20,13 @@ import net.minecraft.world.World;
 public class SolarCollectorBlock extends DirectionalBlock{
 	
 	long gameTime;
+	protected int renderType;
 
 	//Treat it like a normal block here. The Block Bounds are a good idea - the first three are X Y and Z of the botton-left corner,
     //And the second three are the top-right corner.
     public SolarCollectorBlock(int id) {
             super(id, Material.iron, true, false);
+            this.renderType = id;
             this.setCreativeTab(CreativeTabs.tabBlock);
             this.setBlockBounds(0F, 0.0F, 0F, 1f, 0.4F, 1F);
     }
@@ -33,23 +35,6 @@ public class SolarCollectorBlock extends DirectionalBlock{
     @Override
     public TileEntity createNewTileEntity(World world) {
             return new TileEntitySolarCollector();
-    }
-    
-    //You don't want the normal render type, or it wont render properly.
-    @Override
-    public int getRenderType() {
-            return -1;
-    }
-    
-    //It's not an opaque cube, so you need this.
-    @Override
-    public boolean isOpaqueCube() {
-            return false;
-    }
-    
-    //It's not a normal block, so you need this too.
-    public boolean renderAsNormalBlock() {
-            return false;
     }
     
     //This is the icon to use for showing the block in your hand.
@@ -63,4 +48,13 @@ public class SolarCollectorBlock extends DirectionalBlock{
     	gameTime = ModLoader.getMinecraftInstance().theWorld.getWorldTime();
     }
 	
+    @Override
+    public int getRenderType()
+    {
+        return renderType;
+    }
+    
+    public void setRenderType(int id){
+    	this.renderType = id;
+    }
 }

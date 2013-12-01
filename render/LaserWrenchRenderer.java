@@ -1,7 +1,7 @@
 package opticraft.render;
 
 import opticraft.lib.ModInfo;
-import opticraft.models.ItemLaserModel;
+import opticraft.models.LaserModel;
 import opticraft.models.LaserWrenchModel;
 
 import org.lwjgl.opengl.GL11;

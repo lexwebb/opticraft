@@ -8,7 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import opticraft.lib.DirectionalBlock;
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
-import opticraft.entitys.TileEntityItemLaser;
+import opticraft.entitys.TileEntityLaser;
 import opticraft.entitys.TileEntityLaserDetector;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -25,11 +25,14 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.ForgeSubscribe;
 
 public class LaserDetectorBlock extends DirectionalBlock{
+	
+	protected int renderType;
 
 	//Treat it like a normal block here. The Block Bounds are a good idea - the first three are X Y and Z of the botton-left corner,
     //And the second three are the top-right corner.
     public LaserDetectorBlock(int id) {
             super(id, Material.iron, false, true);
+            this.renderType = id;
             this.setCreativeTab(CreativeTabs.tabBlock);
             this.setBlockBounds(0F, 0.0F, 0F, 1f, 1F, 1F);
     }
@@ -44,4 +47,14 @@ public class LaserDetectorBlock extends DirectionalBlock{
     public void registerIcons(IconRegister icon) {
             this.blockIcon = icon.registerIcon(ModInfo.ID.toLowerCase() + ":" + "LaserIconFlat");
     } 
+    
+    @Override
+    public int getRenderType()
+    {
+        return renderType;
+    }
+    
+    public void setRenderType(int id){
+    	this.renderType = id;
+    }
 }

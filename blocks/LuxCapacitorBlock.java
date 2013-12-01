@@ -12,6 +12,7 @@ import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
 import opticraft.entitys.TileEntityFiberCable;
 import opticraft.entitys.TileEntityLaser;
+import opticraft.entitys.TileEntityLuxCapacitor;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -29,13 +30,13 @@ import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeSubscribe;
 
-public class FiberCableBlock extends DirectionalBlock{
+public class LuxCapacitorBlock extends DirectionalBlock{
 	
-	protected int renderType;	
+	protected int renderType;
 
 	//Treat it like a normal block here. The Block Bounds are a good idea - the first three are X Y and Z of the botton-left corner,
     //And the second three are the top-right corner.
-    public FiberCableBlock(int id) {
+    public LuxCapacitorBlock(int id) {
             super(id, Material.iron, true, false);
             this.renderType = id;
             this.setCreativeTab(CreativeTabs.tabBlock);
@@ -45,7 +46,7 @@ public class FiberCableBlock extends DirectionalBlock{
     //Make sure you set this as your TileEntity class relevant for the block!
     @Override
     public TileEntity createNewTileEntity(World world) {  		
-            return new TileEntityFiberCable();
+            return new TileEntityLuxCapacitor();
     }
     
     //This is the icon to use for showing the block in your hand.

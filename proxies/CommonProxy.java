@@ -4,10 +4,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import opticraft.blocks.containers.ItemLaserContainer;
-import opticraft.entitys.TileEntityItemLaser;
+import opticraft.blocks.containers.LaserContainer;
+import opticraft.entitys.TileEntityLaser;
 import opticraft.items.ItemUnatunedCrystal;
-import opticraft.render.ItemLaserRenderer;
+import opticraft.render.LaserRenderer;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 

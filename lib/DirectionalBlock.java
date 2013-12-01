@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import opticraft.Opticraft;
-import opticraft.entitys.TileEntityItemLaser;
+import opticraft.entitys.TileEntityLaser;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -63,7 +63,7 @@ public class DirectionalBlock extends BlockContainer{
     }
     
     public IInventory getInventory(World par1World, int par2, int par3, int par4) {
-		return (TileEntityItemLaser)par1World.getBlockTileEntity(par2, par3, par4);		
+		return (TileEntityLaser)par1World.getBlockTileEntity(par2, par3, par4);		
     }
     
     @Override

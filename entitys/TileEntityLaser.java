@@ -24,12 +24,12 @@ import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class TileEntityItemLaser extends LuxContainerTileEntity implements ISidedInventory{
+public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInventory{
 	
 	private ItemStack[] inv;
 	Position linkedDetector;
 	
-	public TileEntityItemLaser(){
+	public TileEntityLaser(){
 		inv = new ItemStack[2];
 		this.maxCharge = 128;
 		this.canExport = false;

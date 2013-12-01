@@ -6,7 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import opticraft.blocks.Blocks;
-import opticraft.blocks.ItemLaserBlock;
+import opticraft.blocks.LaserBlock;
 import opticraft.lib.Ids;
 import opticraft.lib.Names;
 
@@ -19,6 +19,7 @@ public class Items {
 		laserWrench = new ItemLaserWrench(Ids.laserWrench);
 		unatunedCrystal = new ItemUnatunedCrystal(Ids.unatunedCrystal);
 		matterCrystal = new ItemMatterCrystal(Ids.matterCrystal);
+		
 	}
 	
 	public static void addNames() {

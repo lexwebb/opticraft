@@ -1,18 +1,17 @@
 package opticraft.blocks.containers;
 
 import opticraft.entitys.TileEntityLaser;
-import opticraft.entitys.TileEntityLaserDetector;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class LaserDetectorContainer extends Container{
+public class LaserContainer extends Container{
 
-	protected TileEntityLaserDetector tile_entity;
+	protected TileEntityLaser tile_entity;
 	
-	public LaserDetectorContainer(TileEntityLaserDetector tile_entity, InventoryPlayer inv){
+	public LaserContainer(TileEntityLaser tile_entity, InventoryPlayer inv){
 		this.tile_entity = tile_entity;
 		addSlotToContainer(new Slot(tile_entity, 0, 81, 27));
 		bindPlayerInventory(inv);

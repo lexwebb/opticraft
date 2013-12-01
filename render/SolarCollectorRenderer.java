@@ -6,22 +6,27 @@ import opticraft.models.SolarCollectorModel;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class SolarCollectorRenderer extends TileEntitySpecialRenderer{
+public class SolarCollectorRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler{
 
 	private final SolarCollectorModel model;
+	protected int renderID;
     
-    public SolarCollectorRenderer() {
+    public SolarCollectorRenderer(int renderID) {
             this.model = new SolarCollectorModel();
+            this.renderID = renderID;
     }
     
     private void adjustRotatePivotViaMeta(World world, int x, int y, int z) {
@@ -85,4 +90,42 @@ public class SolarCollectorRenderer extends TileEntitySpecialRenderer{
 		return baseTime;    	
     }
 	
+	@Override
+	public void renderInventoryBlock(Block block, int metadata, int modelID,
+			RenderBlocks renderer) {
+		
+		GL11.glPushMatrix();
+		
+		GL11.glTranslatef(0.0f, 1.4f, 0.0f);
+		
+		ResourceLocation textures = (new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/blocks/solarCollectorTile.png")); 
+		Minecraft.getMinecraft().renderEngine.bindTexture(textures);
+                   
+     	GL11.glPushMatrix();
+
+        GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
+
+        this.model.render((Entity)null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+
+        GL11.glPopMatrix();
+        GL11.glPopMatrix();
+	}
+
+	@Override
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
+			Block block, int modelId, RenderBlocks renderer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean shouldRender3DInInventory() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public int getRenderId() {
+		return this.renderID;
+	}
 }
