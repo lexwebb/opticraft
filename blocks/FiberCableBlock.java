@@ -26,6 +26,7 @@ import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeSubscribe;
 
@@ -39,8 +40,31 @@ public class FiberCableBlock extends DirectionalBlock{
             super(id, Material.iron, true, false);
             this.renderType = id;
             this.setCreativeTab(CreativeTabs.tabBlock);
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1F, 1.0F, 1F);
+            this.setBlockBounds(0.4F, 0.4F, 0.4F, 0.6F, 0.6F, 0.6F);
     }
+    
+    @Override
+    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z){
+    	TileEntityFiberCable ent = (TileEntityFiberCable) blockAccess.getBlockTileEntity(x, y, z);
+    	
+    	float xMin = 0, yMin = 0, zMin = 0, xMax = 0, yMax = 0, zMax = 0;
+    	
+    	if(!ent.upHidden)
+    		yMax = 0.4F;
+    	if(!ent.downHidden)
+    		yMin = -0.4F;
+    	if(!ent.eastHidden)
+    		xMax = 0.4F;
+    	if(!ent.westHidden)
+    		xMin = -0.4F;
+    	if(!ent.northHidden)
+    		zMin = -0.4F;
+    	if(!ent.southHidden)
+    		zMax = 0.4F;
+    	
+    	this.setBlockBounds(0.4F + xMin, 0.4F + yMin, 0.4F + zMin, 0.6F + xMax, 0.6F + yMax, 0.6F + zMax);
+    }
+    
 
     //Make sure you set this as your TileEntity class relevant for the block!
     @Override

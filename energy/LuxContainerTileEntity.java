@@ -1,12 +1,26 @@
 package opticraft.energy;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import opticraft.Opticraft;
 import opticraft.lib.DirectionalBlock;
 import opticraft.lib.DirectionalTileEntity;
+import opticraft.lib.ModInfo;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 
 public class LuxContainerTileEntity extends DirectionalTileEntity{
 		
@@ -42,6 +56,27 @@ public class LuxContainerTileEntity extends DirectionalTileEntity{
 	@Override
 	public void updateEntity(){
 		super.updateEntity();
+		
+		if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER){			
+			ByteArrayOutputStream bos = new ByteArrayOutputStream(8);
+	        DataOutputStream outputStream = new DataOutputStream(bos);
+	        
+	        try {
+	                outputStream.writeInt(xCoord);
+	                outputStream.writeInt(yCoord);
+	                outputStream.writeInt(zCoord);
+	                outputStream.writeInt(lux.value);
+	        } catch (Exception ex) {
+	                ex.printStackTrace();
+	        }
+	        
+			Packet250CustomPayload packet = new Packet250CustomPayload();
+			packet.channel = (ModInfo.CHANNEL + "GuiSync");
+			packet.data = bos.toByteArray();
+			packet.length = bos.size();
+			
+			PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 10, 0, packet);
+		}
 		
 		if(producer && lux.value >= maxOutput){
 			transfer(maxOutput);
@@ -144,5 +179,20 @@ public class LuxContainerTileEntity extends DirectionalTileEntity{
 		
 		return adjacentContainers;
 	}
+	
+	@Override
+    public void readFromNBT(NBTTagCompound tagCompound) {
+            super.readFromNBT(tagCompound);
+            
+            int storedLux = tagCompound.getInteger("Lux");
+            this.lux.value = storedLux;
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tagCompound) {
+            super.writeToNBT(tagCompound);
+                            
+            tagCompound.setInteger("Lux", lux.value);
+    }
 
 }

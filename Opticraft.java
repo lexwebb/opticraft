@@ -11,9 +11,11 @@ import opticraft.entitys.TileEntityFiberCable;
 import opticraft.entitys.TileEntityLaser;
 import opticraft.entitys.TileEntityLaserDetector;
 import opticraft.entitys.TileEntityLuxCapacitor;
+import opticraft.entitys.TileEntityRedstoneLaser;
 import opticraft.entitys.TileEntitySolarCollector;
 import opticraft.items.Items;
 import opticraft.items.ItemLaserWrench;
+import opticraft.lib.PacketHandler;
 import opticraft.lib.Ids;
 import opticraft.lib.ModInfo;
 import opticraft.proxies.CommonProxy;
@@ -32,7 +34,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = ModInfo.ID, name = ModInfo.NAME, version = ModInfo.VERSION)
-@NetworkMod (channels = {ModInfo.CHANNEL}, clientSideRequired = true, serverSideRequired = true)
+@NetworkMod (channels = {ModInfo.CHANNEL + "GuiSync"}, clientSideRequired = true, serverSideRequired = true, packetHandler = PacketHandler.class)
 public class Opticraft {
 	
 	private GuiHandler guiHandler = new GuiHandler();
@@ -72,6 +74,7 @@ public class Opticraft {
         GameRegistry.registerTileEntity(TileEntityLaserDetector.class, "tileEntityLaserDetector");
         GameRegistry.registerTileEntity(TileEntityFiberCable.class, "tileEntityFiberCable");
         GameRegistry.registerTileEntity(TileEntityLuxCapacitor.class, "tileEntityLuxBattery");
+        GameRegistry.registerTileEntity(TileEntityRedstoneLaser.class, "tileEntityRedstoneLaser");
               
 	}
 

@@ -6,6 +6,8 @@
 
 package opticraft.models;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -271,8 +273,11 @@ public class LuxCapacitorModel extends ModelBase
     LeftPipe.render(f5);
     RightPipe.render(f5);
     TopPipe.render(f5);
-    BottomPipe.render(f5);
-    Shape1.render(f5);
+    BottomPipe.render(f5); 
+  }
+  
+  public void renderCenter(Entity entity, float f, float f1, float f2, float f3, float f4, float f5){
+	    Shape1.render(f5);
   }
   
   private void setRotation(ModelRenderer model, float x, float y, float z)

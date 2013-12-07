@@ -12,13 +12,22 @@ import opticraft.lib.Names;
 
 public class Items {
 	public static Item laserWrench;
+	public static Item basicUnatunedCrystal;
 	public static Item unatunedCrystal;
+	public static Item advancedUnatunedCrystal;
+	public static Item basicMatterCrystal;
 	public static Item matterCrystal;
+	public static Item advancedMatterCrystal;
+	
 
 	public static void init() {
 		laserWrench = new ItemLaserWrench(Ids.laserWrench);
-		unatunedCrystal = new ItemUnatunedCrystal(Ids.unatunedCrystal);
+		unatunedCrystal = new ItemUnatunedCrystal(Ids.unatunedCrystal);	
+		basicUnatunedCrystal = new ItemBasicUnatunedCrystal(Ids.basicUnatunedCrystal);
+		advancedUnatunedCrystal = new ItemAdvancedUnatunedCrystal(Ids.advancedUnatunedCrystal);
 		matterCrystal = new ItemMatterCrystal(Ids.matterCrystal);
+		basicMatterCrystal = new ItemBasicMatterCrystal(Ids.basicMatterCrystal);
+		advancedMatterCrystal = new ItemAdvancedMatterCrystal(Ids.advancedMatterCrystal);
 		
 	}
 	
@@ -26,6 +35,10 @@ public class Items {
 		LanguageRegistry.addName(laserWrench, Names.laserRench_n);
 		LanguageRegistry.addName(unatunedCrystal, Names.unatunedCrystal_n);
 		LanguageRegistry.addName(matterCrystal, Names.matterCrystal_n);
+		LanguageRegistry.addName(basicUnatunedCrystal, Names.basicUunatunedCrystal_n);
+		LanguageRegistry.addName(advancedUnatunedCrystal, Names.advancedUunatunedCrystal_n);
+		LanguageRegistry.addName(basicMatterCrystal, Names.basicMatterCrystal_n);
+		LanguageRegistry.addName(advancedMatterCrystal, Names.advancedMatterCrystal_n);
 	}
 	
 	public static void initRecipes(){

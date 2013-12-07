@@ -41,4 +41,8 @@ public class Lux {
 	public double get(){
 		return this.value;
 	}
+	
+	public void set(int value){
+		this.value = value;
+	}
 }

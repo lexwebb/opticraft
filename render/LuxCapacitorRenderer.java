@@ -58,6 +58,11 @@ public class LuxCapacitorRenderer extends TileEntitySpecialRenderer implements I
             GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
     //A reference to your Model file. Again, very important.
             this.model.render((Entity)null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+
+            GL11.glEnable(GL11.GL_BLEND);
+            this.model.renderCenter((Entity)null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+            GL11.glDisable(GL11.GL_BLEND);
+            
     //Tell it to stop rendering for both the PushMatrix's
             GL11.glPopMatrix();
             GL11.glPopMatrix();
@@ -90,6 +95,10 @@ public class LuxCapacitorRenderer extends TileEntitySpecialRenderer implements I
         GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
 
         this.model.render((Entity)null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        
+        GL11.glEnable(GL11.GL_BLEND);
+        this.model.renderCenter((Entity)null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        GL11.glDisable(GL11.GL_BLEND);
 
         GL11.glPopMatrix();
         GL11.glPopMatrix();
@@ -98,13 +107,13 @@ public class LuxCapacitorRenderer extends TileEntitySpecialRenderer implements I
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
 			Block block, int modelId, RenderBlocks renderer) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
 	@Override
 	public boolean shouldRender3DInInventory() {
-		// TODO Auto-generated method stub
+		
 		return true;
 	}
 

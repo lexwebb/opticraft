@@ -1,5 +1,7 @@
 package opticraft.items;
 
+import java.util.List;
+
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -18,8 +20,8 @@ public class ItemUnatunedCrystal extends Item{
 
 	public ItemUnatunedCrystal(int par1) {
 		super(par1);
-		setMaxStackSize(1);
-		this.setCreativeTab(CreativeTabs.tabMisc);
+		setMaxStackSize(16);
+		this.setCreativeTab(CreativeTabs.tabMaterials);
 		this.setUnlocalizedName(Names.unatunedCrystal_u);
 	}
 
@@ -33,6 +35,12 @@ public class ItemUnatunedCrystal extends Item{
 	public boolean itemInteractionForEntity(ItemStack itemstack, EntityPlayer player, EntityLivingBase target) {
 
 		return false;
+	}
+	
+	@Override
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+	{
+		par3List.add("Beam rate: 0.5s");
 	}
 	
 //	@Override

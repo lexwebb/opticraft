@@ -12,6 +12,7 @@ import opticraft.entitys.TileEntityFiberCable;
 import opticraft.entitys.TileEntityLaser;
 import opticraft.entitys.TileEntityLaserDetector;
 import opticraft.entitys.TileEntityLuxCapacitor;
+import opticraft.entitys.TileEntityRedstoneLaser;
 import opticraft.entitys.TileEntitySolarCollector;
 import opticraft.items.ItemLaserWrench;
 import opticraft.lib.Ids;
@@ -23,6 +24,7 @@ import opticraft.render.LaserRenderer;
 import opticraft.render.LaserDetectorRenderer;
 import opticraft.render.LaserWrenchRenderer;
 import opticraft.render.LuxCapacitorRenderer;
+import opticraft.render.RedstoneLaserRenderer;
 import opticraft.render.SolarCollectorRenderer;
 import opticraft.sounds.BuzzSound;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -49,6 +51,13 @@ public class ClientProxy extends CommonProxy{
 		Blocks.itemLaserTileBlock.setRenderType(ItemLaserRenderID);
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaser.class, laserRenderer);
     	RenderingRegistry.registerBlockHandler(laserRenderer);
+    	
+    	//itemLaser
+		int RedstoneLaserRenderID = RenderingRegistry.getNextAvailableRenderId();
+		RedstoneLaserRenderer redstoneLaserRenderer = new RedstoneLaserRenderer(RedstoneLaserRenderID);
+		Blocks.redstoneLaserTileBlock.setRenderType(RedstoneLaserRenderID);
+    	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRedstoneLaser.class, redstoneLaserRenderer);
+    	RenderingRegistry.registerBlockHandler(redstoneLaserRenderer);
     	
     	//solarCollecter
     	int solarCollecterRenderID = RenderingRegistry.getNextAvailableRenderId();

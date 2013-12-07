@@ -16,19 +16,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class ItemMatterCrystal extends Item{
+public class ItemAdvancedMatterCrystal extends Item{
 
-	public ItemMatterCrystal(int par1) {
+	public ItemAdvancedMatterCrystal(int par1) {
 		super(par1);
 		setMaxStackSize(16);
 		this.setCreativeTab(CreativeTabs.tabMaterials);
-		this.setUnlocalizedName(Names.matterCrystal_u);
+		this.setUnlocalizedName(Names.advancedMatterCrystal_u);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister icon) {
-		itemIcon = icon.registerIcon(ModInfo.ID.toLowerCase() + ":" + "matterCrystal");
+		itemIcon = icon.registerIcon(ModInfo.ID.toLowerCase() + ":" + "advancedMatterCrystal");
 	}
 	
 	@Override
@@ -40,7 +40,7 @@ public class ItemMatterCrystal extends Item{
 	@Override
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
 	{
-		par3List.add("Transfer rate: 0.5s");
+		par3List.add("Transfer rate: 0.2s");
 	}
 	
 //	@Override

@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import opticraft.lib.DirectionalBlock;
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
+import opticraft.entitys.TileEntityFiberCable;
 import opticraft.entitys.TileEntityLaser;
 import opticraft.entitys.TileEntityLaserDetector;
 import net.minecraft.block.BlockContainer;
@@ -20,6 +21,7 @@ import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -34,7 +36,26 @@ public class LaserDetectorBlock extends DirectionalBlock{
             super(id, Material.iron, false, true);
             this.renderType = id;
             this.setCreativeTab(CreativeTabs.tabBlock);
-            this.setBlockBounds(0F, 0.0F, 0F, 1f, 1F, 1F);
+//            this.setBlockBounds(0F, 0.0F, 0F, 1f, 1F, 1F);
+    }
+    
+    @Override
+    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z){
+    	TileEntityLaserDetector ent = (TileEntityLaserDetector) blockAccess.getBlockTileEntity(x, y, z);
+    	
+    	if(ent.getOrientation() == "U"){
+    		this.setBlockBounds(0F, 0.0F, 0F, 1f, 0.2F, 1F);
+    	} else if(ent.getOrientation() == "D"){
+    		this.setBlockBounds(0F, 0.8F, 0F, 1f, 1F, 1F);
+    	} else if(ent.getOrientation() == "E"){
+    		this.setBlockBounds(0F, 0F, 0F, 0.2f, 1F, 1F);
+    	} else if(ent.getOrientation() == "W"){
+    		this.setBlockBounds(0.8F, 0F, 0F, 1f, 1F, 1F);
+    	} else if(ent.getOrientation() == "N"){
+    		this.setBlockBounds(0F, 0F, 0.8F, 1f, 1F, 1F);
+    	} else if(ent.getOrientation() == "S"){
+    		this.setBlockBounds(0F, 0F, 0F, 1f, 1F, 0.2F);
+    	}
     }
 
     //Make sure you set this as your TileEntity class relevant for the block!

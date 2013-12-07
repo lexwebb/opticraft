@@ -1,9 +1,11 @@
 package opticraft.entitys;
 
 import opticraft.energy.LuxContainerTileEntity;
+import opticraft.items.Items;
 import opticraft.lib.DirectionalTileEntity;
 import opticraft.lib.Position;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,85 +41,142 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 	public void updateEntity(){
 		super.updateEntity();
 		
-		//check for Detector
-		if(this.worldObj.getWorldTime() % 5 == 0 && this.worldObj.getWorldTime() % 10 != 0){
-			TileEntity tile_entity;
-			linkedDetector = null;
-			
-			if(this.getOrientation() == "U"){
-				for(int i = 1; i < 64; i++){
-					tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord + i, zCoord);
-					if(tile_entity instanceof TileEntityLaserDetector){
-						DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
-						if(ent.getOrientation() == "D"){
-							linkedDetector = new Position(ent);
-						}
-					}
-					if(linkedDetector != null)
-						break;
-				}
-			} else if(this.getOrientation() == "D"){
-				for(int i = 1; i < 64; i++){
-					tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord - i, zCoord);
-					if(tile_entity instanceof TileEntityLaserDetector){
-						DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
-						if(ent.getOrientation() == "U"){
-							linkedDetector = new Position(ent);
-						}
-					}
-					if(linkedDetector != null)
-						break;
-				}	
-			} else if(this.getOrientation() == "N"){
-				for(int i = 1; i < 64; i++){
-					tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord - i);
-					if(tile_entity instanceof TileEntityLaserDetector){
-						DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
-						if(ent.getOrientation() == "S"){
-							linkedDetector = new Position(ent);
-						}
-					}
-					if(linkedDetector != null)
-						break;
-				}	
-			} else if(this.getOrientation() == "S"){
-				for(int i = 1; i < 64; i++){
-					tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord + i);
-					if(tile_entity instanceof TileEntityLaserDetector){
-						DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
-						if(ent.getOrientation() == "N"){
-							linkedDetector = new Position(ent);
-						}
-					}
-					if(linkedDetector != null)
-						break;
-				}	
-			} else if(this.getOrientation() == "W"){
-				for(int i = 1; i < 64; i++){
-					tile_entity = worldObj.getBlockTileEntity(xCoord - i, yCoord, zCoord);
-					if(tile_entity instanceof TileEntityLaserDetector){
-						DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
-						if(ent.getOrientation() == "E"){
-							linkedDetector = new Position(ent);
-						}
-					}
-					if(linkedDetector != null)
-						break;
-				}	
-			} else if(this.getOrientation() == "E"){
-				for(int i = 1; i < 64; i++){
-					tile_entity = worldObj.getBlockTileEntity(xCoord + i, yCoord, zCoord);
-					if(tile_entity instanceof TileEntityLaserDetector){
-						DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
-						if(ent.getOrientation() == "W"){
-							linkedDetector = new Position(ent);
-						}
-					}
-					if(linkedDetector != null)
-						break;
-				}	
+		
+		
+		if(inv[1] != null){
+			if(inv[1].itemID == Items.basicMatterCrystal.itemID){
+				suckItemsIn();
+				findDetector();
+				itemLaser(20);
 			}
-			
+			if(inv[1].itemID == Items.matterCrystal.itemID){
+				suckItemsIn();
+				findDetector();
+				itemLaser(10);
+			}
+			if(inv[1].itemID == Items.advancedMatterCrystal.itemID){
+				suckItemsIn();
+				findDetector();
+				itemLaser(2);
+			}
+		}
+	}
+	
+	public void findDetector(){		
+		TileEntity tile_entity;
+		linkedDetector = null;
+		boolean solidInWay = false;
+		
+		if(this.getOrientation() == "U"){
+			for(int i = 1; i < 64; i++){
+				if(worldObj.getBlockMaterial(xCoord, yCoord + i, zCoord).isSolid())
+					solidInWay = true;
+				
+				tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord + i, zCoord);
+				if(tile_entity instanceof TileEntityLaserDetector){
+					DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
+					if(ent.getOrientation() == "D"){
+						linkedDetector = new Position(ent);
+					}
+				}
+				if(linkedDetector != null)
+					break;
+				else if(solidInWay)
+					break;
+			}
+		} else if(this.getOrientation() == "D"){
+			for(int i = 1; i < 64; i++){
+				if(worldObj.getBlockMaterial(xCoord, yCoord - i, zCoord).isOpaque())
+					solidInWay = true;
+				
+				System.out.println(solidInWay);
+				
+				tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord - i, zCoord);
+				if(tile_entity instanceof TileEntityLaserDetector){
+					DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
+					if(ent.getOrientation() == "U"){
+						linkedDetector = new Position(ent);
+					}
+				}
+				if(linkedDetector != null)
+					break;
+				else if(solidInWay)
+					break;
+			}	
+		} else if(this.getOrientation() == "N"){
+			for(int i = 1; i < 64; i++){
+				if(worldObj.getBlockMaterial(xCoord, yCoord, zCoord - i).isSolid())
+					solidInWay = true;
+				
+				tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord - i);
+				if(tile_entity instanceof TileEntityLaserDetector){
+					DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
+					if(ent.getOrientation() == "S"){
+						linkedDetector = new Position(ent);
+					}
+				}
+				if(linkedDetector != null)
+					break;
+				else if(solidInWay)
+					break;
+			}	
+		} else if(this.getOrientation() == "S"){
+			for(int i = 1; i < 64; i++){
+				if(worldObj.getBlockMaterial(xCoord, yCoord, zCoord + i).isSolid())
+					solidInWay = true;
+				
+				tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord + i);
+				if(tile_entity instanceof TileEntityLaserDetector){
+					DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
+					if(ent.getOrientation() == "N"){
+						linkedDetector = new Position(ent);
+					}
+				}
+				if(linkedDetector != null)
+					break;
+				else if(solidInWay)
+					break;
+			}	
+		} else if(this.getOrientation() == "W"){
+			for(int i = 1; i < 64; i++){
+				if(worldObj.getBlockMaterial(xCoord - i, yCoord, zCoord).isSolid())
+					solidInWay = true;
+				
+				tile_entity = worldObj.getBlockTileEntity(xCoord - i, yCoord, zCoord);
+				if(tile_entity instanceof TileEntityLaserDetector){
+					DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
+					if(ent.getOrientation() == "E"){
+						linkedDetector = new Position(ent);
+					}
+				}
+				if(linkedDetector != null)
+					break;
+				else if(solidInWay)
+					break;
+			}	
+		} else if(this.getOrientation() == "E"){
+			for(int i = 1; i < 64; i++){
+				if(worldObj.getBlockMaterial(xCoord + i, yCoord, zCoord).isSolid())
+					solidInWay = true;
+				
+				tile_entity = worldObj.getBlockTileEntity(xCoord + i, yCoord, zCoord);
+				if(tile_entity instanceof TileEntityLaserDetector){
+					DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
+					if(ent.getOrientation() == "W"){
+						linkedDetector = new Position(ent);
+					}
+				}
+				if(linkedDetector != null)
+					break;
+				else if(solidInWay)
+					break;
+			}	
+		}
+	}
+	
+	public void itemLaser(int frequency){
+		//check for Detector
+		if(this.worldObj.getWorldTime() % frequency == 0){
 			if(linkedDetector != null && this.lux.get() > 0){
 				TileEntityLaserDetector ent = (TileEntityLaserDetector) worldObj.getBlockTileEntity(
 						(int) Math.floor(linkedDetector.x), (int) Math.floor(linkedDetector.y), (int) Math.floor(linkedDetector.z));
@@ -179,53 +238,54 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 					worldObj.playSoundEffect((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D, "optcrft:buzz",  0.1F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
 				}
 			}
-			
-			if(getStackInSlot(0) == null){	
-				TileEntity ent = null;
-				if(this.getOrientation() == "U"){
-					ent = worldObj.getBlockTileEntity(xCoord, yCoord - 1, zCoord);					
-				} else if(this.getOrientation() == "D"){
-					ent = worldObj.getBlockTileEntity(xCoord, yCoord + 1, zCoord);
-				} else if(this.getOrientation() == "N"){
-					ent = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord + 1);
-				} else if(this.getOrientation() == "S"){
-					ent = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord - 1);
-				} else if(this.getOrientation() == "W"){
-					ent = worldObj.getBlockTileEntity(xCoord + 1, yCoord, zCoord);
-				} else if(this.getOrientation() == "E"){
-					ent = worldObj.getBlockTileEntity(xCoord - 1, yCoord , zCoord);
-				}
-				
-				if(ent instanceof IInventory)
-					suckItemsIn((IInventory)ent);
-			}
 		}
 	}
 
-	public void suckItemsIn(IInventory inv) {
-		boolean foundItem = false;
-		for(int i = 0; i < inv.getSizeInventory(); i++){
-			if(inv.getStackInSlot(i) != null){
-				
-				ItemStack tempStack = inv.getStackInSlot(i).copy();
-				tempStack.stackSize = 1;
-				setInventorySlotContents(0, tempStack);
-				
-				if(inv.getStackInSlot(i).stackSize == 1){
-					inv.setInventorySlotContents(i, null);
-				} else {					
-					inv.decrStackSize(i, 1);
-				}
-
-				inv.onInventoryChanged();
-				this.onInventoryChanged();
-				
-				foundItem = true;				
+	public void suckItemsIn() {
+		IInventory inv;
+		if(getStackInSlot(0) == null){	
+			TileEntity ent = null;
+			if(this.getOrientation() == "U"){
+				ent = worldObj.getBlockTileEntity(xCoord, yCoord - 1, zCoord);					
+			} else if(this.getOrientation() == "D"){
+				ent = worldObj.getBlockTileEntity(xCoord, yCoord + 1, zCoord);
+			} else if(this.getOrientation() == "N"){
+				ent = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord + 1);
+			} else if(this.getOrientation() == "S"){
+				ent = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord - 1);
+			} else if(this.getOrientation() == "W"){
+				ent = worldObj.getBlockTileEntity(xCoord + 1, yCoord, zCoord);
+			} else if(this.getOrientation() == "E"){
+				ent = worldObj.getBlockTileEntity(xCoord - 1, yCoord , zCoord);
 			}
-			if(foundItem)
-				break;
-		}
-		
+			
+			if(ent instanceof IInventory){
+				inv = (IInventory)ent;
+			
+				boolean foundItem = false;
+				for(int i = 0; i < inv.getSizeInventory(); i++){
+					if(inv.getStackInSlot(i) != null){
+						
+						ItemStack tempStack = inv.getStackInSlot(i).copy();
+						tempStack.stackSize = 1;
+						setInventorySlotContents(0, tempStack);
+						
+						if(inv.getStackInSlot(i).stackSize == 1){
+							inv.setInventorySlotContents(i, null);
+						} else {					
+							inv.decrStackSize(i, 1);
+						}
+	
+						inv.onInventoryChanged();
+						this.onInventoryChanged();
+						
+						foundItem = true;				
+					}
+					if(foundItem)
+						break;
+				}
+			}
+		}	
 	}
 
     @Override
@@ -347,15 +407,15 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 		if(this.getOrientation() == "U"){
 			return new int[] {0};
 		} else if(this.getOrientation() == "D"){
-			return new int[] {1};
+			return new int[] {0};
 		} else if(this.getOrientation() == "N"){
-			return new int[] {3};
+			return new int[] {0};
 		} else if(this.getOrientation() == "S"){
-			return new int[] {2};
+			return new int[] {0};
 		} else if(this.getOrientation() == "W"){
-			return new int[] {5};
+			return new int[] {0};
 		} else if(this.getOrientation() == "E"){
-			return new int[] {2};
+			return new int[] {0};
 		} 
 		return new int[] {0};
 	}
