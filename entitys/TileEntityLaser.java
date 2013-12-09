@@ -259,7 +259,52 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 				ent = worldObj.getBlockTileEntity(xCoord - 1, yCoord , zCoord);
 			}
 			
-			if(ent instanceof IInventory){
+			if(ent instanceof ISidedInventory){
+				int slots[];
+				int side;
+				ISidedInventory iInv = (ISidedInventory)ent;
+				
+				if(this.getOrientation() == "U"){
+					slots = iInv.getAccessibleSlotsFromSide(1);	
+					side = 1;
+				} else if(this.getOrientation() == "D"){
+					slots = iInv.getAccessibleSlotsFromSide(0);	
+					side = 0;
+				} else if(this.getOrientation() == "N"){
+					slots = iInv.getAccessibleSlotsFromSide(2);	
+					side = 2;
+				} else if(this.getOrientation() == "S"){
+					slots = iInv.getAccessibleSlotsFromSide(3);	
+					side = 3;
+				} else if(this.getOrientation() == "W"){
+					slots = iInv.getAccessibleSlotsFromSide(4);	
+					side = 4;
+				} else if(this.getOrientation() == "E"){
+					slots = iInv.getAccessibleSlotsFromSide(5);	
+					side = 5;
+				} else
+					slots = null;
+					side = 0;
+				
+				for(int slot : slots){
+					if(iInv.getStackInSlot(slot) != null && canExtractItemFromInventory((IInventory)ent, iInv.getStackInSlot(slot), slot, side)){
+						
+						ItemStack tempStack = iInv.getStackInSlot(slot).copy();
+						tempStack.stackSize = 1;
+						setInventorySlotContents(0, tempStack);
+						
+						if(iInv.getStackInSlot(slot).stackSize == 1){
+							iInv.setInventorySlotContents(slot, null);
+						} else {					
+							iInv.decrStackSize(slot, 1);
+						}
+	
+						iInv.onInventoryChanged();
+						this.onInventoryChanged();			
+					}
+				}
+				
+			} else if(ent instanceof IInventory){
 				inv = (IInventory)ent;
 			
 				boolean foundItem = false;
@@ -287,6 +332,11 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 			}
 		}	
 	}
+	
+	private static boolean canExtractItemFromInventory(IInventory par0IInventory, ItemStack par1ItemStack, int par2, int par3)
+    {
+        return !(par0IInventory instanceof ISidedInventory) || ((ISidedInventory)par0IInventory).canExtractItem(par2, par1ItemStack, par3);
+    }
 
     @Override
     public int getSizeInventory() {

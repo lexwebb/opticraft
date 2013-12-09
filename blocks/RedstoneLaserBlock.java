@@ -14,6 +14,7 @@ import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
 import opticraft.entitys.TileEntityLaser;
 import opticraft.entitys.TileEntityRedstoneLaser;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -44,6 +45,7 @@ public class RedstoneLaserBlock extends DirectionalBlock{
     public RedstoneLaserBlock(int id) {
             super(id, Material.iron, false, true);
             this.renderType = id;
+            this.setTickRandomly(true);
             this.setCreativeTab(CreativeTabs.tabBlock);
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1F, 1.0F, 1F);
     }
@@ -87,6 +89,12 @@ public class RedstoneLaserBlock extends DirectionalBlock{
 				}
 			}
     		return false;
+    	} else {
+    		TileEntityRedstoneLaser ent = (TileEntityRedstoneLaser) world.getBlockTileEntity(x, y, z);
+    		if(ent.reciever)
+    			ent.reciever = false;
+    		else
+    			ent.reciever = true;
     	}
     	return super.onBlockActivated(world, x, y, z, player, i, f, g, t);
     }
@@ -113,15 +121,12 @@ public class RedstoneLaserBlock extends DirectionalBlock{
     }
     
     public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int x, int y, int z, int side)
-    {
-    	System.out.print(((TileEntityRedstoneLaser) par1IBlockAccess.getBlockTileEntity(x, y, z)).providedPower);
-    	
+    {  	
         return ((TileEntityRedstoneLaser) par1IBlockAccess.getBlockTileEntity(x, y, z)).providedPower;
     }
     
     public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int x, int y, int z, int side)
     {
-    	System.out.print(((TileEntityRedstoneLaser) par1IBlockAccess.getBlockTileEntity(x, y, z)).providedPower);
         return ((TileEntityRedstoneLaser) par1IBlockAccess.getBlockTileEntity(x, y, z)).providedPower;
     }
     
@@ -145,4 +150,10 @@ public class RedstoneLaserBlock extends DirectionalBlock{
     	par1World.notifyBlocksOfNeighborChange(x, y, z + 1, this.blockID);
     	par1World.notifyBlocksOfNeighborChange(x, y, z - 1, this.blockID);
     }
+    
+    @Override
+    public int tickRate(World par1World)
+    {
+        return 2;
+    }  
 }

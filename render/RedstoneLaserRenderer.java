@@ -118,6 +118,18 @@ public class RedstoneLaserRenderer extends TileEntitySpecialRenderer implements 
 	        		GL11.glRotatef(270F, 0F, 1F, 0F);
             }
             
+            if(ent.reciever){
+            	model.DetectDown.isHidden = false;
+            	model.DetectL.isHidden = false;
+            	model.DetectR.isHidden = false;
+            	model.DetectUp.isHidden = false;
+            } else{
+            	model.DetectDown.isHidden = true;
+            	model.DetectL.isHidden = true;
+            	model.DetectR.isHidden = true;
+            	model.DetectUp.isHidden = true;
+            }
+            
     //A reference to your Model file. Again, very important.
             this.model.render((Entity)null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
     //Tell it to stop rendering for both the PushMatrix's

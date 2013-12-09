@@ -32,13 +32,13 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
 	
 	Position linkedDetector;
 	ForgeDirection direction;
-	boolean powered;
 	public int providedPower, recievedPower;
-	
+	public boolean reciever;
+	public long tickUpdated;
 	
 	public TileEntityRedstoneLaser(){
 		this.maxCharge = 0;
-		
+		this.reciever = false;
 	}
 	
 	@Override
@@ -54,19 +54,45 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
 				this.direction = ForgeDirection.UP;
 		}
 		
-		if (this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)){
-            this.powered = true;
-            this.recievedPower = worldObj.getBlockPowerInput(xCoord, yCoord, zCoord);
-            findDetector();
-            sendSignal();
-            System.out.println("powered");
+//		System.out.println(worldObj.getBlockPowerInput(xCoord, yCoord, zCoord));
+		
+		if(worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0){
+			if(!reciever){
+				System.out.println(worldObj.getBlockPowerInput(xCoord, yCoord, zCoord));
+	            this.recievedPower = worldObj.getBlockPowerInput(xCoord, yCoord, zCoord);
+	            findDetector();
+	            sendSignal();
+	            sendBlockUpdates();
+			}
 		} else {
-			if(this.recievedPower > 0){
+			if(!reciever){
 				this.recievedPower = 0;
 				findDetector();
-	            sendSignal();
+				sendBlockUpdates();
 			}
 		}
+		
+		if(reciever){
+			if(tickUpdated + 10 < worldObj.getWorldTime()){
+				this.recievedPower = 0;
+				System.out.println("recieverpower: " + tickUpdated + " Gametime: " + worldObj.getWorldTime());
+			}
+			
+			if(tickUpdated == 0){
+				this.recievedPower = 0;
+				sendBlockUpdates();
+			}
+		}
+	}
+	
+	void sendBlockUpdates(){
+		if(linkedDetector != null){
+            TileEntityRedstoneLaser ent = (TileEntityRedstoneLaser) worldObj.getBlockTileEntity(
+					(int) Math.floor(linkedDetector.x), (int) Math.floor(linkedDetector.y), (int) Math.floor(linkedDetector.z));
+			ent.recievedPower = 0;			
+			worldObj.scheduleBlockUpdate(ent.xCoord, ent.yCoord, ent.zCoord, 1, 1);
+        }
+		worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, 1, 1);
 	}
 	
 	public void findDetector(){		
@@ -82,7 +108,7 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
 				tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord + i, zCoord);
 				if(tile_entity instanceof TileEntityRedstoneLaser){
 					TileEntityRedstoneLaser ent = (TileEntityRedstoneLaser) tile_entity;
-					if(ent.getDirection() == ForgeDirection.DOWN){
+					if(ent.getDirection() == ForgeDirection.DOWN && ent.reciever){
 						linkedDetector = new Position(ent);
 					}
 				}
@@ -95,13 +121,10 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
 			for(int i = 1; i < 64; i++){
 				if(worldObj.getBlockMaterial(xCoord, yCoord - i, zCoord).isOpaque())
 					solidInWay = true;
-				
-				System.out.println(solidInWay);
-				
 				tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord - i, zCoord);
 				if(tile_entity instanceof TileEntityRedstoneLaser){
 					TileEntityRedstoneLaser ent = (TileEntityRedstoneLaser) tile_entity;
-					if(ent.getDirection() == ForgeDirection.UP){
+					if(ent.getDirection() == ForgeDirection.UP && ent.reciever){
 						linkedDetector = new Position(ent);
 					}
 				}
@@ -118,12 +141,7 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
 				tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord - i);
 				if(tile_entity instanceof TileEntityRedstoneLaser){
 					TileEntityRedstoneLaser ent = (TileEntityRedstoneLaser) tile_entity;
-					
-//					debug
-					if(ent.getDirection() != null)
-						System.out.println("Found " + ent.getDirection().name());
-					
-					if(ent.getDirection() == ForgeDirection.SOUTH){
+					if(ent.getDirection() == ForgeDirection.SOUTH && ent.reciever){
 						linkedDetector = new Position(ent);
 					}
 				}
@@ -140,7 +158,7 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
 				tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord + i);
 				if(tile_entity instanceof TileEntityRedstoneLaser){
 					TileEntityRedstoneLaser ent = (TileEntityRedstoneLaser) tile_entity;
-					if(ent.getDirection() == ForgeDirection.NORTH){
+					if(ent.getDirection() == ForgeDirection.NORTH && ent.reciever){
 						linkedDetector = new Position(ent);
 					}
 				}
@@ -157,7 +175,7 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
 				tile_entity = worldObj.getBlockTileEntity(xCoord - i, yCoord, zCoord);
 				if(tile_entity instanceof TileEntityRedstoneLaser){
 					TileEntityRedstoneLaser ent = (TileEntityRedstoneLaser) tile_entity;
-					if(ent.getDirection() == ForgeDirection.EAST){
+					if(ent.getDirection() == ForgeDirection.EAST && ent.reciever){
 						linkedDetector = new Position(ent);
 					}
 				}
@@ -174,7 +192,7 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
 				tile_entity = worldObj.getBlockTileEntity(xCoord + i, yCoord, zCoord);
 				if(tile_entity instanceof TileEntityRedstoneLaser){
 					TileEntityRedstoneLaser ent = (TileEntityRedstoneLaser) tile_entity;
-					if(ent.getDirection() == ForgeDirection.WEST){
+					if(ent.getDirection() == ForgeDirection.WEST && ent.reciever){
 						linkedDetector = new Position(ent);
 					}
 				}
@@ -189,7 +207,6 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
 	public void sendSignal(){
 		//check for Detector
 		if(linkedDetector != null){
-			System.out.println("bleh");
 			TileEntityRedstoneLaser ent = (TileEntityRedstoneLaser) worldObj.getBlockTileEntity(
 					(int) Math.floor(linkedDetector.x), (int) Math.floor(linkedDetector.y), (int) Math.floor(linkedDetector.z));				
 			if(this.getDirection() == ForgeDirection.UP){
@@ -243,6 +260,8 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
 			}
 			
 			ent.providedPower = this.recievedPower;
+			ent.tickUpdated = worldObj.getWorldTime();
+			worldObj.markBlockForUpdate(ent.xCoord, ent.yCoord, ent.zCoord);
 			worldObj.playSoundEffect((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D, "optcrft:buzz",  0.1F, worldObj.rand.nextFloat() * 0.1F + 0.9F);		
 		}
 	}
