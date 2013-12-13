@@ -42,4 +42,7 @@ public class Names {
 	
 	public static final String luxCapacitorTile_u = "luxCapacitorTile";
 	public static final String luxCapacitorTile_n = "Lux Capacitor";
+	
+	public static final String mirrorTile_u = "mirrorTile";
+	public static final String mirrorTile_n = "Mirror";
 }

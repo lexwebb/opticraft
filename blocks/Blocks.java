@@ -15,6 +15,7 @@ public class Blocks {
 	public static FiberCableBlock fiberCableTileBlock;
 	public static LuxCapacitorBlock luxBatteryTileBlock;
 	public static RedstoneLaserBlock redstoneLaserTileBlock;
+	public static MirrorBlock mirrorBlock;
 
 	public static void init() {
 		itemLaserTileBlock = new LaserBlock(Ids.TileEntityLaserBlock);
@@ -23,6 +24,7 @@ public class Blocks {
 		fiberCableTileBlock = new FiberCableBlock(Ids.TileEntityFiberCable);
 		luxBatteryTileBlock = new LuxCapacitorBlock(Ids.TileEntityLuxCapacitorBlock);
 		redstoneLaserTileBlock = new RedstoneLaserBlock(Ids.TileEntityRedstoneLaserBlock);
+		mirrorBlock = new MirrorBlock(Ids.TileEntityMirrorBlock);
 		
 		
 		GameRegistry.registerBlock(itemLaserTileBlock);
@@ -31,6 +33,7 @@ public class Blocks {
 		GameRegistry.registerBlock(fiberCableTileBlock);
 		GameRegistry.registerBlock(luxBatteryTileBlock);
 		GameRegistry.registerBlock(redstoneLaserTileBlock);
+		GameRegistry.registerBlock(mirrorBlock);
 				
 		itemLaserTileBlock.setUnlocalizedName(Names.laserTile_u);
 		solarCollectorTileBlock.setUnlocalizedName(Names.solarCollectorTile_u);
@@ -38,6 +41,7 @@ public class Blocks {
 		fiberCableTileBlock.setUnlocalizedName(Names.fiberCableTile_u);
 		luxBatteryTileBlock.setUnlocalizedName(Names.luxCapacitorTile_u);
 		redstoneLaserTileBlock.setUnlocalizedName(Names.redstoneLaserTile_u);
+		mirrorBlock.setUnlocalizedName(Names.mirrorTile_u);
 
 	}
 
@@ -48,5 +52,6 @@ public class Blocks {
 		LanguageRegistry.addName(fiberCableTileBlock, Names.fiberCableTile_n);
 		LanguageRegistry.addName(luxBatteryTileBlock, Names.luxCapacitorTile_n);
 		LanguageRegistry.addName(redstoneLaserTileBlock, Names.redstoneLaserTile_n);
+		LanguageRegistry.addName(mirrorBlock, Names.mirrorTile_n);
 	}
 }

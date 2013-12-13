@@ -63,4 +63,5 @@ public class LaserBlock extends DirectionalBlock{
     	this.renderType = id;
     }
     
+  
 }

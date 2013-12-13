@@ -1,10 +1,20 @@
 package opticraft.entitys;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+
+import org.lwjgl.Sys;
+
+import opticraft.blocks.Blocks;
 import opticraft.energy.LuxContainerTileEntity;
 import opticraft.items.Items;
 import opticraft.lib.DirectionalTileEntity;
+import opticraft.lib.ModInfo;
 import opticraft.lib.Position;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
@@ -18,6 +28,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.Hopper;
@@ -28,22 +39,25 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
-public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
+public class TileEntityRedstoneLaser extends DirectionalTileEntity{
 	
 	Position linkedDetector;
-	ForgeDirection direction;
+	public ForgeDirection direction;
 	public int providedPower, recievedPower;
 	public boolean reciever;
 	public long tickUpdated;
 	
 	public TileEntityRedstoneLaser(){
-		this.maxCharge = 0;
 		this.reciever = false;
 	}
 	
 	@Override
 	public void updateEntity(){
 		super.updateEntity();
+		
+		if(this.worldObj.getWorldTime() % 20 == 0 && FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER){
+			sendUpdatePacket();
+		}
 		
 		if(direction == null){
 			if(getOrientation() == "U" || getOrientation() == "D")
@@ -58,7 +72,6 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
 		
 		if(worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0){
 			if(!reciever){
-				System.out.println(worldObj.getBlockPowerInput(xCoord, yCoord, zCoord));
 	            this.recievedPower = worldObj.getBlockPowerInput(xCoord, yCoord, zCoord);
 	            findDetector();
 	            sendSignal();
@@ -67,32 +80,26 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
 		} else {
 			if(!reciever){
 				this.recievedPower = 0;
+				this.providedPower = 0;
 				findDetector();
 				sendBlockUpdates();
 			}
 		}
 		
+		if(tickUpdated != 0)
 		if(reciever){
-			if(tickUpdated + 10 < worldObj.getWorldTime()){
+			if(tickUpdated + 1 < worldObj.getWorldTime()){
 				this.recievedPower = 0;
-				System.out.println("recieverpower: " + tickUpdated + " Gametime: " + worldObj.getWorldTime());
-			}
-			
-			if(tickUpdated == 0){
-				this.recievedPower = 0;
+				this.providedPower = 0;
+				tickUpdated = 0;
 				sendBlockUpdates();
 			}
+			sendBlockUpdates();
 		}
 	}
 	
 	void sendBlockUpdates(){
-		if(linkedDetector != null){
-            TileEntityRedstoneLaser ent = (TileEntityRedstoneLaser) worldObj.getBlockTileEntity(
-					(int) Math.floor(linkedDetector.x), (int) Math.floor(linkedDetector.y), (int) Math.floor(linkedDetector.z));
-			ent.recievedPower = 0;			
-			worldObj.scheduleBlockUpdate(ent.xCoord, ent.yCoord, ent.zCoord, 1, 1);
-        }
-		worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, 1, 1);
+		worldObj.notifyBlockChange(xCoord, yCoord, zCoord, Blocks.redstoneLaserTileBlock.blockID);
 	}
 	
 	public void findDetector(){		
@@ -210,7 +217,7 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
 			TileEntityRedstoneLaser ent = (TileEntityRedstoneLaser) worldObj.getBlockTileEntity(
 					(int) Math.floor(linkedDetector.x), (int) Math.floor(linkedDetector.y), (int) Math.floor(linkedDetector.z));				
 			if(this.getDirection() == ForgeDirection.UP){
-				for(int i = this.yCoord; i < linkedDetector.y; i++){
+				for(int i = this.yCoord + 1; i < linkedDetector.y; i++){
 					if (!worldObj.isRemote){
 						EntityBeamY entity = new EntityBeamY(worldObj);
 						entity.setPosition(xCoord, i, zCoord);							
@@ -218,7 +225,7 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
 					}		
 				}
 			} else if(this.getDirection() == ForgeDirection.DOWN){
-				for(int i = this.yCoord; i > linkedDetector.y; i--){
+				for(int i = this.yCoord - 1; i > linkedDetector.y; i--){
 					if (!worldObj.isRemote){
 						EntityBeamY entity = new EntityBeamY(worldObj);
 						entity.setPosition(xCoord, i, zCoord);							
@@ -226,7 +233,7 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
 					}		
 				}	
 			} else if(this.getDirection() == ForgeDirection.NORTH){
-				for(int i = this.zCoord; i > linkedDetector.z; i--){
+				for(int i = this.zCoord - 1; i > linkedDetector.z; i--){
 					if (!worldObj.isRemote){
 						EntityBeamZ entity = new EntityBeamZ(worldObj);
 						entity.setPosition(xCoord, yCoord, i);							
@@ -234,7 +241,7 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
 					}		
 				}	
 			} else if(this.getDirection() == ForgeDirection.SOUTH){
-				for(int i = this.zCoord; i < linkedDetector.z; i++){
+				for(int i = this.zCoord + 1; i < linkedDetector.z; i++){
 					if (!worldObj.isRemote){
 						EntityBeamZ entity = new EntityBeamZ(worldObj);
 						entity.setPosition(xCoord, yCoord, i);							
@@ -242,7 +249,7 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
 					}		
 				}	
 			} else if(this.getDirection() == ForgeDirection.EAST){
-				for(int i = this.xCoord; i < linkedDetector.x; i++){
+				for(int i = this.xCoord + 1; i < linkedDetector.x; i++){
 					if (!worldObj.isRemote){
 						EntityBeamX entity = new EntityBeamX(worldObj);
 						entity.setPosition(i, yCoord, zCoord);							
@@ -250,7 +257,7 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
 					}		
 				}	
 			} else if(this.getDirection() == ForgeDirection.WEST){
-				for(int i = this.xCoord; i > linkedDetector.x; i--){
+				for(int i = this.xCoord - 1; i > linkedDetector.x; i--){
 					if (!worldObj.isRemote){
 						EntityBeamX entity = new EntityBeamX(worldObj);
 						entity.setPosition(i, yCoord, zCoord);							
@@ -278,26 +285,56 @@ public class TileEntityRedstoneLaser extends LuxContainerTileEntity{
     public void readFromNBT(NBTTagCompound tagCompound) {
             super.readFromNBT(tagCompound);
             
-            if(tagCompound.getString("direction") == "UP")
-            	this.direction = ForgeDirection.UP;
-            else if(tagCompound.getString("direction") == "DOWN")
-            	this.direction = ForgeDirection.DOWN;
-            else if(tagCompound.getString("direction") == "NORTH")
-            	this.direction = ForgeDirection.NORTH;
-            else if(tagCompound.getString("direction") == "EAST")
-            	this.direction = ForgeDirection.EAST;
-            else if(tagCompound.getString("direction") == "SOUTH")
-            	this.direction = ForgeDirection.SOUTH;
-            else if(tagCompound.getString("direction") == "WEST")
-            	this.direction = ForgeDirection.WEST;
-            else
-            	this.direction = ForgeDirection.NORTH;
+            if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER){	
+	            if(tagCompound.getString("direction").equals("UP"))
+	            	this.direction = ForgeDirection.UP;
+	            else if(tagCompound.getString("direction").equals("DOWN"))
+	            	this.direction = ForgeDirection.DOWN;
+	            else if(tagCompound.getString("direction").equals("NORTH"))
+	            	this.direction = ForgeDirection.NORTH;
+	            else if(tagCompound.getString("direction").equals("EAST"))
+	            	this.direction = ForgeDirection.EAST;
+	            else if(tagCompound.getString("direction").equals("SOUTH"))
+	            	this.direction = ForgeDirection.SOUTH;
+	            else if(tagCompound.getString("direction").equals("WEST"))
+	            	this.direction = ForgeDirection.WEST;
+	            else
+	            	this.direction = ForgeDirection.NORTH;
+	            
+	            reciever = tagCompound.getBoolean("receiver");
+            }
+    }
+    
+    void sendUpdatePacket(){
+    	ByteArrayOutputStream bos = new ByteArrayOutputStream(8);
+        DataOutputStream outputStream = new DataOutputStream(bos);
+        
+        try {
+        	outputStream.writeUTF("DirSync");
+            outputStream.writeInt(xCoord);
+            outputStream.writeInt(yCoord);
+            outputStream.writeInt(zCoord);
+            outputStream.writeUTF(this.direction.toString());
+            outputStream.writeBoolean(reciever);
+        } catch (Exception ex) {
+                ex.printStackTrace();
+        }
+        
+		Packet250CustomPayload packet = new Packet250CustomPayload();
+		packet.channel = (ModInfo.CHANNEL + "GuiSync");
+		packet.data = bos.toByteArray();
+		packet.length = bos.size();
+		
+		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 50, 0, packet);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tagCompound) {
             super.writeToNBT(tagCompound);
-                            
-            tagCompound.setString("direction", this.direction.name());
+
+            if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER){	
+	            tagCompound.setString("direction", this.direction.name());
+	            tagCompound.setBoolean("receiver", reciever);
+            }
     }
 }

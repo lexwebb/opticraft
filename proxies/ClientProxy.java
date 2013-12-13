@@ -12,6 +12,7 @@ import opticraft.entitys.TileEntityFiberCable;
 import opticraft.entitys.TileEntityLaser;
 import opticraft.entitys.TileEntityLaserDetector;
 import opticraft.entitys.TileEntityLuxCapacitor;
+import opticraft.entitys.TileEntityMirror;
 import opticraft.entitys.TileEntityRedstoneLaser;
 import opticraft.entitys.TileEntitySolarCollector;
 import opticraft.items.ItemLaserWrench;
@@ -24,6 +25,7 @@ import opticraft.render.LaserRenderer;
 import opticraft.render.LaserDetectorRenderer;
 import opticraft.render.LaserWrenchRenderer;
 import opticraft.render.LuxCapacitorRenderer;
+import opticraft.render.MirrorRenderer;
 import opticraft.render.RedstoneLaserRenderer;
 import opticraft.render.SolarCollectorRenderer;
 import opticraft.sounds.BuzzSound;
@@ -85,7 +87,11 @@ public class ClientProxy extends CommonProxy{
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLuxCapacitor.class, LuxCapacitorRenderer);
     	RenderingRegistry.registerBlockHandler(LuxCapacitorRenderer);
     	
-    	
+    	int MirrorRenderID = RenderingRegistry.getNextAvailableRenderId();
+    	MirrorRenderer mirrorRenderer = new MirrorRenderer(MirrorRenderID);
+		Blocks.mirrorBlock.setRenderType(MirrorRenderID);
+    	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMirror.class, mirrorRenderer);
+    	RenderingRegistry.registerBlockHandler(mirrorRenderer);
     	
     	RenderingRegistry.registerEntityRenderingHandler(EntityBeamY.class, new BeamRendererY());
     	RenderingRegistry.registerEntityRenderingHandler(EntityBeamZ.class, new BeamRendererZ());

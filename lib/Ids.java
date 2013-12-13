@@ -15,4 +15,5 @@ public class Ids {
 	public static final int TileEntityLaserDetectorBlock = 4003;
 	public static final int TileEntityLuxCapacitorBlock = 4004;
 	public static final int TileEntityRedstoneLaserBlock = 4005;
+	public static final int TileEntityMirrorBlock = 4006;
 }

@@ -34,7 +34,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = ModInfo.ID, name = ModInfo.NAME, version = ModInfo.VERSION)
-@NetworkMod (channels = {ModInfo.CHANNEL + "GuiSync"}, clientSideRequired = true, serverSideRequired = true, packetHandler = PacketHandler.class)
+@NetworkMod (channels = {ModInfo.CHANNEL + "GuiSync", ModInfo.CHANNEL + "DirSync"}, clientSideRequired = true, serverSideRequired = true, packetHandler = PacketHandler.class)
 public class Opticraft {
 	
 	private GuiHandler guiHandler = new GuiHandler();

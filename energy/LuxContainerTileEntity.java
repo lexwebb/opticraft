@@ -62,10 +62,11 @@ public class LuxContainerTileEntity extends DirectionalTileEntity{
 	        DataOutputStream outputStream = new DataOutputStream(bos);
 	        
 	        try {
-	                outputStream.writeInt(xCoord);
-	                outputStream.writeInt(yCoord);
-	                outputStream.writeInt(zCoord);
-	                outputStream.writeInt(lux.value);
+	        	outputStream.writeUTF("GuiSync");
+                outputStream.writeInt(xCoord);
+                outputStream.writeInt(yCoord);
+                outputStream.writeInt(zCoord);
+                outputStream.writeInt(lux.value);
 	        } catch (Exception ex) {
 	                ex.printStackTrace();
 	        }

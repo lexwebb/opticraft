@@ -91,12 +91,14 @@ public class RedstoneLaserBlock extends DirectionalBlock{
     		return false;
     	} else {
     		TileEntityRedstoneLaser ent = (TileEntityRedstoneLaser) world.getBlockTileEntity(x, y, z);
-    		if(ent.reciever)
+    		if(ent.reciever){
     			ent.reciever = false;
-    		else
+    			ent.providedPower = 0;
+    			ent.recievedPower = 0;
+    		}else
     			ent.reciever = true;
     	}
-    	return super.onBlockActivated(world, x, y, z, player, i, f, g, t);
+    	return true;
     }
     
     
@@ -149,6 +151,7 @@ public class RedstoneLaserBlock extends DirectionalBlock{
     	par1World.notifyBlocksOfNeighborChange(x - 1, y, z, this.blockID);
     	par1World.notifyBlocksOfNeighborChange(x, y, z + 1, this.blockID);
     	par1World.notifyBlocksOfNeighborChange(x, y, z - 1, this.blockID);
+    	
     }
     
     @Override
