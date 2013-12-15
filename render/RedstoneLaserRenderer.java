@@ -44,24 +44,24 @@ public class RedstoneLaserRenderer extends TileEntitySpecialRenderer implements 
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
     
     		TileEntityRedstoneLaser ent = (TileEntityRedstoneLaser) te;
-    		String or = ent.getOrientation();
+    		ForgeDirection or = ent.getOrientation();
     		ForgeDirection direction = ent.getDirection();
     		
     //The PushMatrix tells the renderer to "start" doing something.    
             GL11.glPushMatrix();
     //This is setting the initial location.
             
-            if(or == "U")
+            if(or == ForgeDirection.UP)
             	GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-            else if(or == "D")
+            else if(or == ForgeDirection.DOWN)
             	GL11.glTranslatef((float) x + 0.5F, (float) y - 0.5F, (float) z + 0.5F);
-            else if(or == "E")
+            else if(or == ForgeDirection.EAST)
             	GL11.glTranslatef((float) x + 1.5F, (float) y + 0.5F, (float) z + 0.5F);
-            else if(or == "W")
+            else if(or == ForgeDirection.WEST)
             	GL11.glTranslatef((float) x - 0.5F, (float) y + 0.5F, (float) z + 0.5F);
-            else if(or == "N")
+            else if(or == ForgeDirection.NORTH)
             	GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z - 0.5F);
-            else if(or == "S")
+            else if(or == ForgeDirection.SOUTH)
             	GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 1.5F);
             
             
@@ -77,20 +77,20 @@ public class RedstoneLaserRenderer extends TileEntitySpecialRenderer implements 
             GL11.glPushMatrix();
             
             
-            if(or == "U")
+            if(or == ForgeDirection.UP)
             	GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
-            else if(or == "D")
+            else if(or == ForgeDirection.DOWN)
             	GL11.glRotatef(0.0F, 0.0F, 0.0F, 1.0F);
-            else if(or == "E")
+            else if(or == ForgeDirection.EAST)
             	GL11.glRotatef(90F, 0.0F, 0.0F, 1.0F);
-            else if(or == "W")
+            else if(or == ForgeDirection.WEST)
             	GL11.glRotatef(270F, 0.0F, 0.0F, 1.0F);
-            else if(or == "N")
+            else if(or == ForgeDirection.NORTH)
             	GL11.glRotatef(90F, 90F, 0.00F, 1.0F);
-            else if(or == "S")
+            else if(or == ForgeDirection.SOUTH)
             	GL11.glRotatef(270F, 90F, 0.00F, 1.0F);
             
-            if(or == "E" || or == "W"){
+            if(or == ForgeDirection.EAST || or == ForgeDirection.WEST){
 	            if(direction == ForgeDirection.NORTH)
 	        		GL11.glRotatef(0F, 0F, 1F, 0F);
 	        	else if(direction == ForgeDirection.SOUTH)

@@ -25,6 +25,7 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInventory{
 	
@@ -67,7 +68,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 		linkedDetector = null;
 		boolean solidInWay = false;
 		
-		if(this.getOrientation() == "U"){
+		if(this.getOrientation() == ForgeDirection.UP){
 			for(int i = 1; i < 64; i++){
 				if(worldObj.getBlockMaterial(xCoord, yCoord + i, zCoord).isSolid())
 					solidInWay = true;
@@ -75,7 +76,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 				tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord + i, zCoord);
 				if(tile_entity instanceof TileEntityLaserDetector){
 					DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
-					if(ent.getOrientation() == "D"){
+					if(ent.getOrientation() == ForgeDirection.DOWN){
 						linkedDetector = new Position(ent);
 					}
 				}
@@ -84,7 +85,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 				else if(solidInWay)
 					break;
 			}
-		} else if(this.getOrientation() == "D"){
+		} else if(this.getOrientation() == ForgeDirection.DOWN){
 			for(int i = 1; i < 64; i++){
 				if(worldObj.getBlockMaterial(xCoord, yCoord - i, zCoord).isOpaque())
 					solidInWay = true;
@@ -94,7 +95,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 				tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord - i, zCoord);
 				if(tile_entity instanceof TileEntityLaserDetector){
 					DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
-					if(ent.getOrientation() == "U"){
+					if(ent.getOrientation() == ForgeDirection.UP){
 						linkedDetector = new Position(ent);
 					}
 				}
@@ -103,7 +104,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 				else if(solidInWay)
 					break;
 			}	
-		} else if(this.getOrientation() == "N"){
+		} else if(this.getOrientation() == ForgeDirection.NORTH){
 			for(int i = 1; i < 64; i++){
 				if(worldObj.getBlockMaterial(xCoord, yCoord, zCoord - i).isSolid())
 					solidInWay = true;
@@ -111,7 +112,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 				tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord - i);
 				if(tile_entity instanceof TileEntityLaserDetector){
 					DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
-					if(ent.getOrientation() == "S"){
+					if(ent.getOrientation() == ForgeDirection.SOUTH){
 						linkedDetector = new Position(ent);
 					}
 				}
@@ -120,7 +121,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 				else if(solidInWay)
 					break;
 			}	
-		} else if(this.getOrientation() == "S"){
+		} else if(this.getOrientation() == ForgeDirection.SOUTH){
 			for(int i = 1; i < 64; i++){
 				if(worldObj.getBlockMaterial(xCoord, yCoord, zCoord + i).isSolid())
 					solidInWay = true;
@@ -128,7 +129,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 				tile_entity = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord + i);
 				if(tile_entity instanceof TileEntityLaserDetector){
 					DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
-					if(ent.getOrientation() == "N"){
+					if(ent.getOrientation() == ForgeDirection.NORTH){
 						linkedDetector = new Position(ent);
 					}
 				}
@@ -137,7 +138,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 				else if(solidInWay)
 					break;
 			}	
-		} else if(this.getOrientation() == "W"){
+		} else if(this.getOrientation() == ForgeDirection.WEST){
 			for(int i = 1; i < 64; i++){
 				if(worldObj.getBlockMaterial(xCoord - i, yCoord, zCoord).isSolid())
 					solidInWay = true;
@@ -145,7 +146,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 				tile_entity = worldObj.getBlockTileEntity(xCoord - i, yCoord, zCoord);
 				if(tile_entity instanceof TileEntityLaserDetector){
 					DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
-					if(ent.getOrientation() == "E"){
+					if(ent.getOrientation() == ForgeDirection.EAST){
 						linkedDetector = new Position(ent);
 					}
 				}
@@ -154,7 +155,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 				else if(solidInWay)
 					break;
 			}	
-		} else if(this.getOrientation() == "E"){
+		} else if(this.getOrientation() == ForgeDirection.EAST){
 			for(int i = 1; i < 64; i++){
 				if(worldObj.getBlockMaterial(xCoord + i, yCoord, zCoord).isSolid())
 					solidInWay = true;
@@ -162,7 +163,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 				tile_entity = worldObj.getBlockTileEntity(xCoord + i, yCoord, zCoord);
 				if(tile_entity instanceof TileEntityLaserDetector){
 					DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
-					if(ent.getOrientation() == "W"){
+					if(ent.getOrientation() == ForgeDirection.WEST){
 						linkedDetector = new Position(ent);
 					}
 				}
@@ -183,7 +184,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 				if(ent.getStackInSlot(0) == null && getStackInSlot(0) != null){
 					ent.setInventorySlotContents(0, this.getStackInSlot(0));
 					this.setInventorySlotContents(0, null);					
-					if(this.getOrientation() == "U"){
+					if(this.getOrientation() == ForgeDirection.UP){
 						for(int i = this.yCoord + 1; i <= linkedDetector.y; i++){
 							if (!worldObj.isRemote){
 								EntityBeamY entity = new EntityBeamY(worldObj);
@@ -191,7 +192,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 								worldObj.spawnEntityInWorld(entity);
 							}		
 						}
-					} else if(this.getOrientation() == "D"){
+					} else if(this.getOrientation() == ForgeDirection.DOWN){
 						for(int i = this.yCoord - 1; i >= linkedDetector.y; i--){
 							if (!worldObj.isRemote){
 								EntityBeamY entity = new EntityBeamY(worldObj);
@@ -199,7 +200,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 								worldObj.spawnEntityInWorld(entity);
 							}		
 						}	
-					} else if(this.getOrientation() == "N"){
+					} else if(this.getOrientation() == ForgeDirection.NORTH){
 						for(int i = this.zCoord - 1; i >= linkedDetector.z; i--){
 							if (!worldObj.isRemote){
 								EntityBeamZ entity = new EntityBeamZ(worldObj);
@@ -207,7 +208,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 								worldObj.spawnEntityInWorld(entity);
 							}		
 						}	
-					} else if(this.getOrientation() == "S"){
+					} else if(this.getOrientation() == ForgeDirection.SOUTH){
 						for(int i = this.zCoord + 1; i <= linkedDetector.z; i++){
 							if (!worldObj.isRemote){
 								EntityBeamZ entity = new EntityBeamZ(worldObj);
@@ -215,7 +216,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 								worldObj.spawnEntityInWorld(entity);
 							}		
 						}	
-					} else if(this.getOrientation() == "E"){
+					} else if(this.getOrientation() == ForgeDirection.EAST){
 						for(int i = this.xCoord + 1; i <= linkedDetector.x; i++){
 							if (!worldObj.isRemote){
 								EntityBeamX entity = new EntityBeamX(worldObj);
@@ -223,7 +224,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 								worldObj.spawnEntityInWorld(entity);
 							}		
 						}	
-					} else if(this.getOrientation() == "W"){
+					} else if(this.getOrientation() == ForgeDirection.WEST){
 						for(int i = this.xCoord - 1; i >= linkedDetector.x; i--){
 							if (!worldObj.isRemote){
 								EntityBeamX entity = new EntityBeamX(worldObj);
@@ -245,17 +246,17 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 		IInventory inv;
 		if(getStackInSlot(0) == null){	
 			TileEntity ent = null;
-			if(this.getOrientation() == "U"){
+			if(this.getOrientation() == ForgeDirection.UP){
 				ent = worldObj.getBlockTileEntity(xCoord, yCoord - 1, zCoord);					
-			} else if(this.getOrientation() == "D"){
+			} else if(this.getOrientation() == ForgeDirection.DOWN){
 				ent = worldObj.getBlockTileEntity(xCoord, yCoord + 1, zCoord);
-			} else if(this.getOrientation() == "N"){
+			} else if(this.getOrientation() == ForgeDirection.NORTH){
 				ent = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord + 1);
-			} else if(this.getOrientation() == "S"){
+			} else if(this.getOrientation() == ForgeDirection.SOUTH){
 				ent = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord - 1);
-			} else if(this.getOrientation() == "W"){
+			} else if(this.getOrientation() == ForgeDirection.WEST){
 				ent = worldObj.getBlockTileEntity(xCoord + 1, yCoord, zCoord);
-			} else if(this.getOrientation() == "E"){
+			} else if(this.getOrientation() == ForgeDirection.EAST){
 				ent = worldObj.getBlockTileEntity(xCoord - 1, yCoord , zCoord);
 			}
 			
@@ -264,22 +265,22 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 				int side;
 				ISidedInventory iInv = (ISidedInventory)ent;
 				
-				if(this.getOrientation() == "U"){
+				if(this.getOrientation() == ForgeDirection.UP){
 					slots = iInv.getAccessibleSlotsFromSide(1);	
 					side = 1;
-				} else if(this.getOrientation() == "D"){
+				} else if(this.getOrientation() == ForgeDirection.DOWN){
 					slots = iInv.getAccessibleSlotsFromSide(0);	
 					side = 0;
-				} else if(this.getOrientation() == "N"){
+				} else if(this.getOrientation() == ForgeDirection.NORTH){
 					slots = iInv.getAccessibleSlotsFromSide(2);	
 					side = 2;
-				} else if(this.getOrientation() == "S"){
+				} else if(this.getOrientation() == ForgeDirection.SOUTH){
 					slots = iInv.getAccessibleSlotsFromSide(3);	
 					side = 3;
-				} else if(this.getOrientation() == "W"){
+				} else if(this.getOrientation() == ForgeDirection.WEST){
 					slots = iInv.getAccessibleSlotsFromSide(4);	
 					side = 4;
-				} else if(this.getOrientation() == "E"){
+				} else if(this.getOrientation() == ForgeDirection.EAST){
 					slots = iInv.getAccessibleSlotsFromSide(5);	
 					side = 5;
 				} else
@@ -454,17 +455,17 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int var1) {
-		if(this.getOrientation() == "U"){
+		if(this.getOrientation() == ForgeDirection.UP){
 			return new int[] {0};
-		} else if(this.getOrientation() == "D"){
+		} else if(this.getOrientation() == ForgeDirection.DOWN){
 			return new int[] {0};
-		} else if(this.getOrientation() == "N"){
+		} else if(this.getOrientation() == ForgeDirection.NORTH){
 			return new int[] {0};
-		} else if(this.getOrientation() == "S"){
+		} else if(this.getOrientation() == ForgeDirection.SOUTH){
 			return new int[] {0};
-		} else if(this.getOrientation() == "W"){
+		} else if(this.getOrientation() == ForgeDirection.WEST){
 			return new int[] {0};
-		} else if(this.getOrientation() == "E"){
+		} else if(this.getOrientation() == ForgeDirection.EAST){
 			return new int[] {0};
 		} 
 		return new int[] {0};

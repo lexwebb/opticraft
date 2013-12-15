@@ -14,6 +14,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 public class DirectionalBlock extends BlockContainer{
 	
@@ -85,24 +86,24 @@ public class DirectionalBlock extends BlockContainer{
     	if(isDirectional && !canFloat){
 	    	DirectionalTileEntity tile_entity = (DirectionalTileEntity) world.getBlockTileEntity(x, y, z);	
 	    	boolean canStay = true;;  	
-	    	String orientation = tile_entity.getOrientation();
+	    	ForgeDirection orientation = tile_entity.getOrientation();
 	    	
-	    	if(orientation == "U"){
+	    	if(orientation == ForgeDirection.UP){
 				if(!world.getBlockMaterial(x, y - 1, z).isSolid())
 					canStay = false;			
-			} else if(orientation == "D"){
+			} else if(orientation == ForgeDirection.DOWN){
 				if(!world.getBlockMaterial(x, y + 1, z).isSolid())
 					canStay = false;	
-			} else if(orientation == "N"){
+			} else if(orientation == ForgeDirection.NORTH){
 				if(!world.getBlockMaterial(x, y, z + 1).isSolid())
 					canStay = false;	
-			} else if(orientation == "S"){
+			} else if(orientation == ForgeDirection.SOUTH){
 				if(!world.getBlockMaterial(x, y, z - 1).isSolid())
 					canStay = false;	
-			} else if(orientation == "W"){
+			} else if(orientation == ForgeDirection.WEST){
 				if(!world.getBlockMaterial(x + 1, y, z).isSolid())
 					canStay = false;	
-			} else if(orientation == "E"){
+			} else if(orientation == ForgeDirection.EAST){
 				if(!world.getBlockMaterial(x - 1, y, z).isSolid())
 					canStay = false;	
 			}

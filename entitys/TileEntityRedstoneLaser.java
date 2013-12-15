@@ -60,11 +60,11 @@ public class TileEntityRedstoneLaser extends DirectionalTileEntity{
 		}
 		
 		if(direction == null){
-			if(getOrientation() == "U" || getOrientation() == "D")
+			if(getOrientation() == ForgeDirection.UP || getOrientation() == ForgeDirection.DOWN)
 				this.direction = ForgeDirection.NORTH;
-			else if(getOrientation() == "E" || getOrientation() == "W")
+			else if(getOrientation() == ForgeDirection.EAST || getOrientation() == ForgeDirection.WEST)
 				this.direction = ForgeDirection.UP;
-			else if(getOrientation() == "N" || getOrientation() == "S")
+			else if(getOrientation() == ForgeDirection.NORTH || getOrientation() == ForgeDirection.SOUTH)
 				this.direction = ForgeDirection.UP;
 		}
 		

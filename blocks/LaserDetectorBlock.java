@@ -43,17 +43,17 @@ public class LaserDetectorBlock extends DirectionalBlock{
     public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z){
     	TileEntityLaserDetector ent = (TileEntityLaserDetector) blockAccess.getBlockTileEntity(x, y, z);
     	
-    	if(ent.getOrientation() == "U"){
+    	if(ent.getOrientation() == ForgeDirection.UP){
     		this.setBlockBounds(0F, 0.0F, 0F, 1f, 0.2F, 1F);
-    	} else if(ent.getOrientation() == "D"){
+    	} else if(ent.getOrientation() == ForgeDirection.DOWN){
     		this.setBlockBounds(0F, 0.8F, 0F, 1f, 1F, 1F);
-    	} else if(ent.getOrientation() == "E"){
+    	} else if(ent.getOrientation() == ForgeDirection.EAST){
     		this.setBlockBounds(0F, 0F, 0F, 0.2f, 1F, 1F);
-    	} else if(ent.getOrientation() == "W"){
+    	} else if(ent.getOrientation() == ForgeDirection.WEST){
     		this.setBlockBounds(0.8F, 0F, 0F, 1f, 1F, 1F);
-    	} else if(ent.getOrientation() == "N"){
+    	} else if(ent.getOrientation() == ForgeDirection.NORTH){
     		this.setBlockBounds(0F, 0F, 0.8F, 1f, 1F, 1F);
-    	} else if(ent.getOrientation() == "S"){
+    	} else if(ent.getOrientation() == ForgeDirection.SOUTH){
     		this.setBlockBounds(0F, 0F, 0F, 1f, 1F, 0.2F);
     	}
     }

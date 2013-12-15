@@ -63,7 +63,7 @@ public class RedstoneLaserBlock extends DirectionalBlock{
     		
     		TileEntityRedstoneLaser ent = (TileEntityRedstoneLaser) world.getBlockTileEntity(x, y, z);
     		
-    		if(ent.getOrientation() == "U" || ent.getOrientation() == "D"){
+    		if(ent.getOrientation() == ForgeDirection.UP || ent.getOrientation() == ForgeDirection.DOWN){
     			switch(ent.getDirection()){
 	    			case NORTH : ent.setDirection(ForgeDirection.EAST); break;
 	    			case EAST : ent.setDirection(ForgeDirection.SOUTH); break;
@@ -71,7 +71,7 @@ public class RedstoneLaserBlock extends DirectionalBlock{
 	    			case WEST : ent.setDirection(ForgeDirection.NORTH); break;
 	    			default: break;
     			}
-    		} else if(ent.getOrientation() == "E" || ent.getOrientation() == "W"){
+    		} else if(ent.getOrientation() == ForgeDirection.EAST || ent.getOrientation() == ForgeDirection.WEST){
     			switch(ent.getDirection()){
 	    			case NORTH : ent.setDirection(ForgeDirection.UP); break;
 	    			case UP : ent.setDirection(ForgeDirection.SOUTH); break;
@@ -79,7 +79,7 @@ public class RedstoneLaserBlock extends DirectionalBlock{
 	    			case DOWN : ent.setDirection(ForgeDirection.NORTH); break;
 	    			default: break;
     			}
-    		} else if(ent.getOrientation() == "N" || ent.getOrientation() == "S"){
+    		} else if(ent.getOrientation() == ForgeDirection.NORTH || ent.getOrientation() == ForgeDirection.SOUTH){
     			switch(ent.getDirection()){
 	    			case EAST : ent.setDirection(ForgeDirection.UP); break;
 	    			case UP : ent.setDirection(ForgeDirection.WEST); break;

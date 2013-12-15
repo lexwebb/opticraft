@@ -21,6 +21,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 public class TileEntityLaserDetector extends LuxContainerTileEntity implements IInventory {	
 	
@@ -42,17 +43,17 @@ private ItemStack[] inv;
 				TileEntity ent = null;
 				int sideDirection = 0;
 				
-				if(this.getOrientation() == "U"){
+				if(this.getOrientation() == ForgeDirection.UP){
 					ent = worldObj.getBlockTileEntity(xCoord, yCoord - 1, zCoord);					
-				} else if(this.getOrientation() == "D"){
+				} else if(this.getOrientation() == ForgeDirection.DOWN){
 					ent = worldObj.getBlockTileEntity(xCoord, yCoord + 1, zCoord);
-				} else if(this.getOrientation() == "N"){
+				} else if(this.getOrientation() == ForgeDirection.NORTH){
 					ent = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord + 1);
-				} else if(this.getOrientation() == "S"){
+				} else if(this.getOrientation() == ForgeDirection.SOUTH){
 					ent = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord - 1);
-				} else if(this.getOrientation() == "W"){
+				} else if(this.getOrientation() == ForgeDirection.WEST){
 					ent = worldObj.getBlockTileEntity(xCoord + 1, yCoord, zCoord);
-				} else if(this.getOrientation() == "E"){
+				} else if(this.getOrientation() == ForgeDirection.EAST){
 					ent = worldObj.getBlockTileEntity(xCoord - 1, yCoord, zCoord);
 				}
 				
