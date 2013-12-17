@@ -8,6 +8,7 @@ import java.io.InputStream;
 
 import opticraft.Opticraft;
 import opticraft.energy.LuxContainerTileEntity;
+import opticraft.entitys.TileEntityMirror;
 import opticraft.entitys.TileEntityRedstoneLaser;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -109,7 +110,25 @@ public class PacketHandler implements IPacketHandler{
             	((TileEntityRedstoneLaser) ent).direction = ForgeDirection.WEST;
             else
             	((TileEntityRedstoneLaser) ent).direction = ForgeDirection.NORTH;
+		
+			((TileEntityRedstoneLaser) ent).reciever = receiver;
+		} else if(ent instanceof TileEntityMirror){
+			
+			if(direction.equals("UP"))
+				((TileEntityMirror) ent).direction = ForgeDirection.UP;
+            else if(direction.equals("DOWN"))
+            	((TileEntityMirror) ent).direction = ForgeDirection.DOWN;
+            else if(direction.equals("NORTH"))
+            	((TileEntityMirror) ent).direction = ForgeDirection.NORTH;
+            else if(direction.equals("EAST"))
+            	((TileEntityMirror) ent).direction = ForgeDirection.EAST;
+            else if(direction.equals("SOUTH"))
+            	((TileEntityMirror) ent).direction = ForgeDirection.SOUTH;
+            else if(direction.equals("WEST"))
+            	((TileEntityMirror) ent).direction = ForgeDirection.WEST;
+            else
+            	((TileEntityMirror) ent).direction = ForgeDirection.NORTH;
 		}
-		((TileEntityRedstoneLaser) ent).reciever = receiver;
+		
 	}
 }

@@ -6,17 +6,20 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import opticraft.lib.DirectionalBlock;
+import opticraft.lib.Ids;
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
 import opticraft.entitys.TileEntityFiberCable;
 import opticraft.entitys.TileEntityLaser;
 import opticraft.entitys.TileEntityLaserDetector;
 import opticraft.entitys.TileEntityMirror;
+import opticraft.entitys.TileEntityRedstoneLaser;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
@@ -78,5 +81,49 @@ public class MirrorBlock extends DirectionalBlock{
     
     public void setRenderType(int id){
     	this.renderType = id;
+    }
+    
+    @Override
+    public void onPostBlockPlaced(World par1World, int x, int y, int z, int par5) {
+    	super.onPostBlockPlaced(par1World, x, y, z, par5);
+    	((TileEntityMirror) par1World.getBlockTileEntity(x, y, z)).direction = ForgeDirection.UP;
+    }
+    
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int i, float f, float g, float t){
+    	if(player.inventory.getStackInSlot(player.inventory.currentItem) != null 
+    			&& player.inventory.getStackInSlot(player.inventory.currentItem).getItem().itemID - 256 == Ids.laserWrench){
+    		
+    		TileEntityMirror ent = (TileEntityMirror) world.getBlockTileEntity(x, y, z);
+    		
+    		if(ent.getOrientation() == ForgeDirection.UP || ent.getOrientation() == ForgeDirection.DOWN){
+    			switch(ent.getDirection()){
+	    			case NORTH : ent.setDirection(ForgeDirection.EAST); break;
+	    			case EAST : ent.setDirection(ForgeDirection.SOUTH); break;
+	    			case SOUTH : ent.setDirection(ForgeDirection.WEST); break;
+	    			case WEST : ent.setDirection(ForgeDirection.NORTH); break;
+	    			default: break;
+    			}
+    		} else if(ent.getOrientation() == ForgeDirection.EAST || ent.getOrientation() == ForgeDirection.WEST){
+    			switch(ent.getDirection()){
+	    			case NORTH : ent.setDirection(ForgeDirection.UP); break;
+	    			case UP : ent.setDirection(ForgeDirection.SOUTH); break;
+	    			case SOUTH : ent.setDirection(ForgeDirection.DOWN); break;
+	    			case DOWN : ent.setDirection(ForgeDirection.NORTH); break;
+	    			default: break;
+    			}
+    		} else if(ent.getOrientation() == ForgeDirection.NORTH || ent.getOrientation() == ForgeDirection.SOUTH){
+    			switch(ent.getDirection()){
+	    			case EAST : ent.setDirection(ForgeDirection.UP); break;
+	    			case UP : ent.setDirection(ForgeDirection.WEST); break;
+	    			case WEST : ent.setDirection(ForgeDirection.DOWN); break;
+	    			case DOWN : ent.setDirection(ForgeDirection.EAST); break;
+	    			default: break;
+				}
+			}
+    		return false;
+    	} else {
+    		return true;
+    	}
     }
 }

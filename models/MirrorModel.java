@@ -18,20 +18,20 @@ import net.minecraft.entity.Entity;
 public class MirrorModel extends ModelBase
 {
   //fields
-    ModelRenderer Down;
-    ModelRenderer DownBlock;
-    ModelRenderer Up;
-    ModelRenderer UpBlock;
-    ModelRenderer Back;
-    ModelRenderer BackBlock;
-    ModelRenderer Front;
-    ModelRenderer FrontBlock;
-    ModelRenderer Left;
-    ModelRenderer LeftBlock;
-    ModelRenderer Right;
-    ModelRenderer RightBlock;
+    public ModelRenderer Down;
+    public ModelRenderer DownBlock;
+    public ModelRenderer Up;
+    public ModelRenderer UpBlock;
+    public ModelRenderer Back;
+    public ModelRenderer BackBlock;
+    public ModelRenderer Front;
+    public ModelRenderer FrontBlock;
+    public ModelRenderer Left;
+    public ModelRenderer LeftBlock;
+    public ModelRenderer Right;
+    public ModelRenderer RightBlock;
     ModelRenderer MirrorBlock;
-    ModelRenderer Mirror;
+    public ModelRenderer Mirror;
   
   public MirrorModel()
   {

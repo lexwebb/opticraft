@@ -3,6 +3,7 @@ package opticraft.render;
 import opticraft.entitys.TileEntityFiberCable;
 import opticraft.entitys.TileEntityLaser;
 import opticraft.entitys.TileEntityMirror;
+import opticraft.entitys.TileEntityRedstoneLaser;
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
 import opticraft.models.CableModel;
@@ -49,6 +50,7 @@ public class MirrorRenderer extends TileEntitySpecialRenderer implements ISimple
     	
     	TileEntityMirror ent = (TileEntityMirror) te;
     	ForgeDirection or = ent.getOrientation();
+		ForgeDirection direction = ent.getDirection();
 		
     //The PushMatrix tells the renderer to "start" doing something.
             GL11.glPushMatrix();
@@ -66,8 +68,6 @@ public class MirrorRenderer extends TileEntitySpecialRenderer implements ISimple
             	GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z - 0.5F);
             else if(or == ForgeDirection.SOUTH)
             	GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 1.5F);
-            else
-            	GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
             
     //This is the texture of your block. It's pathed to be the same place as your other blocks here.
             //Outdated bindTextureByName("/mods/roads/textures/blocks/TrafficLightPoleRed.png");
@@ -79,6 +79,20 @@ public class MirrorRenderer extends TileEntitySpecialRenderer implements ISimple
 
     //This rotation part is very important! Without it, your model will render upside-down! And for some reason you DO need PushMatrix again!                       
             GL11.glPushMatrix();
+            
+            //Do Direction
+            model.Back.isHidden = false;
+            model.BackBlock.isHidden = false;
+            model.Front.isHidden = true;
+            model.FrontBlock.isHidden = true;
+            model.Left.isHidden = false;
+            model.LeftBlock.isHidden = false;
+            model.Right.isHidden = false;
+            model.RightBlock.isHidden = false;
+            model.Up.isHidden = true;
+            model.UpBlock.isHidden = true;
+            model.Down.isHidden = false;
+            model.DownBlock.isHidden = false;
             
             if(or == ForgeDirection.UP)
             	GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
@@ -92,8 +106,36 @@ public class MirrorRenderer extends TileEntitySpecialRenderer implements ISimple
             	GL11.glRotatef(90F, 90F, 0.00F, 1.0F);
             else if(or == ForgeDirection.SOUTH)
             	GL11.glRotatef(270F, 90F, 0.00F, 1.0F);
-            else
-            	GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
+            
+            
+            
+            if(or == ForgeDirection.EAST || or == ForgeDirection.WEST){
+	            if(direction == ForgeDirection.NORTH)
+	        		GL11.glRotatef(0F, 0F, 1F, 0F);
+	        	else if(direction == ForgeDirection.SOUTH)
+	        		GL11.glRotatef(180F, 0F, 1F, 0F);
+	        	else if(direction == ForgeDirection.UP)
+	        		GL11.glRotatef(90F, 0F, 1F, 0F);
+	        	else if(direction == ForgeDirection.DOWN)
+	        		GL11.glRotatef(270F, 0F, 1F, 0F);
+	        	else if(direction == ForgeDirection.EAST)
+	        		GL11.glRotatef(90F, 0F, 1F, 0F);
+	        	else if(direction == ForgeDirection.WEST)
+	        		GL11.glRotatef(270F, 0F, 1F, 0F);
+            } else {
+            	if(direction == ForgeDirection.NORTH)
+	        		GL11.glRotatef(0F, 0F, 1F, 0F);
+	        	else if(direction == ForgeDirection.SOUTH)
+	        		GL11.glRotatef(180F, 0F, 1F, 0F);
+	        	else if(direction == ForgeDirection.UP)
+	        		GL11.glRotatef(180F, 0F, 1F, 0F);
+	        	else if(direction == ForgeDirection.DOWN)
+	        		GL11.glRotatef(0F, 0F, 1F, 0F);
+	        	else if(direction == ForgeDirection.EAST)
+	        		GL11.glRotatef(90F, 0F, 1F, 0F);
+	        	else if(direction == ForgeDirection.WEST)
+	        		GL11.glRotatef(270F, 0F, 1F, 0F);
+            }
             
     //A reference to your Model file. Again, very important.
             this.model.render((Entity)null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
