@@ -1,9 +1,12 @@
 package opticraft;
 
+import net.minecraft.entity.Entity;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.MinecraftForge;
 import opticraft.blocks.Blocks;
 import opticraft.client.gui.GuiHandler;
+import opticraft.entitys.EntityBeam;
 import opticraft.entitys.EntityBeamX;
 import opticraft.entitys.EntityBeamY;
 import opticraft.entitys.EntityBeamZ;
@@ -13,6 +16,7 @@ import opticraft.entitys.TileEntityLaserDetector;
 import opticraft.entitys.TileEntityLuxCapacitor;
 import opticraft.entitys.TileEntityRedstoneLaser;
 import opticraft.entitys.TileEntitySolarCollector;
+import opticraft.events.LaserEvent;
 import opticraft.items.Items;
 import opticraft.items.ItemLaserWrench;
 import opticraft.lib.PacketHandler;
@@ -62,11 +66,16 @@ public class Opticraft {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		
+		//needed for @ForgeSubscribe: public void renderWorldLastEvent(RenderWorldLastEvent)
+		MinecraftForge.EVENT_BUS.register(new opticraft.events.LaserEventHandler());
+		
 		NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
 	
 		EntityRegistry.registerModEntity(EntityBeamY.class, "EntityBeamY", 20, this, 128, 1, false);
 		EntityRegistry.registerModEntity(EntityBeamX.class, "EntityBeamX", 21, this, 128, 1, false);
 		EntityRegistry.registerModEntity(EntityBeamZ.class, "EntityBeamZ", 22, this, 128, 1, false);
+		EntityRegistry.registerModEntity(EntityBeam.class, "EntityBeam", 23, this, 128, 1, false);
+		
 		proxy.registerRenderThings();
 		
         GameRegistry.registerTileEntity(TileEntityLaser.class, "tileEntityItemLaser");

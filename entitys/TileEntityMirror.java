@@ -30,29 +30,30 @@ import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
-public class TileEntityMirror extends DirectionalTileEntity{	
+public class TileEntityMirror extends TileEntity{	
 	
 	public ForgeDirection direction;
+	public ForgeDirection orientation;
 	
 	public TileEntityMirror(){
 		
 	}
 	
-	public void updateEntity(){
-		super.updateEntity();
-		
-		if(this.worldObj.getWorldTime() % 20 == 0 && FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER){
-			sendUpdatePacket();
+	public void updateEntity(){	
+		if(orientation == null){
+			this.orientation = ForgeDirection.NORTH;
+			System.out.println("UPDATED OR");
 		}
 		
 		if(direction == null){
-			if(getOrientation() == ForgeDirection.UP || getOrientation() == ForgeDirection.DOWN)
-				this.direction = ForgeDirection.NORTH;
-			else if(getOrientation() == ForgeDirection.EAST || getOrientation() == ForgeDirection.WEST)
-				this.direction = ForgeDirection.UP;
-			else if(getOrientation() == ForgeDirection.NORTH || getOrientation() == ForgeDirection.SOUTH)
-				this.direction = ForgeDirection.UP;
+			this.direction = ForgeDirection.UP;
+			System.out.println("UPDATED DIR");
 		}
+		
+		if(this.worldObj.getWorldTime() % 2 == 0 && FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER){
+			sendUpdatePacket();
+		}
+		
 	}
     
 	@Override
@@ -74,6 +75,21 @@ public class TileEntityMirror extends DirectionalTileEntity{
 	            	this.direction = ForgeDirection.WEST;
 	            else
 	            	this.direction = ForgeDirection.NORTH;
+	            
+	            if(tagCompound.getString("orientation").equals("UP"))
+	            	this.orientation = ForgeDirection.UP;
+	            else if(tagCompound.getString("orientation").equals("DOWN"))
+	            	this.orientation = ForgeDirection.DOWN;
+	            else if(tagCompound.getString("orientation").equals("NORTH"))
+	            	this.orientation = ForgeDirection.NORTH;
+	            else if(tagCompound.getString("orientation").equals("EAST"))
+	            	this.orientation = ForgeDirection.EAST;
+	            else if(tagCompound.getString("orientation").equals("SOUTH"))
+	            	this.orientation = ForgeDirection.SOUTH;
+	            else if(tagCompound.getString("orientation").equals("WEST"))
+	            	this.orientation = ForgeDirection.WEST;
+	            else
+	            	this.orientation = ForgeDirection.NORTH;
             }
     }
     
@@ -82,11 +98,12 @@ public class TileEntityMirror extends DirectionalTileEntity{
         DataOutputStream outputStream = new DataOutputStream(bos);
         
         try {
-        	outputStream.writeUTF("DirSync");
+        	outputStream.writeUTF("MultiDirSync");
             outputStream.writeInt(xCoord);
             outputStream.writeInt(yCoord);
             outputStream.writeInt(zCoord);
             outputStream.writeUTF(this.direction.toString());
+            outputStream.writeUTF(this.orientation.toString());
             outputStream.writeBoolean(false);
         } catch (Exception ex) {
                 ex.printStackTrace();
@@ -102,10 +119,9 @@ public class TileEntityMirror extends DirectionalTileEntity{
 
     @Override
     public void writeToNBT(NBTTagCompound tagCompound) {
-            super.writeToNBT(tagCompound);
-
             if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER){	
 	            tagCompound.setString("direction", this.direction.name());
+	            tagCompound.setString("orientation", this.orientation.name());
             }
     }
 
@@ -117,5 +133,15 @@ public class TileEntityMirror extends DirectionalTileEntity{
 	public void setDirection(ForgeDirection direction) {
 		// TODO Auto-generated method stub
 		this.direction = direction;
+	}
+	
+	public ForgeDirection getOrientation() {
+		// TODO Auto-generated method stub
+		return orientation;
+	}
+
+	public void setOrientation(ForgeDirection orientation) {
+		// TODO Auto-generated method stub
+		this.orientation = orientation;
 	}
 }

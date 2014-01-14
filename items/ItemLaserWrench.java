@@ -13,6 +13,7 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 public class ItemLaserWrench extends Item{
 
@@ -35,7 +36,11 @@ public class ItemLaserWrench extends Item{
 		return false;
 	}
 	
-	
+	@Override
+	public boolean shouldPassSneakingClickToBlock(World par2World, int par4, int par5, int par6)
+    {
+        return true;
+    }
 	
 //	@Override
 //	  public int getSpriteNumber() {

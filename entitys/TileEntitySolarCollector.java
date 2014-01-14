@@ -20,8 +20,6 @@ public class TileEntitySolarCollector extends LuxContainerTileEntity {
 			if(time() < 16000){
 				lux.increaseBy(2, maxCharge);			
 			}
-			
-			System.out.println(lux.get());
 		}
 	}
 	

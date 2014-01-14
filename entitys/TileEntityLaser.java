@@ -1,8 +1,14 @@
 package opticraft.entitys;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import opticraft.energy.LuxContainerTileEntity;
 import opticraft.items.Items;
 import opticraft.lib.DirectionalTileEntity;
+import opticraft.lib.ModInfo;
 import opticraft.lib.Position;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.block.material.Material;
@@ -17,6 +23,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.Hopper;
@@ -31,38 +38,38 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 	
 	private ItemStack[] inv;
 	Position linkedDetector;
+	public List<Position> laserToList;
+	public List<ForgeDirection> laserToDirection;
 	
 	public TileEntityLaser(){
 		inv = new ItemStack[2];
 		this.maxCharge = 128;
 		this.consumer = true;
+		laserToList = new ArrayList<Position>();
+		laserToDirection = new ArrayList<ForgeDirection>();
 	}
 	
 	@Override
 	public void updateEntity(){
 		super.updateEntity();
 		
-		
-		
 		if(inv[1] != null){
 			if(inv[1].itemID == Items.basicMatterCrystal.itemID){
-				suckItemsIn();
-				findDetector();
+				suckItemsIn();				
 				itemLaser(20);
 			}
 			if(inv[1].itemID == Items.matterCrystal.itemID){
 				suckItemsIn();
-				findDetector();
 				itemLaser(10);
 			}
 			if(inv[1].itemID == Items.advancedMatterCrystal.itemID){
 				suckItemsIn();
-				findDetector();
 				itemLaser(2);
 			}
 		}
 	}
 	
+	//legacy
 	public void findDetector(){		
 		TileEntity tile_entity;
 		linkedDetector = null;
@@ -174,65 +181,201 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 			}	
 		}
 	}
+	//------
+	
+	public void findDetectorRecursive(ForgeDirection direction, int x, int y, int z){
+		TileEntity tile_entity;
+		linkedDetector = null;
+		boolean solidInWay = false;
+		
+		laserToList.add(new Position(x, y, z));
+		laserToDirection.add(direction);
+		
+		if(direction == ForgeDirection.UP){
+			for(int i = 1; i < 64; i++){
+				if(worldObj.getBlockMaterial(x, y + i, z).isSolid())
+					solidInWay = true;
+				
+				tile_entity = worldObj.getBlockTileEntity(x, y + i, z);
+				if(tile_entity instanceof TileEntityLaserDetector){
+					DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
+					if(ent.getOrientation() == ForgeDirection.DOWN){
+						linkedDetector = new Position(ent);
+					}
+				} else if(tile_entity instanceof TileEntityMirror){
+					TileEntityMirror ent = (TileEntityMirror) tile_entity;
+					if(ent.direction != null && ent.direction.getOpposite() == direction){
+						findDetectorRecursive(ent.orientation, ent.xCoord, ent.yCoord, ent.zCoord);
+						break;
+					} else if(ent.orientation != null && ent.orientation.getOpposite() == direction){
+						findDetectorRecursive(ent.direction, ent.xCoord, ent.yCoord, ent.zCoord);
+						break;
+					}
+				}
+				if(linkedDetector != null)
+					break;
+				else if(solidInWay)
+					break;
+			}
+		} else if(direction == ForgeDirection.DOWN){
+			for(int i = 1; i < 64; i++){
+				if(worldObj.getBlockMaterial(x, y - i, z).isOpaque())
+					solidInWay = true;
+				
+				System.out.println(solidInWay);
+				
+				tile_entity = worldObj.getBlockTileEntity(x, y - i, z);
+				if(tile_entity instanceof TileEntityLaserDetector){
+					DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
+					if(ent.getOrientation() == ForgeDirection.UP){
+						linkedDetector = new Position(ent);
+					}
+				} else if(tile_entity instanceof TileEntityMirror){
+					TileEntityMirror ent = (TileEntityMirror) tile_entity;
+					if(ent.direction != null && ent.direction.getOpposite() == direction){
+						findDetectorRecursive(ent.orientation, ent.xCoord, ent.yCoord, ent.zCoord);
+						break;
+					} else if(ent.orientation != null && ent.orientation.getOpposite() == direction){
+						findDetectorRecursive(ent.direction, ent.xCoord, ent.yCoord, ent.zCoord);
+						break;
+					}
+				}
+				if(linkedDetector != null)
+					break;
+				else if(solidInWay)
+					break;
+			}	
+		} else if(direction == ForgeDirection.NORTH){
+			for(int i = 1; i < 64; i++){
+				if(worldObj.getBlockMaterial(x, y, z - i).isSolid())
+					solidInWay = true;
+				
+				tile_entity = worldObj.getBlockTileEntity(x, y, z - i);
+				if(tile_entity instanceof TileEntityLaserDetector){
+					DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
+					if(ent.getOrientation() == ForgeDirection.SOUTH){
+						linkedDetector = new Position(ent);
+					}
+				} else if(tile_entity instanceof TileEntityMirror){
+					TileEntityMirror ent = (TileEntityMirror) tile_entity;
+					if(ent.direction != null && ent.direction.getOpposite() == direction){
+						findDetectorRecursive(ent.orientation, ent.xCoord, ent.yCoord, ent.zCoord);
+						break;
+					} else if(ent.orientation != null && ent.orientation.getOpposite() == direction){
+						findDetectorRecursive(ent.direction, ent.xCoord, ent.yCoord, ent.zCoord);
+						break;
+					}
+				}
+				if(linkedDetector != null)
+					break;
+				else if(solidInWay)
+					break;
+			}	
+		} else if(direction == ForgeDirection.SOUTH){
+			for(int i = 1; i < 64; i++){
+				if(worldObj.getBlockMaterial(x, y, z + i).isSolid())
+					solidInWay = true;
+				
+				tile_entity = worldObj.getBlockTileEntity(x, y, z + i);
+				if(tile_entity instanceof TileEntityLaserDetector){
+					DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
+					if(ent.getOrientation() == ForgeDirection.NORTH){
+						linkedDetector = new Position(ent);
+					}
+				} else if(tile_entity instanceof TileEntityMirror){
+					TileEntityMirror ent = (TileEntityMirror) tile_entity;
+					if(ent.direction != null && ent.direction.getOpposite() == direction){
+						findDetectorRecursive(ent.orientation, ent.xCoord, ent.yCoord, ent.zCoord);
+						break;
+					} else if(ent.orientation != null && ent.orientation.getOpposite() == direction){
+						findDetectorRecursive(ent.direction, ent.xCoord, ent.yCoord, ent.zCoord);
+						break;
+					}
+				}
+				if(linkedDetector != null)
+					break;
+				else if(solidInWay)
+					break;
+			}	
+		} else if(direction == ForgeDirection.WEST){
+			for(int i = 1; i < 64; i++){
+				if(worldObj.getBlockMaterial(x - i, y, z).isSolid())
+					solidInWay = true;
+				
+				tile_entity = worldObj.getBlockTileEntity(x - i, y, z);
+				if(tile_entity instanceof TileEntityLaserDetector){
+					DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
+					if(ent.getOrientation() == ForgeDirection.EAST){
+						linkedDetector = new Position(ent);
+					}
+				} else if(tile_entity instanceof TileEntityMirror){
+					TileEntityMirror ent = (TileEntityMirror) tile_entity;
+					if(ent.direction != null && ent.direction.getOpposite() == direction){
+						findDetectorRecursive(ent.orientation, ent.xCoord, ent.yCoord, ent.zCoord);
+						break;
+					} else if(ent.orientation != null && ent.orientation.getOpposite() == direction){
+						findDetectorRecursive(ent.direction, ent.xCoord, ent.yCoord, ent.zCoord);
+						break;
+					}
+				}
+				if(linkedDetector != null)
+					break;
+				else if(solidInWay)
+					break;
+			}	
+		} else if(direction == ForgeDirection.EAST){
+			for(int i = 1; i < 64; i++){
+				if(worldObj.getBlockMaterial(x + i, y, z).isSolid())
+					solidInWay = true;
+				
+				tile_entity = worldObj.getBlockTileEntity(x + i, y, z);
+				if(tile_entity instanceof TileEntityLaserDetector){
+					DirectionalTileEntity ent = (DirectionalTileEntity) tile_entity;
+					if(ent.getOrientation() == ForgeDirection.WEST){
+						linkedDetector = new Position(ent);
+					}
+				} else if(tile_entity instanceof TileEntityMirror){
+					TileEntityMirror ent = (TileEntityMirror) tile_entity;
+					if(ent.direction != null && ent.direction.getOpposite() == direction){
+						findDetectorRecursive(ent.orientation, ent.xCoord, ent.yCoord, ent.zCoord);
+						break;
+					} else if(ent.orientation != null && ent.orientation.getOpposite() == direction){
+						findDetectorRecursive(ent.direction, ent.xCoord, ent.yCoord, ent.zCoord);
+						break;
+					}
+				}
+				if(linkedDetector != null)
+					break;
+				else if(solidInWay)
+					break;
+			}	
+		}
+	}
 	
 	public void itemLaser(int frequency){
 		//check for Detector
 		if(this.worldObj.getWorldTime() % frequency == 0){
+			
+			laserToList.clear();
+			findDetectorRecursive(this.getOrientation(), xCoord, yCoord, zCoord);
+			if(linkedDetector != null)
+				laserToList.add(linkedDetector);
+			laserToDirection.add(ForgeDirection.NORTH);
+			
 			if(linkedDetector != null && this.lux.get() > 0){
 				TileEntityLaserDetector ent = (TileEntityLaserDetector) worldObj.getBlockTileEntity(
 						(int) Math.floor(linkedDetector.x), (int) Math.floor(linkedDetector.y), (int) Math.floor(linkedDetector.z));
 				if(ent.getStackInSlot(0) == null && getStackInSlot(0) != null){
 					ent.setInventorySlotContents(0, this.getStackInSlot(0));
 					this.setInventorySlotContents(0, null);					
-					if(this.getOrientation() == ForgeDirection.UP){
-						for(int i = this.yCoord + 1; i <= linkedDetector.y; i++){
-							if (!worldObj.isRemote){
-								EntityBeamY entity = new EntityBeamY(worldObj);
-								entity.setPosition(xCoord, i, zCoord);							
-								worldObj.spawnEntityInWorld(entity);
-							}		
-						}
-					} else if(this.getOrientation() == ForgeDirection.DOWN){
-						for(int i = this.yCoord - 1; i >= linkedDetector.y; i--){
-							if (!worldObj.isRemote){
-								EntityBeamY entity = new EntityBeamY(worldObj);
-								entity.setPosition(xCoord, i, zCoord);							
-								worldObj.spawnEntityInWorld(entity);
-							}		
-						}	
-					} else if(this.getOrientation() == ForgeDirection.NORTH){
-						for(int i = this.zCoord - 1; i >= linkedDetector.z; i--){
-							if (!worldObj.isRemote){
-								EntityBeamZ entity = new EntityBeamZ(worldObj);
-								entity.setPosition(xCoord, yCoord, i);							
-								worldObj.spawnEntityInWorld(entity);
-							}		
-						}	
-					} else if(this.getOrientation() == ForgeDirection.SOUTH){
-						for(int i = this.zCoord + 1; i <= linkedDetector.z; i++){
-							if (!worldObj.isRemote){
-								EntityBeamZ entity = new EntityBeamZ(worldObj);
-								entity.setPosition(xCoord, yCoord, i);							
-								worldObj.spawnEntityInWorld(entity);
-							}		
-						}	
-					} else if(this.getOrientation() == ForgeDirection.EAST){
-						for(int i = this.xCoord + 1; i <= linkedDetector.x; i++){
-							if (!worldObj.isRemote){
-								EntityBeamX entity = new EntityBeamX(worldObj);
-								entity.setPosition(i, yCoord, zCoord);							
-								worldObj.spawnEntityInWorld(entity);
-							}		
-						}	
-					} else if(this.getOrientation() == ForgeDirection.WEST){
-						for(int i = this.xCoord - 1; i >= linkedDetector.x; i--){
-							if (!worldObj.isRemote){
-								EntityBeamX entity = new EntityBeamX(worldObj);
-								entity.setPosition(i, yCoord, zCoord);							
-								worldObj.spawnEntityInWorld(entity);
-							}		
-						}
+					
+					if (!worldObj.isRemote){
+						laserBeam();
 					}
+					
+//					if (worldObj.isRemote){
+//						sendUpdatePacket();
+//					}		
 					
 					this.lux.decreaseBy(1, 0);
 					//System.out.println(this.lux.get());
@@ -241,6 +384,51 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 			}
 		}
 	}
+	
+	public void laserBeam(){
+		
+		System.out.println(laserToList.size());
+		if(laserToList != null && laserToList.size() > 1){
+			for(int j = 0; j < laserToList.size() - 1; j++){
+				ForgeDirection or = laserToDirection.get(j);
+				Position one = laserToList.get(j);
+				Position two = laserToList.get(j + 1);
+				
+				System.out.println("Spawned Laser: " + j);
+				System.out.println("Pos1: " + one.toString() + " Pos2: " + two.toString());
+				sendUpdatePacket(one, two);
+			}
+		}
+			
+		
+	}
+	
+	void sendUpdatePacket(Position pos1, Position pos2){
+    	ByteArrayOutputStream bos = new ByteArrayOutputStream(8);
+        DataOutputStream outputStream = new DataOutputStream(bos);
+        
+        
+        try {
+        	outputStream.writeUTF("LaserRender");
+            outputStream.writeDouble(pos1.x);
+            outputStream.writeDouble(pos1.y);
+            outputStream.writeDouble(pos1.z);
+            outputStream.writeDouble(pos2.x);
+            outputStream.writeDouble(pos2.y);
+            outputStream.writeDouble(pos2.z);     
+        } catch (Exception ex) {
+                ex.printStackTrace();
+        }
+        
+		Packet250CustomPayload packet = new Packet250CustomPayload();
+		packet.channel = (ModInfo.CHANNEL + "GuiSync");
+		packet.data = bos.toByteArray();
+		packet.length = bos.size();
+		
+		System.out.println("Test");
+		
+		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 50, 0, packet);
+    }
 
 	public void suckItemsIn() {
 		IInventory inv;
@@ -482,5 +670,4 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 		// TODO Auto-generated method stub
 		return true;
 	}
-	
 }

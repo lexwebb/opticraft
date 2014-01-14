@@ -2,6 +2,7 @@ package opticraft.blocks;
 
 import java.util.HashMap;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,6 +15,7 @@ import opticraft.entitys.TileEntityLaser;
 import opticraft.entitys.TileEntityLaserDetector;
 import opticraft.entitys.TileEntityMirror;
 import opticraft.entitys.TileEntityRedstoneLaser;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -30,36 +32,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.ForgeSubscribe;
 
-public class MirrorBlock extends DirectionalBlock{
+public class MirrorBlock extends BlockContainer{
 	
 	protected int renderType;
 
 	//Treat it like a normal block here. The Block Bounds are a good idea - the first three are X Y and Z of the botton-left corner,
     //And the second three are the top-right corner.
     public MirrorBlock(int id) {
-            super(id, Material.iron, true, true);
+            super(id, Material.iron);
             this.renderType = id;
             this.setCreativeTab(CreativeTabs.tabBlock);
 //            this.setBlockBounds(0F, 0.0F, 0F, 1f, 1F, 1F);
-    }
-    
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z){
-//    	TileEntityLaserDetector ent = (TileEntityLaserDetector) blockAccess.getBlockTileEntity(x, y, z);
-//    	
-//    	if(ent.getOrientation() == "U"){
-//    		this.setBlockBounds(0F, 0.0F, 0F, 1f, 0.2F, 1F);
-//    	} else if(ent.getOrientation() == "D"){
-//    		this.setBlockBounds(0F, 0.8F, 0F, 1f, 1F, 1F);
-//    	} else if(ent.getOrientation() == "E"){
-//    		this.setBlockBounds(0F, 0F, 0F, 0.2f, 1F, 1F);
-//    	} else if(ent.getOrientation() == "W"){
-//    		this.setBlockBounds(0.8F, 0F, 0F, 1f, 1F, 1F);
-//    	} else if(ent.getOrientation() == "N"){
-//    		this.setBlockBounds(0F, 0F, 0.8F, 1f, 1F, 1F);
-//    	} else if(ent.getOrientation() == "S"){
-//    		this.setBlockBounds(0F, 0F, 0F, 1f, 1F, 0.2F);
-//    	}
     }
 
     //Make sure you set this as your TileEntity class relevant for the block!
@@ -73,6 +56,17 @@ public class MirrorBlock extends DirectionalBlock{
             this.blockIcon = icon.registerIcon(ModInfo.ID.toLowerCase() + ":" + "LaserIconFlat");
     } 
     
+    //It's not an opaque cube, so you need this.
+    @Override
+    public boolean isOpaqueCube() {
+            return false;
+    }
+    
+    //It's not a normal block, so you need this too.
+    public boolean renderAsNormalBlock() {
+            return false;
+    }
+    
     @Override
     public int getRenderType()
     {
@@ -85,7 +79,7 @@ public class MirrorBlock extends DirectionalBlock{
     
     @Override
     public void onPostBlockPlaced(World par1World, int x, int y, int z, int par5) {
-    	super.onPostBlockPlaced(par1World, x, y, z, par5);
+    	((TileEntityMirror) par1World.getBlockTileEntity(x, y, z)).orientation = ForgeDirection.NORTH;
     	((TileEntityMirror) par1World.getBlockTileEntity(x, y, z)).direction = ForgeDirection.UP;
     }
     
@@ -96,31 +90,55 @@ public class MirrorBlock extends DirectionalBlock{
     		
     		TileEntityMirror ent = (TileEntityMirror) world.getBlockTileEntity(x, y, z);
     		
-    		if(ent.getOrientation() == ForgeDirection.UP || ent.getOrientation() == ForgeDirection.DOWN){
-    			switch(ent.getDirection()){
-	    			case NORTH : ent.setDirection(ForgeDirection.EAST); break;
-	    			case EAST : ent.setDirection(ForgeDirection.SOUTH); break;
-	    			case SOUTH : ent.setDirection(ForgeDirection.WEST); break;
-	    			case WEST : ent.setDirection(ForgeDirection.NORTH); break;
-	    			default: break;
-    			}
-    		} else if(ent.getOrientation() == ForgeDirection.EAST || ent.getOrientation() == ForgeDirection.WEST){
-    			switch(ent.getDirection()){
-	    			case NORTH : ent.setDirection(ForgeDirection.UP); break;
-	    			case UP : ent.setDirection(ForgeDirection.SOUTH); break;
-	    			case SOUTH : ent.setDirection(ForgeDirection.DOWN); break;
-	    			case DOWN : ent.setDirection(ForgeDirection.NORTH); break;
-	    			default: break;
-    			}
-    		} else if(ent.getOrientation() == ForgeDirection.NORTH || ent.getOrientation() == ForgeDirection.SOUTH){
-    			switch(ent.getDirection()){
-	    			case EAST : ent.setDirection(ForgeDirection.UP); break;
-	    			case UP : ent.setDirection(ForgeDirection.WEST); break;
-	    			case WEST : ent.setDirection(ForgeDirection.DOWN); break;
-	    			case DOWN : ent.setDirection(ForgeDirection.EAST); break;
-	    			default: break;
-				}
-			}
+    		if(player.isSneaking()){
+    			if(ent.getOrientation() == ForgeDirection.NORTH){
+
+	    			if(ent.getDirection() == ForgeDirection.UP)ent.setDirection(ForgeDirection.EAST);
+	    			else if(ent.getDirection() == ForgeDirection.EAST) ent.setDirection(ForgeDirection.DOWN);
+	    			else if(ent.getDirection() == ForgeDirection.DOWN) ent.setDirection(ForgeDirection.WEST);
+	    			else if(ent.getDirection() == ForgeDirection.WEST) ent.setDirection(ForgeDirection.UP);
+	    			
+    			} else if(ent.getOrientation() == ForgeDirection.EAST){
+    				
+    				if(ent.getDirection() == ForgeDirection.UP)ent.setDirection(ForgeDirection.NORTH);
+	    			else if(ent.getDirection() == ForgeDirection.NORTH) ent.setDirection(ForgeDirection.DOWN);
+	    			else if(ent.getDirection() == ForgeDirection.DOWN) ent.setDirection(ForgeDirection.SOUTH);
+	    			else if(ent.getDirection() == ForgeDirection.SOUTH) ent.setDirection(ForgeDirection.UP);
+    				
+    			} else if(ent.getOrientation() == ForgeDirection.SOUTH){
+    				
+    				if(ent.getDirection() == ForgeDirection.UP)ent.setDirection(ForgeDirection.WEST);
+	    			else if(ent.getDirection() == ForgeDirection.WEST) ent.setDirection(ForgeDirection.DOWN);
+	    			else if(ent.getDirection() == ForgeDirection.DOWN) ent.setDirection(ForgeDirection.EAST);
+	    			else if(ent.getDirection() == ForgeDirection.EAST) ent.setDirection(ForgeDirection.UP);
+    				
+    			} else if(ent.getOrientation() == ForgeDirection.WEST){
+    				
+    				if(ent.getDirection() == ForgeDirection.UP)ent.setDirection(ForgeDirection.SOUTH);
+	    			else if(ent.getDirection() == ForgeDirection.SOUTH) ent.setDirection(ForgeDirection.DOWN);
+	    			else if(ent.getDirection() == ForgeDirection.DOWN) ent.setDirection(ForgeDirection.NORTH);
+	    			else if(ent.getDirection() == ForgeDirection.NORTH) ent.setDirection(ForgeDirection.UP);
+    				
+    			}  	
+    			
+    			if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER && ent.getDirection() != null)
+        			System.out.println("Dir: " + ent.getDirection().toString());
+    			
+    		} else {
+    			if(ent.getOrientation() == ForgeDirection.NORTH)
+    				ent.setOrientation(ForgeDirection.EAST);
+    			else if(ent.getOrientation() == ForgeDirection.EAST)
+    				ent.setOrientation(ForgeDirection.SOUTH);
+    			else if(ent.getOrientation() == ForgeDirection.SOUTH)
+    				ent.setOrientation(ForgeDirection.WEST);
+    			else if(ent.getOrientation() == ForgeDirection.WEST)
+    				ent.setOrientation(ForgeDirection.NORTH);
+    			ent.setDirection(ForgeDirection.UP);
+    			
+    			if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER && ent.getOrientation() != null)
+        			System.out.println("Or: " + ent.getOrientation().toString());
+    		}
+
     		return false;
     	} else {
     		return true;
