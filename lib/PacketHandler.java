@@ -204,29 +204,41 @@ public class PacketHandler implements IPacketHandler{
 	public void handleLaserRenderSyncPacket(Packet250CustomPayload payload){
 		DataInputStream data = new DataInputStream(new ByteArrayInputStream(payload.data));
 		int dimID;
-		String parseString;
 		int x, y, z;
+		double x1, y1, z1;
 		String direction, orientation;
 		boolean receiver;
+		
+		List<Position> laserToList = new ArrayList<Position>();
 		
 		try {
 			String temp = data.readUTF();
 			x = data.readInt();
 			y = data.readInt();
 			z = data.readInt();
-			parseString = data.readUTF();
+			
+			//pass size of array
+        	int size = data.readInt();
+        	
+        	//array send loop
+        	for(int i = 0; i < size; i++){
+        		x1 = data.readDouble();
+        		y1 = data.readDouble();
+        		z1 = data.readDouble();
+        		
+        		laserToList.add(new Position(x1, y1, z1));
+        	}
+        	
 		} catch (IOException e) {
             e.printStackTrace();
             return;
 		}
 		
 		TileEntityLaser ent = (TileEntityLaser) Minecraft.getMinecraft().theWorld.getBlockTileEntity(x, y, z);
-		List<Position> laserToList = new ArrayList<Position>();
-		for(String split : parseString.split(";")){
-			String[] splitTwo = split.split(",");
-			laserToList.add(new Position(Integer.valueOf(splitTwo[0]), Integer.valueOf(splitTwo[1]), Integer.valueOf(splitTwo[2])));	
-		}
 		
+		ent.laserToList.clear();
 		ent.laserToList = laserToList;
+		
+		ent.laserFireTime = Minecraft.getMinecraft().theWorld.getTotalWorldTime();
 	}
 }

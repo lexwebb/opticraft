@@ -40,6 +40,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 	Position linkedDetector;
 	public List<Position> laserToList;
 	public List<ForgeDirection> laserToDirection;
+	public long laserFireTime;
 	
 	public TileEntityLaser(){
 		inv = new ItemStack[2];
@@ -52,6 +53,11 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 	@Override
 	public void updateEntity(){
 		super.updateEntity();
+		
+		if (worldObj.isRemote){
+			if(Minecraft.getMinecraft().theWorld.getTotalWorldTime() >= laserFireTime + 2)
+				laserToList.clear();
+		}
 		
 		if(inv[1] != null){
 			if(inv[1].itemID == Items.basicMatterCrystal.itemID){
@@ -387,35 +393,50 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 	
 	public void laserBeam(){
 		
-		System.out.println(laserToList.size());
+//		System.out.println(laserToList.size());
 		if(laserToList != null && laserToList.size() > 1){
 			for(int j = 0; j < laserToList.size() - 1; j++){
 				ForgeDirection or = laserToDirection.get(j);
-				Position one = laserToList.get(j);
-				Position two = laserToList.get(j + 1);
+//				sendUpdatePacket();				
 				
-				System.out.println("Spawned Laser: " + j);
-				System.out.println("Pos1: " + one.toString() + " Pos2: " + two.toString());
-				sendUpdatePacket(one, two);
+//				EntityLaser laser = new EntityLaser(worldObj, laserToList.get(0), laserToList.get(1));
+//                worldObj.spawnEntityInWorld(laser);
+//                laser.show();
+				
+				System.out.println("spawningLaser");
+				EntityBeam beam = new EntityBeam(worldObj, laserToList.get(0), laserToList.get(1));
+				worldObj.spawnEntityInWorld(beam);
+                beam.updateDataServer();
+                beam.onUpdate();
+                
+                laserToList.clear();
 			}
 		}
 			
 		
 	}
 	
-	void sendUpdatePacket(Position pos1, Position pos2){
+	// TODO STOP BEING A DERP AND SEND OVER THE WHOLE LIST
+	
+	void sendUpdatePacket(){
     	ByteArrayOutputStream bos = new ByteArrayOutputStream(8);
-        DataOutputStream outputStream = new DataOutputStream(bos);
-        
+        DataOutputStream outputStream = new DataOutputStream(bos);      
         
         try {
-        	outputStream.writeUTF("LaserRender");
-            outputStream.writeDouble(pos1.x);
-            outputStream.writeDouble(pos1.y);
-            outputStream.writeDouble(pos1.z);
-            outputStream.writeDouble(pos2.x);
-            outputStream.writeDouble(pos2.y);
-            outputStream.writeDouble(pos2.z);     
+        	outputStream.writeUTF("LaserRenderSync");
+        	outputStream.writeInt(xCoord);
+        	outputStream.writeInt(yCoord);
+        	outputStream.writeInt(zCoord);
+        	
+        	//pass size of array
+        	outputStream.writeInt(laserToList.size());
+        	
+        	//array send loop
+        	for(int i = 0; i < laserToList.size(); i++){
+        		outputStream.writeDouble(laserToList.get(i).x);
+                outputStream.writeDouble(laserToList.get(i).y);
+                outputStream.writeDouble(laserToList.get(i).z);
+        	}      	    
         } catch (Exception ex) {
                 ex.printStackTrace();
         }
@@ -424,9 +445,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 		packet.channel = (ModInfo.CHANNEL + "GuiSync");
 		packet.data = bos.toByteArray();
 		packet.length = bos.size();
-		
-		System.out.println("Test");
-		
+
 		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 50, 0, packet);
     }
 

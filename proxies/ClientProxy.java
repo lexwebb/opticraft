@@ -18,11 +18,12 @@ import opticraft.entitys.TileEntityRedstoneLaser;
 import opticraft.entitys.TileEntitySolarCollector;
 import opticraft.items.ItemLaserWrench;
 import opticraft.lib.Ids;
-import opticraft.render.BeamRenderer;
+import opticraft.render.BeamTileRenderer;
 import opticraft.render.BeamRendererX;
 import opticraft.render.BeamRendererY;
 import opticraft.render.BeamRendererZ;
 import opticraft.render.FiberCableRenderer;
+import opticraft.render.LaserBeamRenderer;
 import opticraft.render.LaserRenderer;
 import opticraft.render.LaserDetectorRenderer;
 import opticraft.render.LaserWrenchRenderer;
@@ -98,7 +99,7 @@ public class ClientProxy extends CommonProxy{
     	RenderingRegistry.registerEntityRenderingHandler(EntityBeamY.class, new BeamRendererY());
     	RenderingRegistry.registerEntityRenderingHandler(EntityBeamZ.class, new BeamRendererZ());
     	RenderingRegistry.registerEntityRenderingHandler(EntityBeamX.class, new BeamRendererX());
-    	RenderingRegistry.registerEntityRenderingHandler(EntityBeam.class, new BeamRenderer());
+    	RenderingRegistry.registerEntityRenderingHandler(EntityBeam.class, new LaserBeamRenderer());
     	
     	MinecraftForgeClient.registerItemRenderer(Ids.laserWrench + 256, (IItemRenderer)new LaserWrenchRenderer());
     	

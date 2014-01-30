@@ -97,26 +97,8 @@ public class LaserRenderer extends TileEntitySpecialRenderer implements ISimpleB
             GL11.glPopMatrix();
             GL11.glPopMatrix();
             
-//            List<Position> laserToList = ent.laserToList;
-//    		if(laserToList != null && laserToList.size() > 1){
-////    			System.out.println("LOL");
-//    			for(int i = 0; i < laserToList.size() - 1; i++){
-//    				System.out.println(laserToList.get(i).toString());
-//    				System.out.println(laserToList.get(i + 1).toString());
-//    				GL11.glPushMatrix();
-//    				GL11.glTranslated(laserToList.get(i).x, laserToList.get(i).y, laserToList.get(i).z);
-//    				GL11.glColor3ub((byte)255,(byte)0,(byte)0);
-//    				float mx = (float) laserToList.get(i + 1).x;
-//    				float my = (float) laserToList.get(i + 1).y;
-//    				float mz = (float) laserToList.get(i + 1).z;
-//    				GL11.glBegin(GL11.GL_LINES);
-//    				GL11.glVertex3f(mx,my,mz);
-//    				GL11.glEnd();
-//    				GL11.glPopMatrix();
-//    			}	
-//    		} else {
-////    			System.out.println(laserToList.size());
-//    		}
+//		BeamTileRenderer beamRenderer = new BeamTileRenderer();
+//		beamRenderer.Render(ent, x, y, z);
     }
     
     
