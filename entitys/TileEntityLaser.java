@@ -30,6 +30,7 @@ import net.minecraft.tileentity.Hopper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityHopper;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -41,6 +42,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 	public List<Position> laserToList;
 	public List<ForgeDirection> laserToDirection;
 	public long laserFireTime;
+	private AxisAlignedBB boundingRenderBox;
 	
 	public TileEntityLaser(){
 		inv = new ItemStack[2];
@@ -48,6 +50,8 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 		this.consumer = true;
 		laserToList = new ArrayList<Position>();
 		laserToDirection = new ArrayList<ForgeDirection>();
+		boundingRenderBox = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1); /////noooooo
+		updateRenderBox();
 	}
 	
 	@Override
@@ -73,6 +77,8 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 				itemLaser(2);
 			}
 		}
+		
+		updateRenderBox();
 	}
 	
 	//legacy
@@ -397,23 +403,58 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 		if(laserToList != null && laserToList.size() > 1){
 			for(int j = 0; j < laserToList.size() - 1; j++){
 				ForgeDirection or = laserToDirection.get(j);
-//				sendUpdatePacket();				
+				sendUpdatePacket();				
 				
 //				EntityLaser laser = new EntityLaser(worldObj, laserToList.get(0), laserToList.get(1));
 //                worldObj.spawnEntityInWorld(laser);
 //                laser.show();
 				
-				System.out.println("spawningLaser");
-				EntityBeam beam = new EntityBeam(worldObj, laserToList.get(0), laserToList.get(1));
-				worldObj.spawnEntityInWorld(beam);
-                beam.updateDataServer();
-                beam.onUpdate();
-                
+//				System.out.println("spawningLaser");
+//				EntityBeam beam = new EntityBeam(worldObj, laserToList.get(0), laserToList.get(1));
+//				worldObj.spawnEntityInWorld(beam);
+//                beam.updateDataServer();
+//                beam.onUpdate();
+
                 laserToList.clear();
 			}
 		}
 			
 		
+	}
+	
+	@Override
+	public AxisAlignedBB getRenderBoundingBox(){
+		
+		return boundingRenderBox;		
+	}
+	
+	public void updateRenderBox(){
+		if(laserToList == null || laserToList.size() == 0){
+			boundingRenderBox.setBounds(xCoord, yCoord, zCoord, xCoord + 1,  yCoord + 1, zCoord + 1);
+		} else {
+			int minx, miny, minz, maxx, maxy, maxz;
+			minx = xCoord;
+			miny = yCoord;
+			minz = zCoord;
+			maxx = xCoord+1;
+			maxy = yCoord+1;
+			maxz = zCoord+1;
+			
+			for(int i = 0; i < laserToList.size();i++){
+				minx = Math.min(minx, (int) laserToList.get(i).x);
+				miny = Math.min(miny, (int) laserToList.get(i).y);
+				minz = Math.min(minz, (int) laserToList.get(i).z);
+				
+				maxx = Math.max(maxx, (int) laserToList.get(i).x);
+				maxy = Math.max(maxy, (int) laserToList.get(i).y);
+				maxz = Math.max(maxz, (int) laserToList.get(i).z);
+			}
+			
+			minx--; miny--; minz--;
+			maxx++; maxy++; maxz++;
+			
+			boundingRenderBox.setBounds(minx, miny, minz, maxx, maxy, maxz);
+		}
 	}
 	
 	// TODO STOP BEING A DERP AND SEND OVER THE WHOLE LIST

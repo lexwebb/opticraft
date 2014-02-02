@@ -97,8 +97,8 @@ public class LaserRenderer extends TileEntitySpecialRenderer implements ISimpleB
             GL11.glPopMatrix();
             GL11.glPopMatrix();
             
-//		BeamTileRenderer beamRenderer = new BeamTileRenderer();
-//		beamRenderer.Render(ent, x, y, z);
+		BeamTileRenderer beamRenderer = new BeamTileRenderer();
+		beamRenderer.Render(ent, x, y, z);
     }
     
     
