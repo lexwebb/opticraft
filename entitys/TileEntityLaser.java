@@ -63,9 +63,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 		if (worldObj.isRemote){
 			if(Minecraft.getMinecraft().theWorld.getTotalWorldTime() >= laserFireTime + 2)
 				laserToList.clear();
-		}
-		
-		
+		}	
 		
 		if(inv[1] != null){
 			
