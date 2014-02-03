@@ -1,4 +1,4 @@
-package opticraft.render;
+package opticraft.client.render;
 
 import opticraft.entitys.TileEntityLaser;
 import opticraft.entitys.TileEntityRedstoneLaser;

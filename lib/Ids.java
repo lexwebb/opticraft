@@ -8,6 +8,9 @@ public class Ids {
 	public static final int basicMatterCrystal = 16004;
 	public static final int matterCrystal = 16005;
 	public static final int advancedMatterCrystal = 16006;
+	public static final int basicEnergyCrystal = 16007;
+	public static final int energyCrystal = 16008;
+	public static final int advancedEnergyCrystal = 16009;
 	
 	public static final int TileEntityLaserBlock = 4001;
 	public static final int TileEntitySolarCollectorBlock = 4002;

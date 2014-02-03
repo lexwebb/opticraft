@@ -1,9 +1,10 @@
-package opticraft.render;
+package opticraft.client.render;
 
-import opticraft.entitys.TileEntityFiberCable;
+import javax.imageio.stream.ImageInputStream;
+
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
-import opticraft.models.FiberCableModel;
+import opticraft.models.LuxCapacitorModel;
 import opticraft.models.SolarCollectorModel;
 
 import org.lwjgl.opengl.GL11;
@@ -11,7 +12,6 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -22,13 +22,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class FiberCableRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler{
+public class LuxCapacitorRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler{
 
-	private final FiberCableModel model;
+	private final LuxCapacitorModel model;
 	protected int renderID;
     
-    public FiberCableRenderer(int renderID) {
-            this.model = new FiberCableModel();
+    public LuxCapacitorRenderer(int renderID) {
+            this.model = new LuxCapacitorModel();
             this.renderID = renderID;
     }
     
@@ -41,22 +41,6 @@ public class FiberCableRenderer extends TileEntitySpecialRenderer implements ISi
     
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
-    	
-    	TileEntityFiberCable ent = (TileEntityFiberCable) te;
-    	
-        model.Top.isHidden = ent.upHidden;
-        model.TopInner.isHidden = ent.upHidden;
-        model.Bottom.isHidden = ent.downHidden;
-        model.BottomInner.isHidden = ent.downHidden;
-        model.Front.isHidden = ent.northHidden;
-        model.FrontInner.isHidden = ent.northHidden;
-        model.Back.isHidden = ent.southHidden;
-        model.BackInner.isHidden = ent.southHidden;
-        model.Left.isHidden = ent.westHidden;
-        model.LeftInner.isHidden = ent.westHidden;
-        model.Right.isHidden = ent.eastHidden;
-        model.RightInner.isHidden = ent.eastHidden;
-    	
     //The PushMatrix tells the renderer to "start" doing something.
             GL11.glPushMatrix();
     //This is setting the initial location.
@@ -64,7 +48,7 @@ public class FiberCableRenderer extends TileEntitySpecialRenderer implements ISi
     //This is the texture of your block. It's pathed to be the same place as your other blocks here.
             //Outdated bindTextureByName("/mods/roads/textures/blocks/TrafficLightPoleRed.png");
    //Use in 1.6.2  this
-            ResourceLocation textures = (new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/blocks/fiberCableTile.png")); 
+            ResourceLocation textures = (new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/blocks/LuxBatteryTile.png")); 
     //the ':' is very important
     //binding the textures
             Minecraft.getMinecraft().renderEngine.bindTexture(textures);
@@ -74,9 +58,14 @@ public class FiberCableRenderer extends TileEntitySpecialRenderer implements ISi
             GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
     //A reference to your Model file. Again, very important.
             this.model.render((Entity)null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+
+            GL11.glEnable(GL11.GL_BLEND);
+            this.model.renderCenter((Entity)null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+            GL11.glDisable(GL11.GL_BLEND);
+            
     //Tell it to stop rendering for both the PushMatrix's
             GL11.glPopMatrix();
-            GL11.glPopMatrix(); 
+            GL11.glPopMatrix();
     }
 
     //Set the lighting stuff, so it changes it's brightness properly.       
@@ -88,8 +77,8 @@ public class FiberCableRenderer extends TileEntitySpecialRenderer implements ISi
             int divModifier = skyLight / 65536;
             tess.setColorOpaque_F(brightness, brightness, brightness);
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit,  (float) modulousModifier,  divModifier);
-    }
-
+    }	
+    
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID,
 			RenderBlocks renderer) {
@@ -98,27 +87,18 @@ public class FiberCableRenderer extends TileEntitySpecialRenderer implements ISi
 		
 		GL11.glTranslatef(0.0f, 1.0f, 0.0f);
 		
-		ResourceLocation textures = (new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/blocks/fiberCableTile.png")); 
+		ResourceLocation textures = (new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/blocks/LuxBatteryTile.png")); 
 		Minecraft.getMinecraft().renderEngine.bindTexture(textures);
                    
      	GL11.glPushMatrix();
 
         GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
-        
-        model.Top.isHidden = false;
-        model.TopInner.isHidden = false;
-        model.Bottom.isHidden = false;
-        model.BottomInner.isHidden =false;
-        model.Front.isHidden = false;
-        model.FrontInner.isHidden = false;
-        model.Back.isHidden = false;
-        model.BackInner.isHidden = false;
-        model.Left.isHidden = false;
-        model.LeftInner.isHidden = false;
-        model.Right.isHidden = false;
-        model.RightInner.isHidden = false;
 
         this.model.render((Entity)null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        
+        GL11.glEnable(GL11.GL_BLEND);
+        this.model.renderCenter((Entity)null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        GL11.glDisable(GL11.GL_BLEND);
 
         GL11.glPopMatrix();
         GL11.glPopMatrix();
@@ -127,13 +107,13 @@ public class FiberCableRenderer extends TileEntitySpecialRenderer implements ISi
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
 			Block block, int modelId, RenderBlocks renderer) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
 	@Override
 	public boolean shouldRender3DInInventory() {
-		// TODO Auto-generated method stub
+		
 		return true;
 	}
 
@@ -141,5 +121,4 @@ public class FiberCableRenderer extends TileEntitySpecialRenderer implements ISi
 	public int getRenderId() {
 		return this.renderID;
 	}
-	
 }

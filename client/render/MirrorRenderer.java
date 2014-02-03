@@ -1,4 +1,4 @@
-package opticraft.render;
+package opticraft.client.render;
 
 import opticraft.entitys.TileEntityFiberCable;
 import opticraft.entitys.TileEntityLaser;
@@ -78,7 +78,9 @@ public class MirrorRenderer extends TileEntitySpecialRenderer implements ISimple
 		GL11.glPushMatrix();
 
 		GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
-
+		
+		
+		if(or != null && direction != null) //Error Stopper
 		switch (or) {
 		case NORTH:
 			switch (direction) {
@@ -95,6 +97,8 @@ public class MirrorRenderer extends TileEntitySpecialRenderer implements ISimple
 			case WEST:
 				GL11.glRotatef(90F, 0.0F, 0.0F, 1.0F);
 				GL11.glTranslatef(1f, -1f, 0f);
+				break;
+			default:
 				break;
 			}
 			break;
@@ -115,6 +119,8 @@ public class MirrorRenderer extends TileEntitySpecialRenderer implements ISimple
 				GL11.glRotatef(270F, 0.0F, 0.0F, 1.0F);
 				GL11.glTranslatef(-1f, -1f, 0f);
 				break;
+			default:
+				break;
 			}
 			break;
 		case SOUTH:
@@ -133,6 +139,8 @@ public class MirrorRenderer extends TileEntitySpecialRenderer implements ISimple
 			case WEST:
 				GL11.glRotatef(270F, 0.0F, 0.0F, 1.0F);
 				GL11.glTranslatef(-1f, -1f, 0f);
+				break;
+			default:
 				break;
 			}
 			break;
@@ -153,7 +161,11 @@ public class MirrorRenderer extends TileEntitySpecialRenderer implements ISimple
 				GL11.glRotatef(90F, 0.0F, 0.0F, 1.0F);
 				GL11.glTranslatef(1f, -1f,0f);
 				break;
+			default:
+				break;
 			}
+			break;
+		default:
 			break;
 		}
 

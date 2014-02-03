@@ -18,6 +18,9 @@ public class Items {
 	public static Item basicMatterCrystal;
 	public static Item matterCrystal;
 	public static Item advancedMatterCrystal;
+	public static Item energyCrystal;
+	public static Item basicEnergyCrystal;
+	public static Item advancedEnergyCrystal;
 	
 
 	public static void init() {
@@ -29,6 +32,8 @@ public class Items {
 		basicMatterCrystal = new ItemBasicMatterCrystal(Ids.basicMatterCrystal);
 		advancedMatterCrystal = new ItemAdvancedMatterCrystal(Ids.advancedMatterCrystal);
 		
+		energyCrystal = new ItemEnergyCrystal(Ids.energyCrystal);
+		
 	}
 	
 	public static void addNames() {
@@ -39,6 +44,8 @@ public class Items {
 		LanguageRegistry.addName(advancedUnatunedCrystal, Names.advancedUunatunedCrystal_n);
 		LanguageRegistry.addName(basicMatterCrystal, Names.basicMatterCrystal_n);
 		LanguageRegistry.addName(advancedMatterCrystal, Names.advancedMatterCrystal_n);
+		
+		LanguageRegistry.addName(energyCrystal, Names.EnergyCrystal_n);
 	}
 	
 	public static void initRecipes(){
@@ -49,7 +56,7 @@ public class Items {
 				'r', Item.redstone, 
 				'f', Item.flint, 
 				'q', Item.netherQuartz);
-		GameRegistry.addShapedRecipe(new ItemStack(Blocks.itemLaserTileBlock,1 ),
+		GameRegistry.addShapedRecipe(new ItemStack(Blocks.laserTileBlock,1 ),
 				" g ", 
 				"iri",
 				"sss", 

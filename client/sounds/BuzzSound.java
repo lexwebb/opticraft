@@ -1,4 +1,4 @@
-package opticraft.sounds;
+package opticraft.client.sounds;
 
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.event.ForgeSubscribe;

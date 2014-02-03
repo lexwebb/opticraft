@@ -20,6 +20,9 @@ public class SlotCrystal extends Slot{
 			case Ids.unatunedCrystal: return true;
 			case Ids.basicUnatunedCrystal: return true;
 			case Ids.advancedUnatunedCrystal: return true;
+			case Ids.basicEnergyCrystal: return true;
+			case Ids.energyCrystal: return true;
+			case Ids.advancedEnergyCrystal: return true;
 			default: return false;
 		}	
     }

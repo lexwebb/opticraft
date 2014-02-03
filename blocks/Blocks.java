@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.src.ModLoader;
 
 public class Blocks {
-	public static LaserBlock itemLaserTileBlock;
+	public static LaserBlock laserTileBlock;
 	public static SolarCollectorBlock solarCollectorTileBlock;
 	public static LaserDetectorBlock laserDetectorTileBlock;
 	public static FiberCableBlock fiberCableTileBlock;
@@ -18,7 +18,7 @@ public class Blocks {
 	public static MirrorBlock mirrorBlock;
 
 	public static void init() {
-		itemLaserTileBlock = new LaserBlock(Ids.TileEntityLaserBlock);
+		laserTileBlock = new LaserBlock(Ids.TileEntityLaserBlock);
 		solarCollectorTileBlock = new SolarCollectorBlock(Ids.TileEntitySolarCollectorBlock);
 		laserDetectorTileBlock = new LaserDetectorBlock(Ids.TileEntityLaserDetectorBlock);
 		fiberCableTileBlock = new FiberCableBlock(Ids.TileEntityFiberCable);
@@ -27,7 +27,7 @@ public class Blocks {
 		mirrorBlock = new MirrorBlock(Ids.TileEntityMirrorBlock);
 		
 		
-		GameRegistry.registerBlock(itemLaserTileBlock);
+		GameRegistry.registerBlock(laserTileBlock);
 		GameRegistry.registerBlock(solarCollectorTileBlock);
 		GameRegistry.registerBlock(laserDetectorTileBlock);
 		GameRegistry.registerBlock(fiberCableTileBlock);
@@ -35,7 +35,7 @@ public class Blocks {
 		GameRegistry.registerBlock(redstoneLaserTileBlock);
 		GameRegistry.registerBlock(mirrorBlock);
 				
-		itemLaserTileBlock.setUnlocalizedName(Names.laserTile_u);
+		laserTileBlock.setUnlocalizedName(Names.laserTile_u);
 		solarCollectorTileBlock.setUnlocalizedName(Names.solarCollectorTile_u);
 		laserDetectorTileBlock.setUnlocalizedName(Names.laserDetectorTile_u);
 		fiberCableTileBlock.setUnlocalizedName(Names.fiberCableTile_u);
@@ -46,7 +46,7 @@ public class Blocks {
 	}
 
 	public static void addNames() {		
-		LanguageRegistry.addName(itemLaserTileBlock, Names.laserTile_n);
+		LanguageRegistry.addName(laserTileBlock, Names.laserTile_n);
 		LanguageRegistry.addName(solarCollectorTileBlock, Names.solarCollectorTile_n);
 		LanguageRegistry.addName(laserDetectorTileBlock, Names.laserDetectorTile_n);
 		LanguageRegistry.addName(fiberCableTileBlock, Names.fiberCableTile_n);

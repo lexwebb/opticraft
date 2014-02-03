@@ -236,9 +236,11 @@ public class PacketHandler implements IPacketHandler{
 		
 		TileEntityLaser ent = (TileEntityLaser) Minecraft.getMinecraft().theWorld.getBlockTileEntity(x, y, z);
 		
-		ent.laserToList.clear();
-		ent.laserToList = laserToList;
-		
-		ent.laserFireTime = Minecraft.getMinecraft().theWorld.getTotalWorldTime();
+		if(ent != null){
+			ent.laserToList.clear();
+			ent.laserToList = laserToList;
+			
+			ent.laserFireTime = Minecraft.getMinecraft().theWorld.getTotalWorldTime();
+		}
 	}
 }

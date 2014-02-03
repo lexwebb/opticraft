@@ -22,6 +22,15 @@ public class Names {
 	public static final String advancedMatterCrystal_u = "advancedMatterCrystal";
 	public static final String advancedMatterCrystal_n = "Advanced Matter Crystal";
 	
+	public static final String basicEnergyCrystal_u = "basicEnergyCrystal";
+	public static final String basicEnergyCrystal_n = "Basic Energy Crystal";
+	
+	public static final String energyCrystal_u = "energyCrystal";
+	public static final String EnergyCrystal_n = "Energy Crystal";
+	
+	public static final String advancedEnergyCrystal_u = "advancedEnergyCrystal";
+	public static final String advancedEnergyCrystal_n = "Advanced Energy Crystal";
+	
 	public static final String laserTile_u = "laserTile";
 	public static final String laserTile_n = "Laser";
 	

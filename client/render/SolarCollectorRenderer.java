@@ -1,4 +1,4 @@
-package opticraft.render;
+package opticraft.client.render;
 
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;

@@ -68,6 +68,9 @@ public class TileEntityRedstoneLaser extends DirectionalTileEntity{
 				this.direction = ForgeDirection.UP;
 		}
 		
+		if(getOrientation() == null)
+			setOrientation(ForgeDirection.UP);
+		
 //		System.out.println(worldObj.getBlockPowerInput(xCoord, yCoord, zCoord));
 		
 		if(worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0){
@@ -332,6 +335,8 @@ public class TileEntityRedstoneLaser extends DirectionalTileEntity{
     public void writeToNBT(NBTTagCompound tagCompound) {
             super.writeToNBT(tagCompound);
 
+            System.out.println(this.direction.name());
+            
             if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER){	
 	            tagCompound.setString("direction", this.direction.name());
 	            tagCompound.setBoolean("receiver", reciever);

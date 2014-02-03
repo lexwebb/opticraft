@@ -1,4 +1,4 @@
-package opticraft.render;
+package opticraft.client.render;
 
 import opticraft.entitys.EntityBeamY;
 import opticraft.lib.ModInfo;
@@ -19,12 +19,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class BeamRendererZ extends Render{
+public class BeamRendererY extends Render{
 
 	private final BeamModel model;
 	private String orientation = "UD";
     
-    public BeamRendererZ() {
+    public BeamRendererY() {
             this.model = new BeamModel();
     }
     
@@ -76,8 +76,8 @@ public class BeamRendererZ extends Render{
         GL11.glPopMatrix();            
         
         model.LR.isHidden = true;
-        model.FB.isHidden = false;
-        model.TB.isHidden = true;
+        model.FB.isHidden = true;
+        model.TB.isHidden = false;
 	}
 
 	@Override

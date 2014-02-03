@@ -8,6 +8,7 @@ import java.util.List;
 import opticraft.energy.LuxContainerTileEntity;
 import opticraft.items.Items;
 import opticraft.lib.DirectionalTileEntity;
+import opticraft.lib.Ids;
 import opticraft.lib.ModInfo;
 import opticraft.lib.Position;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -41,6 +42,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 	Position linkedDetector;
 	public List<Position> laserToList;
 	public List<ForgeDirection> laserToDirection;
+	public boolean shouldFire;
 	public long laserFireTime;
 	private AxisAlignedBB boundingRenderBox;
 	
@@ -63,18 +65,30 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 				laserToList.clear();
 		}
 		
+		
+		
 		if(inv[1] != null){
-			if(inv[1].itemID == Items.basicMatterCrystal.itemID){
-				suckItemsIn();				
+			
+			shouldFire = false;
+			
+//			System.out.println("invid: " + inv[1].itemID + "itemID: " + Ids.energyCrystal);
+			
+			switch (inv[1].itemID) {
+			case Ids.basicMatterCrystal + 256:
+				suckItemsIn();
 				itemLaser(20);
-			}
-			if(inv[1].itemID == Items.matterCrystal.itemID){
+				break;
+			case Ids.matterCrystal + 256:
 				suckItemsIn();
 				itemLaser(10);
-			}
-			if(inv[1].itemID == Items.advancedMatterCrystal.itemID){
+				break;
+			case Ids.advancedMatterCrystal + 256:
 				suckItemsIn();
 				itemLaser(2);
+				break;
+			case Ids.energyCrystal + 256:
+				energyLaser(10);
+				break;
 			}
 		}
 		
@@ -381,45 +395,53 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 					ent.setInventorySlotContents(0, this.getStackInSlot(0));
 					this.setInventorySlotContents(0, null);					
 					
-					if (!worldObj.isRemote){
+					if (!worldObj.isRemote)
 						laserBeam();
-					}
-					
-//					if (worldObj.isRemote){
-//						sendUpdatePacket();
-//					}		
-					
+
+					shouldFire = true;
 					this.lux.decreaseBy(1, 0);
-					//System.out.println(this.lux.get());
-					worldObj.playSoundEffect((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D, "optcrft:buzz",  0.1F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
 				}
 			}
 		}
 	}
 	
+	public void energyLaser(int transferable){
+		if(this.worldObj.getWorldTime() % 10 == 0){
+			laserToList.clear();
+			findDetectorRecursive(this.getOrientation(), xCoord, yCoord, zCoord);
+			if(linkedDetector != null)
+				laserToList.add(linkedDetector);
+			laserToDirection.add(ForgeDirection.NORTH);
+			
+			System.out.println(lux.get());
+			
+			if(linkedDetector != null && this.lux.get() > 1){
+				TileEntityLaserDetector ent = (TileEntityLaserDetector) worldObj.getBlockTileEntity(
+						(int) Math.floor(linkedDetector.x), (int) Math.floor(linkedDetector.y), (int) Math.floor(linkedDetector.z));
+				
+				if (!worldObj.isRemote)
+					laserBeam();
+				
+				shouldFire = true;
+				
+				if(lux.get() <= transferable){
+					lux.decreaseBy(ent.pushPowerOut((int) lux.get() - 1), 0);
+				} else
+					lux.decreaseBy(ent.pushPowerOut(transferable), 0);
+				lux.decreaseBy(1, 0);
+			}
+		}
+	}
+	
 	public void laserBeam(){
-		
-//		System.out.println(laserToList.size());
 		if(laserToList != null && laserToList.size() > 1){
 			for(int j = 0; j < laserToList.size() - 1; j++){
 				ForgeDirection or = laserToDirection.get(j);
-				sendUpdatePacket();				
-				
-//				EntityLaser laser = new EntityLaser(worldObj, laserToList.get(0), laserToList.get(1));
-//                worldObj.spawnEntityInWorld(laser);
-//                laser.show();
-				
-//				System.out.println("spawningLaser");
-//				EntityBeam beam = new EntityBeam(worldObj, laserToList.get(0), laserToList.get(1));
-//				worldObj.spawnEntityInWorld(beam);
-//                beam.updateDataServer();
-//                beam.onUpdate();
-
+				sendUpdatePacket();	
+				worldObj.playSoundEffect((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D, "optcrft:buzz",  0.1F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
                 laserToList.clear();
 			}
 		}
-			
-		
 	}
 	
 	@Override
@@ -456,9 +478,7 @@ public class TileEntityLaser extends LuxContainerTileEntity implements ISidedInv
 			boundingRenderBox.setBounds(minx, miny, minz, maxx, maxy, maxz);
 		}
 	}
-	
-	// TODO STOP BEING A DERP AND SEND OVER THE WHOLE LIST
-	
+
 	void sendUpdatePacket(){
     	ByteArrayOutputStream bos = new ByteArrayOutputStream(8);
         DataOutputStream outputStream = new DataOutputStream(bos);      

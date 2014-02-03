@@ -1,4 +1,4 @@
-package opticraft.render;
+package opticraft.client.render;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class BeamTileRenderer{
 //		List<Position> laserToList = ((TileEntityLaser)((EntityBeam) entity).worldObj.getBlockTileEntity((int) Math.floor(x), (int) Math.floor(y), (int) Math.floor(z))).laserToList;
 		
 		List<Position> laserToList =  ((TileEntityLaser)ent).laserToList;
-		if (laserToList != null && laserToList.size() > 1) {
+		if (laserToList != null && laserToList.size() > 1 && ((TileEntityLaser)ent).shouldFire) {
 			 System.out.println("BeamRenderer LaserToList Size: " + laserToList.size());
 			for (int i = 0; i < laserToList.size() - 1; i++) {
 //				System.out.println(laserToList.get(i).toString());

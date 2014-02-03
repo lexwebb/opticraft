@@ -1,9 +1,13 @@
 package opticraft.entitys;
 
+import buildcraft.api.power.IPowerEmitter;
 import opticraft.energy.LuxContainerTileEntity;
 import opticraft.lib.DirectionalTileEntity;
 import opticraft.lib.Position;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.Optional.Interface;
+import cpw.mods.fml.common.Optional.Method;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,9 +25,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeDirection;
 
-public class TileEntityLaserDetector extends LuxContainerTileEntity implements IInventory {	
+@Interface(iface = "IPowerEmitter", modid = "BuildCraftAPI|power")
+public class TileEntityLaserDetector extends LuxContainerTileEntity implements IInventory, IPowerEmitter{	
 	
 private ItemStack[] inv;
 	
@@ -33,8 +39,7 @@ private ItemStack[] inv;
 		this.maxOutput = 2;
 		this.producer = true;
 	}
-	
-	
+		
     @Override
     public void updateEntity(){
     	super.updateEntity();
@@ -61,6 +66,41 @@ private ItemStack[] inv;
 					PushItemsOut((IInventory)ent);
 			}
     	}
+    }
+    
+    public int pushPowerOut(int lux){
+    	TileEntity ent = null;
+    	LuxContainerTileEntity entity = null;
+		
+		if(this.getOrientation() == ForgeDirection.UP){
+			ent = worldObj.getBlockTileEntity(xCoord, yCoord - 1, zCoord);					
+		} else if(this.getOrientation() == ForgeDirection.DOWN){
+			ent = worldObj.getBlockTileEntity(xCoord, yCoord + 1, zCoord);
+		} else if(this.getOrientation() == ForgeDirection.NORTH){
+			ent = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord + 1);
+		} else if(this.getOrientation() == ForgeDirection.SOUTH){
+			ent = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord - 1);
+		} else if(this.getOrientation() == ForgeDirection.WEST){
+			ent = worldObj.getBlockTileEntity(xCoord + 1, yCoord, zCoord);
+		} else if(this.getOrientation() == ForgeDirection.EAST){
+			ent = worldObj.getBlockTileEntity(xCoord - 1, yCoord, zCoord);
+		}
+		
+		if(ent instanceof LuxContainerTileEntity)
+			entity = (LuxContainerTileEntity) ent;
+			
+		if(entity.consumer){
+			if(entity.lux.increaseBy(lux, entity.maxCharge))
+				return lux;
+			else{	
+				for(int i = lux; i >= 0;i--){
+					if(entity.lux.increaseBy(i, entity.maxCharge))
+						return i;
+				}
+				return 0;
+			}			
+		} else
+			return 0;
     }
     
     public void PushItemsOut(IInventory inv) {
@@ -215,5 +255,15 @@ private ItemStack[] inv;
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+
+	@Method(modid = "BuildCraftAPI|power")
+	@Override
+	public boolean canEmitPowerFrom(ForgeDirection side) {	
+		if(side == getOrientation().getOpposite())
+			return true;
+		else
+			return false;
 	}
 }
