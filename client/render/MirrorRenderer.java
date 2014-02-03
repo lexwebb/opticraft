@@ -59,12 +59,30 @@ public class MirrorRenderer extends TileEntitySpecialRenderer implements ISimple
 		ForgeDirection or = ent.getOrientation();
 		ForgeDirection direction = ent.getDirection();
 
-		showDown = true;
-		showUp = true;
-		showBack = true;
-		showFront = true;
-		showLeft = true;
-		showRight = true;
+		if(or == ForgeDirection.DOWN || direction == ForgeDirection.DOWN)
+			showDown = false;
+		else
+			showDown = true;
+		if(or == ForgeDirection.UP || direction == ForgeDirection.UP)
+			showUp = false;
+		else
+			showUp = true;
+		if(or == ForgeDirection.SOUTH || direction == ForgeDirection.SOUTH)
+			showBack = false;
+		else
+			showBack = true;
+		if(or == ForgeDirection.NORTH || direction == ForgeDirection.NORTH)
+			showFront = false;
+		else
+			showFront = true;
+		if(or == ForgeDirection.WEST || direction == ForgeDirection.WEST)
+			showLeft = false;
+		else
+			showLeft = true;
+		if(or == ForgeDirection.EAST || direction == ForgeDirection.EAST)
+			showRight = false;
+		else
+			showRight = true;
 
 		ResourceLocation textures = (new ResourceLocation(ModInfo.ID.toLowerCase() + ":textures/blocks/mirrorTile.png"));
 		Minecraft.getMinecraft().renderEngine.bindTexture(textures);
@@ -219,7 +237,7 @@ public class MirrorRenderer extends TileEntitySpecialRenderer implements ISimple
 
 		GL11.glPushMatrix();
 
-		float scale = 3F;
+		float scale = 1.5F;
 		GL11.glScalef(scale, scale, scale);
 		GL11.glTranslatef(0.0f, 1.0f, 0.0f);
 
@@ -233,6 +251,10 @@ public class MirrorRenderer extends TileEntitySpecialRenderer implements ISimple
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glCullFace(GL11.GL_FRONT);
 		this.model.mirrorRender((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		this.model.renderBack((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		this.model.renderLeft((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		this.model.renderRight((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		this.model.renderDown((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		GL11.glCullFace(GL11.GL_BACK);
 		GL11.glDisable(GL11.GL_CULL_FACE);
 

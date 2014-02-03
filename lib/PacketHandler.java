@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -208,15 +209,15 @@ public class PacketHandler implements IPacketHandler{
 		double x1, y1, z1;
 		String direction, orientation;
 		boolean receiver;
-		
+
 		List<Position> laserToList = new ArrayList<Position>();
-		
+
 		try {
 			String temp = data.readUTF();
 			x = data.readInt();
 			y = data.readInt();
 			z = data.readInt();
-			
+
 			//pass size of array
         	int size = data.readInt();
         	
@@ -233,13 +234,13 @@ public class PacketHandler implements IPacketHandler{
             e.printStackTrace();
             return;
 		}
-		
+
 		TileEntityLaser ent = (TileEntityLaser) Minecraft.getMinecraft().theWorld.getBlockTileEntity(x, y, z);
-		
+
 		if(ent != null){
 			ent.laserToList.clear();
 			ent.laserToList = laserToList;
-			
+
 			ent.laserFireTime = Minecraft.getMinecraft().theWorld.getTotalWorldTime();
 		}
 	}

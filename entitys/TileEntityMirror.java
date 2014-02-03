@@ -38,23 +38,22 @@ public class TileEntityMirror extends TileEntity{
 	public ForgeDirection prevOr;
 	
 	public TileEntityMirror(){
+		if(direction == null)
+			this.direction = ForgeDirection.UP;
+		if(orientation == null)
+			this.orientation = ForgeDirection.NORTH;
 		
+		sendUpdatePacket();
 	}
 	
 	public void updateEntity(){	
 		super.updateEntity();
-		if(orientation == null){
-			this.orientation = ForgeDirection.NORTH;
-			System.out.println("UPDATED OR");
-		}
 		
-		if(direction == null){
-			this.direction = ForgeDirection.UP;
-			System.out.println("UPDATED DIR");
-		}
-		
-		if(prevDir != direction || prevOr != orientation)
+		if(prevDir != direction || prevOr != orientation || prevDir == null)
 			sendUpdatePacket();		
+		
+		if(this.worldObj.getWorldTime() % 20 == 0)
+			sendUpdatePacket();
 		
 		prevDir = direction;
 		prevOr = orientation;
@@ -125,11 +124,12 @@ public class TileEntityMirror extends TileEntity{
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
+    public void writeToNBT(NBTTagCompound tagCompound) {   	
             if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER){	
 	            tagCompound.setString("direction", this.direction.name());
 	            tagCompound.setString("orientation", this.orientation.name());
             }
+            super.writeToNBT(tagCompound);
     }
 
 	public ForgeDirection getDirection() {

@@ -15,6 +15,7 @@ import opticraft.entitys.TileEntityFiberCable;
 import opticraft.entitys.TileEntityLaser;
 import opticraft.entitys.TileEntityLaserDetector;
 import opticraft.entitys.TileEntityLuxCapacitor;
+import opticraft.entitys.TileEntityMirror;
 import opticraft.entitys.TileEntityRedstoneLaser;
 import opticraft.entitys.TileEntitySolarCollector;
 import opticraft.events.LaserEvent;
@@ -84,6 +85,7 @@ public class Opticraft {
         GameRegistry.registerTileEntity(TileEntityFiberCable.class, "tileEntityFiberCable");
         GameRegistry.registerTileEntity(TileEntityLuxCapacitor.class, "tileEntityLuxBattery");
         GameRegistry.registerTileEntity(TileEntityRedstoneLaser.class, "tileEntityRedstoneLaser");
+        GameRegistry.registerTileEntity(TileEntityMirror.class, "tileEntityMirror");
               
 	}
 

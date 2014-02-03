@@ -8,7 +8,7 @@ import opticraft.blocks.Blocks;
 import opticraft.client.render.BeamRendererX;
 import opticraft.client.render.BeamRendererY;
 import opticraft.client.render.BeamRendererZ;
-import opticraft.client.render.BeamTileRenderer;
+import opticraft.client.render.LaserBeamRenderer;
 import opticraft.client.render.FiberCableRenderer;
 import opticraft.client.render.LaserBeamRenderer;
 import opticraft.client.render.LaserDetectorRenderer;
@@ -99,7 +99,6 @@ public class ClientProxy extends CommonProxy{
     	RenderingRegistry.registerEntityRenderingHandler(EntityBeamY.class, new BeamRendererY());
     	RenderingRegistry.registerEntityRenderingHandler(EntityBeamZ.class, new BeamRendererZ());
     	RenderingRegistry.registerEntityRenderingHandler(EntityBeamX.class, new BeamRendererX());
-    	RenderingRegistry.registerEntityRenderingHandler(EntityBeam.class, new LaserBeamRenderer());
     	
     	MinecraftForgeClient.registerItemRenderer(Ids.laserWrench + 256, (IItemRenderer)new LaserWrenchRenderer());
     	
