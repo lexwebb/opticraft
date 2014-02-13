@@ -1,8 +1,8 @@
 package opticraft.client.render;
 
+import opticraft.client.models.LaserModel;
+import opticraft.client.models.LaserWrenchModel;
 import opticraft.lib.ModInfo;
-import opticraft.models.LaserModel;
-import opticraft.models.LaserWrenchModel;
 
 import org.lwjgl.opengl.GL11;
 

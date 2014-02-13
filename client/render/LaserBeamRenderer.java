@@ -2,13 +2,13 @@ package opticraft.client.render;
 
 import java.util.List;
 
+import opticraft.client.models.BeamModel;
 import opticraft.entitys.EntityBeam;
 import opticraft.entitys.EntityBeamY;
 import opticraft.entitys.TileEntityLaser;
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
 import opticraft.lib.Position;
-import opticraft.models.BeamModel;
 
 import org.lwjgl.opengl.GL11;
 

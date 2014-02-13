@@ -1,10 +1,10 @@
 package opticraft.client.render;
 
+import opticraft.client.models.LaserDetectorModel;
+import opticraft.client.models.LaserModel;
 import opticraft.entitys.TileEntityLaserDetector;
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
-import opticraft.models.LaserModel;
-import opticraft.models.LaserDetectorModel;
 
 import org.lwjgl.opengl.GL11;
 

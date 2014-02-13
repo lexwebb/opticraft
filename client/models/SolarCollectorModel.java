@@ -9,7 +9,7 @@
 
 
 
-package opticraft.models;
+package opticraft.client.models;
 
 import java.util.List;
 

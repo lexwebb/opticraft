@@ -16,6 +16,9 @@ public class Blocks {
 	public static LuxCapacitorBlock luxBatteryTileBlock;
 	public static RedstoneLaserBlock redstoneLaserTileBlock;
 	public static MirrorBlock mirrorBlock;
+	public static ColliderPipeBlock colliderPipeBlock;
+	public static ColliderPipeCornerBlock colliderPipeCornerBlock;
+	public static PrinterBlock printerBlock;
 
 	public static void init() {
 		laserTileBlock = new LaserBlock(Ids.TileEntityLaserBlock);
@@ -25,6 +28,9 @@ public class Blocks {
 		luxBatteryTileBlock = new LuxCapacitorBlock(Ids.TileEntityLuxCapacitorBlock);
 		redstoneLaserTileBlock = new RedstoneLaserBlock(Ids.TileEntityRedstoneLaserBlock);
 		mirrorBlock = new MirrorBlock(Ids.TileEntityMirrorBlock);
+		colliderPipeBlock = new ColliderPipeBlock(Ids.TileEntityColliderPipeBlock);
+		colliderPipeCornerBlock = new ColliderPipeCornerBlock(Ids.TileEntityColliderPipeCornerBlock);
+		printerBlock = new PrinterBlock(Ids.TileEntityPrinterBlock);
 		
 		
 		GameRegistry.registerBlock(laserTileBlock);
@@ -34,6 +40,9 @@ public class Blocks {
 		GameRegistry.registerBlock(luxBatteryTileBlock);
 		GameRegistry.registerBlock(redstoneLaserTileBlock);
 		GameRegistry.registerBlock(mirrorBlock);
+		GameRegistry.registerBlock(colliderPipeBlock);
+		GameRegistry.registerBlock(colliderPipeCornerBlock);
+		GameRegistry.registerBlock(printerBlock);
 				
 		laserTileBlock.setUnlocalizedName(Names.laserTile_u);
 		solarCollectorTileBlock.setUnlocalizedName(Names.solarCollectorTile_u);
@@ -42,6 +51,9 @@ public class Blocks {
 		luxBatteryTileBlock.setUnlocalizedName(Names.luxCapacitorTile_u);
 		redstoneLaserTileBlock.setUnlocalizedName(Names.redstoneLaserTile_u);
 		mirrorBlock.setUnlocalizedName(Names.mirrorTile_u);
+		colliderPipeBlock.setUnlocalizedName(Names.colliderPipeTile_u);
+		colliderPipeCornerBlock.setUnlocalizedName(Names.colliderPipeCornerTile_u);
+		printerBlock.setUnlocalizedName(Names.printerTile_u);
 
 	}
 
@@ -53,5 +65,8 @@ public class Blocks {
 		LanguageRegistry.addName(luxBatteryTileBlock, Names.luxCapacitorTile_n);
 		LanguageRegistry.addName(redstoneLaserTileBlock, Names.redstoneLaserTile_n);
 		LanguageRegistry.addName(mirrorBlock, Names.mirrorTile_n);
+		LanguageRegistry.addName(colliderPipeBlock, Names.colliderPipeTile_n);
+		LanguageRegistry.addName(colliderPipeCornerBlock, Names.colliderPipeCornerTile_n);
+		LanguageRegistry.addName(printerBlock, Names.printerTile_n);
 	}
 }

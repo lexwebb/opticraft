@@ -1,11 +1,11 @@
 package opticraft.client.render;
 
+import opticraft.client.models.LaserModel;
+import opticraft.client.models.LaserRedstoneModel;
 import opticraft.entitys.TileEntityLaser;
 import opticraft.entitys.TileEntityRedstoneLaser;
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
-import opticraft.models.LaserModel;
-import opticraft.models.LaserRedstoneModel;
 
 import org.lwjgl.opengl.GL11;
 

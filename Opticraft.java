@@ -11,11 +11,14 @@ import opticraft.entitys.EntityBeam;
 import opticraft.entitys.EntityBeamX;
 import opticraft.entitys.EntityBeamY;
 import opticraft.entitys.EntityBeamZ;
+import opticraft.entitys.TileEntityColliderPipe;
+import opticraft.entitys.TileEntityColliderPipeCorner;
 import opticraft.entitys.TileEntityFiberCable;
 import opticraft.entitys.TileEntityLaser;
 import opticraft.entitys.TileEntityLaserDetector;
 import opticraft.entitys.TileEntityLuxCapacitor;
 import opticraft.entitys.TileEntityMirror;
+import opticraft.entitys.TileEntityPrinter;
 import opticraft.entitys.TileEntityRedstoneLaser;
 import opticraft.entitys.TileEntitySolarCollector;
 import opticraft.events.LaserEvent;
@@ -86,6 +89,9 @@ public class Opticraft {
         GameRegistry.registerTileEntity(TileEntityLuxCapacitor.class, "tileEntityLuxBattery");
         GameRegistry.registerTileEntity(TileEntityRedstoneLaser.class, "tileEntityRedstoneLaser");
         GameRegistry.registerTileEntity(TileEntityMirror.class, "tileEntityMirror");
+        GameRegistry.registerTileEntity(TileEntityColliderPipe.class, "tileEntityColliderPipe");
+        GameRegistry.registerTileEntity(TileEntityColliderPipeCorner.class, "tileEntityColliderPipeCorner");
+        GameRegistry.registerTileEntity(TileEntityPrinter.class, "tileEntityPrinter");
               
 	}
 

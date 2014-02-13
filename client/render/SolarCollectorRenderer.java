@@ -1,8 +1,8 @@
 package opticraft.client.render;
 
+import opticraft.client.models.SolarCollectorModel;
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
-import opticraft.models.SolarCollectorModel;
 
 import org.lwjgl.opengl.GL11;
 

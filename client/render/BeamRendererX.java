@@ -1,9 +1,9 @@
 package opticraft.client.render;
 
+import opticraft.client.models.BeamModel;
 import opticraft.entitys.EntityBeamY;
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
-import opticraft.models.BeamModel;
 
 import org.lwjgl.opengl.GL11;
 

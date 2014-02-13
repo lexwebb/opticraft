@@ -4,7 +4,7 @@
 // Keep in mind that you still need to fill in some blanks
 // - ZeuX
 
-package opticraft.models;
+package opticraft.client.models;
 
 import org.lwjgl.opengl.GL11;
 

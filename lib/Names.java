@@ -54,4 +54,13 @@ public class Names {
 	
 	public static final String mirrorTile_u = "mirrorTile";
 	public static final String mirrorTile_n = "Mirror";
+	
+	public static final String colliderPipeTile_u = "colliderPipeTile";
+	public static final String colliderPipeTile_n = "Collider Pipe";
+	
+	public static final String colliderPipeCornerTile_u = "colliderPipeCornerTile";
+	public static final String colliderPipeCornerTile_n = "Collider Pipe Corner";
+	
+	public static final String printerTile_u = "printerTile";
+	public static final String printerTile_n = "3D Printer";
 }

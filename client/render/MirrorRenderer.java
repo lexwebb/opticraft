@@ -1,15 +1,15 @@
 package opticraft.client.render;
 
+import opticraft.client.models.CableModel;
+import opticraft.client.models.FiberCableModel;
+import opticraft.client.models.MirrorModel;
+import opticraft.client.models.SolarCollectorModel;
 import opticraft.entitys.TileEntityFiberCable;
 import opticraft.entitys.TileEntityLaser;
 import opticraft.entitys.TileEntityMirror;
 import opticraft.entitys.TileEntityRedstoneLaser;
 import opticraft.lib.ModInfo;
 import opticraft.lib.Names;
-import opticraft.models.CableModel;
-import opticraft.models.FiberCableModel;
-import opticraft.models.MirrorModel;
-import opticraft.models.SolarCollectorModel;
 
 import org.lwjgl.opengl.GL11;
 
